@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -102,9 +102,12 @@
   .foot a,.foot button{flex:1;text-align:center;font-size:10.5px;font-weight:600;padding:4px 3px;border-radius:6px;background:#1b2130;border:1px solid var(--line);color:var(--text)}
   .foot a:hover,.foot button:hover{border-color:var(--cc);text-decoration:none}
   .foot .tw{background:#3a2a66;border-color:#5b44a0} .foot .tw.open{background:#5b44a0;border-color:#9b82ff;box-shadow:0 0 10px rgba(145,70,255,.45)}
-  .twp .visit{display:block;margin:2px auto 0;padding:7px 10px;border-radius:7px;background:#3a2a66;border:1px solid #5b44a0;color:#fff;font-weight:700;font-size:12px;text-align:center}
+  .stats{position:relative} .stats.twon>.stat{visibility:hidden}
+  .twp{position:absolute;inset:0;display:grid;grid-template-columns:2fr 1fr;align-items:center;padding:inherit}
+  .twp .stat{visibility:visible!important}
+  .twp .visit{display:block;margin:0 auto;padding:6px 10px;border-radius:7px;background:#3a2a66;border:1px solid #5b44a0;color:#fff;font-weight:700;font-size:12px;text-align:center}
   .twp .visit:hover{background:#5b44a0;text-decoration:none}
-  .twp .lnk{gap:4px} .twp .lnk a{display:block;padding:3px 4px;border-radius:6px;background:#1b2130;border:1px solid var(--line);color:var(--text);font-size:10.5px;font-weight:600;text-align:center}
+  .twp .lnk{gap:2px;justify-content:center} .twp .lnk a{display:block;padding:1px 4px;line-height:14px;border-radius:6px;background:#1b2130;border:1px solid var(--line);color:var(--text);font-size:10.5px;font-weight:600;text-align:center}
   .twp .lnk a:hover{border-color:#9b82ff;text-decoration:none}
   .details{display:none;padding:6px 9px 9px;font-size:11.5px;color:var(--muted);border-top:1px solid rgba(255,255,255,.06)}
   .details.open{display:block} .details p{margin:5px 0} .details .ok{color:#56d364} .details .bad{color:#ff7b72} .details a{margin-right:8px}
@@ -208,7 +211,7 @@
   /* talents popup */
   #talwrap{position:fixed;inset:0;z-index:9000;display:none;align-items:flex-start;justify-content:center;background:rgba(3,4,7,.78);backdrop-filter:blur(3px);overflow-y:auto;padding:24px 12px}
   #talwrap.on{display:flex}
-  .tal{position:relative;width:min(400px,100%);background:#10131b;border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 2px var(--cc) inset;color:var(--text);overflow:clip}
+  .tal{position:relative;width:min(470px,100%);background:#10131b;border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 2px var(--cc) inset;color:var(--text);overflow:clip}
   .tal header{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.07);background:linear-gradient(90deg,color-mix(in srgb,var(--cc) 22%,transparent),transparent)}
   .tal header h3{margin:0;font:800 19px Cinzel,serif;color:var(--cc)} .tal header .who{font-size:11.5px;color:var(--muted)}
   .tal header .pts{margin-left:auto;font:800 15px Cinzel,serif;color:var(--gold);white-space:nowrap}
@@ -224,23 +227,23 @@
   .tree.main{border-color:color-mix(in srgb,var(--cc) 55%,transparent)}
   .tree h4{margin:0 0 8px;display:flex;justify-content:space-between;font:800 13px Cinzel,serif;color:var(--text)} .tree h4 b{color:var(--gold)}
   .tree.none h4{color:var(--dim)} .tree.none h4 b{color:var(--dim)}
-  .tgrid{position:relative;width:max-content;margin:0 auto;display:grid;grid-template-columns:repeat(4,44px);grid-template-rows:repeat(7,44px);gap:7px 9px;justify-content:center}
+  .tgrid{--ts:58px;position:relative;width:max-content;margin:0 auto;display:grid;grid-template-columns:repeat(4,var(--ts));grid-template-rows:repeat(7,var(--ts));gap:calc(var(--ts)*.16) calc(var(--ts)*.2);justify-content:center}
   .tgrid svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
   .tgrid svg path{stroke:#3a404d;stroke-width:3;fill:none} .tgrid svg path.on{stroke:#d9a93a}
-  .tl{position:relative;width:44px;height:44px;border-radius:7px;border:2px solid #2a2f3a;background:#151922;cursor:pointer;padding:0}
-  .tl i{position:absolute;inset:1px;border-radius:5px;background-image:var(--tspr);background-size:1200% calc(var(--trows)*100%)}
-  .tl.off i{filter:grayscale(1) brightness(.45)} .tl.off.noicon i{display:none}
+  .tl{position:relative;width:var(--ts);height:var(--ts);border-radius:8px;border:2px solid #2a2f3a;background:#151922;cursor:pointer;padding:0}
+  .tl i{position:absolute;inset:1px;border-radius:5px;background-image:url(talent-icons.webp?v=500df386d832);background-size:1200% 3100%}
+  .tl.off i{filter:grayscale(1) brightness(.6)} .tl.off.noicon i{display:none}
   .tl.off.noicon::after{content:attr(data-ab);position:absolute;inset:0;display:grid;place-items:center;font:700 11px Cinzel,serif;color:#4c5363}
   .tl.on{border-color:#56d364;box-shadow:0 0 8px rgba(86,211,100,.35)} .tl.max{border-color:#e3b341;box-shadow:0 0 10px rgba(227,179,65,.45)}
-  .tl em{position:absolute;right:-6px;bottom:-6px;font:700 9.5px/1 system-ui,sans-serif;font-style:normal;background:#0b0d13;border:1px solid #3a404d;border-radius:4px;padding:2px 3px;color:#8b93a3}
+  .tl em{position:absolute;right:-6px;bottom:-6px;font:700 10.5px/1 system-ui,sans-serif;font-style:normal;background:#0b0d13;border:1px solid #3a404d;border-radius:4px;padding:2px 3px;color:#8b93a3}
   .tl.on em{color:#56d364;border-color:#56d364} .tl.max em{color:#e3b341;border-color:#e3b341}
   .tl.sel{outline:2px solid #fff;outline-offset:2px}
-  .tinfo{position:sticky;bottom:8px;z-index:2;box-shadow:0 -6px 18px rgba(0,0,0,.5);margin:0 12px;min-height:54px;padding:9px 11px;border-radius:9px;background:#0b0d13;border:1px solid rgba(255,255,255,.07);font-size:12.5px;color:var(--muted)}
+  .tinfo{position:sticky;bottom:8px;z-index:2;box-shadow:0 -6px 18px rgba(0,0,0,.5);margin:0 12px;min-height:0;padding:7px 10px;border-radius:9px;background:#0b0d13;border:1px solid rgba(255,255,255,.07);font-size:12.5px;color:var(--muted)}
   .tinfo b{color:var(--text);font-size:13.5px} .tinfo .rk{margin-left:6px;color:var(--gold);font-weight:700}
-  .tabout{padding:8px 12px 12px;font-size:11px;line-height:1.4;color:var(--muted)} .tabout p{margin:3px 0} .tabout .ok{color:#56d364} .tabout .bad{color:#ff7b72} .tabout a{margin-right:10px}
+  .tabout{padding:2px 12px 8px;font-size:11px;line-height:1.4;color:var(--muted)} .tabout p{margin:3px 0} .tabout .ok{color:#56d364} .tabout .bad{color:#ff7b72} .tabout a{margin-right:10px}
   .tabout .flavor{color:var(--text)} .tabout .src{font-size:9.5px;color:var(--dim);margin-top:6px}
   .lbtns{display:flex;gap:5px;margin-top:7px} .lbtns a{flex:1;margin:0!important;text-align:center;font-size:11px;font-weight:600;padding:5px 3px;border-radius:6px;background:#1b2130;border:1px solid var(--line);color:var(--text)} .lbtns a:hover{border-color:var(--cc);text-decoration:none} .lbtns a:first-child{background:#3a2a66;border-color:#5b44a0}
-  @media (max-width:640px){ #talwrap{padding:0} .tal{border-radius:0;min-height:100%} .tgrid{grid-template-columns:repeat(4,48px);grid-template-rows:repeat(7,48px)} .tl{width:48px;height:48px} }
+  @media (max-width:640px){ #talwrap{padding:0} .tal{border-radius:0 0 14px 14px} .tgrid{--ts:min(64px,calc((100vw - 64px)/4.6))} }
   @media (prefers-reduced-motion:reduce){.card,.cname{animation:none!important}.flip{transition:none}}
 
   /* ---------- phones ---------- */
@@ -318,7 +321,7 @@
     <span class="fact">Level cap <b>60</b></span>
     <span class="fact">World first 60 <b>Team JokerD · ~52h</b></span>
     <span class="fact">Raids unlock <b>9 Dec</b> <span id="raidCountdown"></span></span>
-    <span class="fact">Armory checked <b id="checked">20 Nov, 4:35 PM AEDT</b> · every 6h</span>
+    <span class="fact">Armory checked <b id="checked">20 Nov, 9:54 PM AEDT</b> · every 6h</span>
   </div>
   <div class="legend"><span>Tap a card to flip it to its gear. Tap or hover an item for its tooltip, where it comes from and the Forever vs Classic changes:</span>
     <span><span class="sw" style="background:var(--new)"></span>new in Forever</span>
@@ -404,13 +407,13 @@ const ROSTER = [
     how:"worldfirst60 tracker entry, confirmed on the Armory.", fixed:"",
     chars:[{name:"Esfand Television", slug:"esfand-television", render:"76/7621452", bg:"human",
       level:52, ilvl:49, race:"Human", cls:"Paladin", spec:"Retribution", faction:"ally", ruleset:"PvP", guild:"Crusade",
-      profs:[["First Aid",225,300],["Blacksmithing",215,225],["Engineering",200,225],["Cooking",1,75],["Fishing",1,75]], rep:["Stormwind","Revered",55]}]},
+      profs:[["First Aid",235,300],["Blacksmithing",215,225],["Engineering",200,225],["Cooking",1,75],["Fishing",1,75]], rep:["Stormwind","Revered",55]}]},
   { ch:"imaqtpie", streamer:"imaqtpie",
     flavor:"65 honorable kills on the PvP ruleset. Up from 24 at the end of the launch race to 55.",
     how:"Name from you. Confirmed on the Armory and the worldfirst60 tracker.", fixed:"",
     chars:[{name:"Abg Slayer", slug:"abg-slayer", render:"43/6998315", bg:"night_elf",
       level:52, ilvl:48, race:"Night Elf", cls:"Warrior", spec:"Protection", faction:"ally", ruleset:"PvP", guild:"Jorkers",
-      profs:[["Mining",281,300],["Blacksmithing",129,150],["First Aid",50,150],["Fishing",28,75],["Cooking",1,75]], rep:["Darnassus","Honored",43]}]},
+      profs:[["Mining",285,300],["Blacksmithing",129,150],["First Aid",50,150],["Fishing",28,75],["Cooking",1,75]], rep:["Darnassus","Honored",44]}]},
   { ch:"nmplol", streamer:"Nmplol", added:true,
     flavor:"Third member of the launch LAN, in the same guild as Soda and Mitch.",
     how:"worldfirst60 tracker entry, confirmed on the Armory.", fixed:"",
@@ -450,6 +453,12 @@ const ROSTER = [
     chars:[{name:"Xaryu Forever", slug:"xaryu-forever", render:"7/1494791", bg:"gnome",
       level:52, ilvl:41, race:"Gnome", cls:"Mage", spec:"Frost", faction:"ally", ruleset:"PvP", guild:"Phase IX",
       profs:[["First Aid",259,300],["Tailoring",204,225],["Enchanting",170,225],["Cooking",67,150],["Fishing",1,75]], rep:["Stormwind","Revered",52]}]},
+  { ch:"bajheera", streamer:"Bajheera", added:true,
+    flavor:"Added from the tracker page on 20 Nov 2026.",
+    how:"Found on the Armory: “Bajheera Furyborn”, a level 57 Human Warrior in The Furyborn Alliance.", fixed:"",
+    chars:[{name:"Bajheera Furyborn", slug:"bajheera-furyborn", render:"200/5784776", bg:"human",
+      level:57, ilvl:52, race:"Human", cls:"Warrior", spec:"Protection", faction:"ally", ruleset:"Roleplay", guild:"The Furyborn Alliance",
+      profs:[["Mining",300,300],["First Aid",277,300],["Blacksmithing",225,225],["Cooking",225,300],["Fishing",89,150]], rep:["Stormwind","Revered",52]}]},
   { ch:"quin69", streamer:"Quin69",
     flavor:"Busy in Wraeclast, not Azeroth: live in Path of Exile for the Umbra league launch (HC SSF).",
     how:"Checked his live stream on 14 Nov and the Armory. “Bald Fraud” returns 0 results.",
@@ -631,18 +640,18 @@ function profsHTML(c){
   return `<div class="profs">${c.profs.slice(0,4).map(([n,v,m])=>`<div class="prof ${v>=m?"max":""}"><div class="top"><span>${esc(PSHORT[n]||n)}</span><b>${v}<i>/${m}</i></b></div><div class="bar"><i style="width:${Math.round(v/m*100)}%"></i></div></div>`).join("")}</div>`;
 }
 function twPanelHTML(e, status){
-  return `<div class="stats twp">
+  return `<div class="twp">
     <div class="stat gld"><a class="visit" href="https://www.twitch.tv/${e.ch}" target="_blank" rel="noopener">Visit channel</a>${status?`<div class="tw">${status}</div>`:""}</div>
     <div class="stat lnk"><a href="https://www.twitch.tv/${e.ch}/videos?filter=archives" target="_blank" rel="noopener">VODs</a><a href="https://www.twitch.tv/${e.ch}/clips?filter=clips&range=7d" target="_blank" rel="noopener">Clips</a><a href="https://worldfirst60.com/twitch/${e.ch}" target="_blank" rel="noopener">Archive</a></div></div>`;
 }
-function statsHTML(c, status){
+function statsHTML(c, status, overlay=""){
   let first;
   if (c.level == null) first = `<div class="stat"><div class="lb">Progress</div><div class="v">—</div></div>`;
   else if (c.level >= 60 && c.rep) first = `<div class="stat" title="${esc(c.rep[0])} · ${esc(c.rep[1])}: ${c.rep[2]}% of the way to Exalted"><div class="lb">Top rep</div><div class="v">${c.rep[2]}%</div><div class="sub">${esc(c.rep[0])}</div><div class="sub" style="color:${STANDCOL[c.rep[1]]||"var(--muted)"};font-weight:600">${esc(c.rep[1])}</div></div>`;
   else { const p = Math.round(c.level/60*100); first = `<div class="stat"><div class="lb">To lvl 60</div><div class="v">${p}%</div><div class="mbar"><i style="width:${p}%"></i></div></div>`; }
   const g = c.guild || "—";
-  return `<div class="stats">
-    <div class="stat gld" title="${esc(g)}"><div class="lb">Guild <span class="realm">${esc(c.ruleset||"")} realm${c.slug&&c.slug.includes("/")?" · "+c.slug.split("/")[0].toUpperCase():""}</span></div><div class="v ${g.length>8?"sm":""}">${esc(g)}</div>${status?`<div class="tw">${status}</div>`:""}</div>${first}</div>`;
+  return `<div class="stats ${overlay?"twon":""}">
+    <div class="stat gld" title="${esc(g)}"><div class="lb">Guild <span class="realm">${esc(c.ruleset||"")} realm${c.slug&&c.slug.includes("/")?" · "+c.slug.split("/")[0].toUpperCase():""}</span></div><div class="v ${g.length>8?"sm":""}">${esc(g)}</div>${status?`<div class="tw">${status}</div>`:""}</div>${first}${overlay}</div>`;
 }
 function gearBackHTML(e, c, stack){
   const g = c.slug && gearOf(c.slug);
@@ -703,7 +712,7 @@ function card(e){
       </div>
     </div>
     <div class="typeline"><span class="cls">${esc((String(c.race||"").replace(/^.*\bSkyborne$/,"Skyborne")+" "+(c.cls==="Unknown"?"":c.cls)).trim()||"Unknown")}${c.spec?`<span class="spec"> ${esc(c.spec)}</span>`:""}</span><span class="rs">${c.ilvl!=null?`ILVL <b>${c.ilvl}</b>`:""}</span></div>
-    ${twOpen.has(e.ch) ? twPanelHTML(e, status) : statsHTML(c, status)}
+    ${statsHTML(c, status, twOpen.has(e.ch) ? twPanelHTML(e, status) : "")}
     <div class="foot">
       <button type="button" class="tw ${twOpen.has(e.ch)?"open":""}" data-twp="${e.ch}" aria-expanded="${twOpen.has(e.ch)}">Twitch</button>
       <a href="${armory}" target="_blank" rel="noopener">Armory</a>
@@ -772,11 +781,11 @@ document.getElementById("refresh").addEventListener("click",refreshAll);
 
 // ---------- talents popup ----------
 let treesReady = null;
-function loadTrees(){ if (window.TREES) return Promise.resolve(); if (!treesReady) treesReady = new Promise((ok,bad)=>{ const sc=document.createElement("script"); sc.src="talent-trees.js?v=d71e6c614969"; sc.onload=ok; sc.onerror=bad; document.head.appendChild(sc); }); return treesReady; }
+function loadTrees(){ if (window.TREES) return Promise.resolve(); if (!treesReady) treesReady = new Promise((ok,bad)=>{ const sc=document.createElement("script"); sc.src="talent-trees.js?v=500df386d832"; sc.onload=ok; sc.onerror=bad; document.head.appendChild(sc); }); return treesReady; }
 const TW = document.createElement("div"); TW.id="talwrap"; document.body.appendChild(TW);
-try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=aea3e8f0f695)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
+try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=89977354e3d6)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
 let talCur = null;
-function iconPos(ix){ const rows=Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12)); return `background-position:${(ix%12)/11*100}% ${rows>1?Math.floor(ix/12)/(rows-1)*100:0}%`; }
+function iconPos(ix){ const rows=Math.ceil(((window.TICN)||365)/12); return `background-position:${(ix%12)/11*100}% ${rows>1?Math.floor(ix/12)/(rows-1)*100:0}%`; }
 function knownIcons(cls){ const m={}; ROSTER.forEach(r=>r.chars.forEach(c=>{ if(c.cls!==cls||!c.slug||!CH[c.slug]) return; Object.values(CH[c.slug].t).forEach(a=>a.forEach(t=>{ if(t[2]>=0) m[t[0]]=t[2]; })); })); return m; }
 function treeHTML(tr, mine, icons, isMain){
   const [tname, list] = tr; const got = {}; (mine||[]).forEach(t=>got[t[0]]=t);
@@ -785,7 +794,7 @@ function treeHTML(tr, mine, icons, isMain){
   const paths = list.map(t=>{ if(t[4]<0) return ""; const q=list[t[4]]; const on=got[q[0]]&&got[q[0]][1]>=q[3];
     const d = q[2]===t[2] ? `M${cx(q[2])} ${cy(q[1])+22} V${cy(t[1])-22}` : q[1]===t[1] ? `M${cx(q[2])+(t[2]>q[2]?22:-22)} ${cy(q[1])} H${cx(t[2])+(t[2]>q[2]?-22:22)}` : `M${cx(q[2])+(t[2]>q[2]?22:-22)} ${cy(q[1])} H${cx(t[2])} V${cy(t[1])-22}`;
     return `<path class="${on?"on":""}" d="${d}"/>`; }).join("");
-  const cells = list.map((t,i)=>{ const g=got[t[0]]; const ix = g&&g[2]>=0 ? g[2] : (icons[t[0]]??-1); const rank=g?g[1]:0;
+  const cells = list.map((t,i)=>{ const g=got[t[0]]; const ix = t[7]??-1; const rank=g?g[1]:0;
     const cls = rank>=t[3]?"on max":rank>0?"on":"off"+(ix<0?" noicon":"");
     const ab = t[0].split(/\s+/).map(w=>w[0]).join("").slice(0,3);
     return `<button type="button" class="tl ${cls}" style="grid-row:${t[1]+1};grid-column:${t[2]+1}" data-t="${esc(tname)}|${i}" data-ab="${esc(ab)}" aria-label="${esc(t[0])}, rank ${rank} of ${t[3]}"><i style="${ix>=0?iconPos(ix):""}"></i><em>${rank}/${t[3]}</em></button>`; }).join("");
