@@ -189,23 +189,29 @@
   .tb-front{position:relative;z-index:4;padding-left:58px;min-height:44px}
   .tb-front .lvl{position:absolute;left:8px;top:5px;width:42px;height:42px}
   .tb-front .lvl b{font-size:17px}
-  .side{top:14px;bottom:6px;width:clamp(120px,41%,134px);gap:0}
-  .prof .top{letter-spacing:.2px} .prof .top b{font-size:9.5px} .prof .top b i{font-size:8px}
+  .side{top:14px;bottom:6px;width:112px;gap:0}
+  .pbox .profs{padding:4px 7px;gap:2px}
+  .pbox .prof .top{font-size:8px;letter-spacing:.1px} .pbox .prof .top b{font:700 10px/1.25 Inter,system-ui,sans-serif;font-variant-numeric:tabular-nums} .pbox .prof .top b i{font-size:8px;font-weight:600}
+  .pbox .prof .bar{height:2px;margin-top:0}
+  .cstats .hi{color:var(--ccl)} .cstats .hi b{color:var(--cc);text-shadow:0 0 6px color-mix(in srgb,var(--cc) 55%,transparent)}
   .pbox{margin-top:0;min-width:0}
   .profs{margin-top:0}
   .cstats{grid-template-columns:1fr;gap:1px;padding:4px 7px}
   .cstats div{font-size:8px}
-  @media (max-width:640px){ .tb-front{padding-left:66px;min-height:52px} .tb-front .lvl{width:50px;height:50px} .tb-front .lvl b{font-size:20px} .side{top:18px;width:clamp(122px,36%,144px)} .cstats{gap:2px} }
+  @media (max-width:640px){ .tb-front{padding-left:66px;min-height:52px} .tb-front .lvl{width:50px;height:50px} .tb-front .lvl b{font-size:20px} .side{top:18px;width:120px} .pbox .prof .top{font-size:9px} .pbox .prof .top b{font-size:11px} .cstats{gap:2px} }
   /* talents popup */
   #talwrap{position:fixed;inset:0;z-index:9000;display:none;align-items:flex-start;justify-content:center;background:rgba(3,4,7,.78);backdrop-filter:blur(3px);overflow-y:auto;padding:24px 12px}
   #talwrap.on{display:flex}
-  .tal{position:relative;width:min(760px,100%);background:#10131b;border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 2px var(--cc) inset;color:var(--text);overflow:clip}
+  .tal{position:relative;width:min(400px,100%);background:#10131b;border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 2px var(--cc) inset;color:var(--text);overflow:clip}
   .tal header{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.07);background:linear-gradient(90deg,color-mix(in srgb,var(--cc) 22%,transparent),transparent)}
   .tal header h3{margin:0;font:800 19px Cinzel,serif;color:var(--cc)} .tal header .who{font-size:11.5px;color:var(--muted)}
   .tal header .pts{margin-left:auto;font:800 15px Cinzel,serif;color:var(--gold);white-space:nowrap}
   .tal .talx{position:static;width:32px;height:32px;display:grid;place-items:center;border-radius:8px;background:#1b2130;border:1px solid var(--line);color:var(--text);font-size:16px;line-height:1;cursor:pointer;flex:none}
   .tal .talx:hover{border-color:var(--cc)}
-  .trees{display:grid;grid-template-columns:repeat(auto-fit,minmax(214px,1fr));gap:10px;padding:12px}
+  .trees{padding:0 12px 10px}
+  .ttabs{display:flex;gap:6px;padding:10px 12px 8px} .ttabs button{flex:1;display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 9px;border-radius:8px;background:#151922;border:1px solid var(--line);color:var(--muted);font:600 12px Inter,system-ui,sans-serif;cursor:pointer}
+  .ttabs button b{font:800 13px Cinzel,serif;color:var(--dim)} .ttabs button.on{color:var(--text);border-color:var(--cc);background:color-mix(in srgb,var(--cc) 16%,#151922)} .ttabs button.on b{color:var(--gold)}
+  .tal .tree h4{display:none}
   .tree{background:#0b0d13;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:8px 8px 10px}
   .tree.main{border-color:color-mix(in srgb,var(--cc) 55%,transparent)}
   .tree h4{margin:0 0 8px;display:flex;justify-content:space-between;font:800 13px Cinzel,serif;color:var(--text)} .tree h4 b{color:var(--gold)}
@@ -223,8 +229,9 @@
   .tl.sel{outline:2px solid #fff;outline-offset:2px}
   .tinfo{position:sticky;bottom:8px;z-index:2;box-shadow:0 -6px 18px rgba(0,0,0,.5);margin:0 12px;min-height:54px;padding:9px 11px;border-radius:9px;background:#0b0d13;border:1px solid rgba(255,255,255,.07);font-size:12.5px;color:var(--muted)}
   .tinfo b{color:var(--text);font-size:13.5px} .tinfo .rk{margin-left:6px;color:var(--gold);font-weight:700}
-  .tabout{padding:10px 14px 14px;font-size:12px;color:var(--muted)} .tabout p{margin:6px 0} .tabout .ok{color:#56d364} .tabout .bad{color:#ff7b72} .tabout a{margin-right:10px}
-  .tabout .flavor{color:var(--text)} .tabout .src{font-size:10.5px;color:var(--dim)}
+  .tabout{padding:8px 12px 12px;font-size:11px;line-height:1.4;color:var(--muted)} .tabout p{margin:3px 0} .tabout .ok{color:#56d364} .tabout .bad{color:#ff7b72} .tabout a{margin-right:10px}
+  .tabout .flavor{color:var(--text)} .tabout .src{font-size:9.5px;color:var(--dim);margin-top:6px}
+  .lbtns{display:flex;gap:5px;margin-top:7px} .lbtns a{flex:1;margin:0!important;text-align:center;font-size:11px;font-weight:600;padding:5px 3px;border-radius:6px;background:#1b2130;border:1px solid var(--line);color:var(--text)} .lbtns a:hover{border-color:var(--cc);text-decoration:none} .lbtns a:first-child{background:#3a2a66;border-color:#5b44a0}
   @media (max-width:640px){ #talwrap{padding:0} .tal{border-radius:0;min-height:100%} .tgrid{grid-template-columns:repeat(4,48px);grid-template-rows:repeat(7,48px)} .tl{width:48px;height:48px} }
   @media (prefers-reduced-motion:reduce){.card,.cname{animation:none!important}.flip{transition:none}}
 
@@ -580,7 +587,7 @@ function hideTipSoon(){ clearTimeout(ttTimer); ttTimer = setTimeout(hideTip, 260
 // ---------- card faces ----------
 function rarityRing(l){ return l==null?"#b8bcc4":l>=55?"#ff8a1c":l>=45?"#b25bff":l>=30?"#3a8bff":"#b8bcc4"; }
 const STANDCOL={Exalted:"#ff8000",Revered:"#a335ee",Honored:"#0070dd",Friendly:"#1eff00",Neutral:"#ffffff",Unfriendly:"#9d9d9d",Hostile:"#e04848",Hated:"#b02020"};
-const PSHORT={Blacksmithing:"Smithing",Leatherworking:"Leatherwork",Engineering:"Engineer",Enchanting:"Enchant",Jewelcrafting:"Jewelcraft"};
+const PSHORT={Blacksmithing:"Smithing",Leatherworking:"Leather",Engineering:"Engineer",Enchanting:"Enchant",Jewelcrafting:"Jewelcraft"};
 
 // ---------- side panel: character stats (default) or professions, switched by the tab ----------
 const CH = (window.CHARS && window.CHARS.C) || {};
@@ -597,7 +604,9 @@ function statsBoxHTML(c){
   rows.push(caster ? ["","SP",fmt(s.sp)] : ["","AP",fmt(s.ap)]);
   rows.push(s.mp>0 ? ["","Armor",fmt(s.arm)] : ["","Dodge",pct(s.dodge)]);
   rows.push(["","Crit",pct(s.crit)], caster ? ["","MP5",fmt(s.mp5)] : ["","Parry",pct(s.parry)]);
-  return `<div class="cstats">${rows.map(([k,l,v])=>`<div class="${k}">${l}<b>${v}</b></div>`).join("")}</div>`;
+  const top = ["str","agi","int"].reduce((a,b)=>(s[b]||0)>(s[a]||0)?b:a);
+  const hiL = {str:"Str",agi:"Agi",int:"Int"}[top];
+  return `<div class="cstats">${rows.map(([k,l,v])=>`<div class="${k}${l===hiL?" hi":""}">${l}<b>${v}</b></div>`).join("")}</div>`;
 }
 function sideBoxHTML(e, c){
   const st = statsBoxHTML(c), pr = profsHTML(c);
@@ -777,7 +786,7 @@ async function openTalents(ch){
   const np = (state[ch]||{}).title ? `<p>${state[ch].live?"Now":"Last"}: <b>${esc(state[ch].game||"")}</b> · ${esc(state[ch].title)}</p>` : "";
   const about = `<div class="tabout"><div class="flavor">${esc(c.note||e.flavor)}</div>${np}
       ${e.how?`<p><span class="ok">✓</span> ${esc(e.how)}</p>`:""}${e.fixed?`<p><span class="bad">✗</span> ${e.fixed}</p>`:""}
-      <p><a href="https://www.twitch.tv/${e.ch}/videos?filter=archives" target="_blank" rel="noopener">VODs</a><a href="https://www.twitch.tv/${e.ch}/clips?filter=clips&range=7d" target="_blank" rel="noopener">Clips</a><a href="https://worldfirst60.com/twitch/${e.ch}" target="_blank" rel="noopener">Race archive</a></p>
+      <div class="lbtns"><a href="https://www.twitch.tv/${e.ch}/videos?filter=archives" target="_blank" rel="noopener">VODs</a><a href="https://www.twitch.tv/${e.ch}/clips?filter=clips&range=7d" target="_blank" rel="noopener">Clips</a><a href="https://worldfirst60.com/twitch/${e.ch}" target="_blank" rel="noopener">Race archive</a></div>
       <p class="src">Talents from the Armory. Tree layout from timesaver.gg’s WoW Forever talent calculator.</p></div>`;
   const head = `<header><div><h3>${esc(c.name)}</h3><div class="who">${esc(e.streamer)} · ${esc(c.spec?c.spec+" ":"")}${esc(c.cls)} · level ${c.level??"?"}</div></div><span class="pts"></span><button type="button" class="talx" data-talx aria-label="Close">✕</button></header>`;
   TW.innerHTML = `<div class="tal" style="--cc:${k.c}">${head}<div class="trees"><div class="tinfo">Loading talents…</div></div>${about}</div>`;
@@ -792,10 +801,14 @@ async function openTalents(ch){
   const sums = trees.map(tr=>mine(tr[0]).reduce((a,t)=>a+t[1],0)); const top = Math.max(...sums);
   const icons = knownIcons(c.cls);
   TW.querySelector(".pts").textContent = sums.join(" / ");
-  TW.querySelector(".trees").outerHTML = `<div class="trees">${trees.map((tr,i)=>treeHTML(tr, mine(tr[0]), icons, sums[i]===top&&top>0)).join("")}</div><div class="tinfo">Tap or hover a talent to read it.</div>`;
+  const best = sums.indexOf(top);
+  const tabs = `<div class="ttabs">${trees.map((tr,i)=>`<button type="button" data-tree="${i}" class="${i===best?"on":""}">${esc(norm(tr[0]))}<b>${sums[i]}</b></button>`).join("")}</div>`;
+  TW.querySelector(".trees").outerHTML = `${tabs}<div class="trees"></div><div class="tinfo">Tap or hover a talent to read it.</div>`;
+  talCur.show = i => { TW.querySelectorAll(".ttabs button").forEach((b,j)=>b.classList.toggle("on",j===i)); TW.querySelector(".trees").innerHTML = treeHTML(trees[i], mine(trees[i][0]), icons, i===best&&top>0); TW.querySelector(".tinfo").textContent = "Tap or hover a talent to read it."; };
+  talCur.show(best);
 }
 function closeTalents(){ TW.classList.remove("on"); TW.innerHTML=""; talCur=null; document.body.style.overflow=""; }
-TW.addEventListener("click", ev=>{ if (ev.target===TW || ev.target.closest("[data-talx]")) { closeTalents(); return; } const tl=ev.target.closest(".tl"); if (tl) talInfo(tl); });
+TW.addEventListener("click", ev=>{ if (ev.target===TW || ev.target.closest("[data-talx]")) { closeTalents(); return; } const tt=ev.target.closest("[data-tree]"); if (tt && talCur && talCur.show) { talCur.show(+tt.dataset.tree); return; } const tl=ev.target.closest(".tl"); if (tl) talInfo(tl); });
 TW.addEventListener("mouseover", ev=>{ const tl=ev.target.closest(".tl"); if (tl && !isPhone()) talInfo(tl); });
 document.addEventListener("keydown", ev=>{ if (ev.key==="Escape" && TW.classList.contains("on")) closeTalents(); });
 
