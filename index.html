@@ -613,10 +613,10 @@ function itemFor(el){
 }
 function render(){
   hideTip();
-  const list = entries().slice().sort((a,b)=>{ const la=state[a.ch]?.live===true, lb=state[b.ch]?.live===true;
-    const ka=a.chars[0], kb=b.chars[0];
+  const list = entries().slice().sort((a,b)=>{ const ka=a.chars[0], kb=b.chars[0];
     const score=c=>c.level==null?-1:(c.level>=60?1000+(c.ilvl||0):c.level*10+(c.ilvl||0)/100);
-    return (lb-la) || (score(kb)-score(ka)); });
+    const side=c=>c.faction==="ally"?0:1;
+    return (score(kb)-score(ka)) || (side(ka)-side(kb)); });
   document.getElementById("grid").innerHTML = list.map(card).join("");
   const n = list.filter(e=>state[e.ch]?.live===true).length;
   document.getElementById("liveCount").textContent = attempted && blocked<attempted ? `${n} of ${list.length} live ·` : "";
