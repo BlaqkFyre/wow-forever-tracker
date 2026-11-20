@@ -170,6 +170,50 @@
   h2{font:600 13px Cinzel,serif;margin:0 0 8px;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
   .srcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:5px 16px;font-size:12px;color:var(--muted)}
   footer{color:var(--dim);font-size:11.5px;margin-top:26px}
+
+  /* side panel: stats / profs tab */
+  .pbox{margin-top:auto;width:100%;position:relative;padding-top:15px}
+  .pbox .profs,.pbox .cstats{margin-top:0;border-top-left-radius:0}
+  .ptab{position:absolute;top:0;left:0;height:16px;padding:0 9px;font:700 8.5px/16px system-ui,sans-serif;letter-spacing:.9px;text-transform:uppercase;
+    color:var(--ccl,#ddd);background:rgba(8,10,14,.86);border:1px solid rgba(255,255,255,.12);border-bottom:none;border-radius:7px 7px 0 0;cursor:pointer;z-index:2}
+  .ptab:hover{color:#fff;border-color:var(--cc)}
+  .ptab::before{content:"";display:inline-block;width:5px;height:5px;margin-right:5px;border-radius:50%;background:var(--cc);vertical-align:1px}
+  .cstats{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;padding:5px 7px;background:rgba(8,10,14,.72);border:1px solid rgba(255,255,255,.08);border-radius:8px}
+  .cstats div{display:flex;justify-content:space-between;align-items:baseline;font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:600;white-space:nowrap}
+  .cstats b{font:800 10.5px Cinzel,serif;color:var(--text);letter-spacing:0;text-transform:none}
+  .cstats .hp b{color:#5fd36b} .cstats .mp b{color:#5aa6ff}
+  @media (max-width:640px){ .cstats div{font-size:9.5px} .cstats b{font-size:12px} .ptab{height:19px;line-height:19px;font-size:9.5px} .pbox{padding-top:18px} }
+
+  /* talents popup */
+  #talwrap{position:fixed;inset:0;z-index:9000;display:none;align-items:flex-start;justify-content:center;background:rgba(3,4,7,.78);backdrop-filter:blur(3px);overflow-y:auto;padding:24px 12px}
+  #talwrap.on{display:flex}
+  .tal{position:relative;width:min(760px,100%);background:#10131b;border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 2px var(--cc) inset;color:var(--text);overflow:clip}
+  .tal header{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.07);background:linear-gradient(90deg,color-mix(in srgb,var(--cc) 22%,transparent),transparent)}
+  .tal header h3{margin:0;font:800 19px Cinzel,serif;color:var(--cc)} .tal header .who{font-size:11.5px;color:var(--muted)}
+  .tal header .pts{margin-left:auto;font:800 15px Cinzel,serif;color:var(--gold);white-space:nowrap}
+  .tal .talx{position:static;width:32px;height:32px;display:grid;place-items:center;border-radius:8px;background:#1b2130;border:1px solid var(--line);color:var(--text);font-size:16px;line-height:1;cursor:pointer;flex:none}
+  .tal .talx:hover{border-color:var(--cc)}
+  .trees{display:grid;grid-template-columns:repeat(auto-fit,minmax(214px,1fr));gap:10px;padding:12px}
+  .tree{background:#0b0d13;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:8px 8px 10px}
+  .tree.main{border-color:color-mix(in srgb,var(--cc) 55%,transparent)}
+  .tree h4{margin:0 0 8px;display:flex;justify-content:space-between;font:800 13px Cinzel,serif;color:var(--text)} .tree h4 b{color:var(--gold)}
+  .tree.none h4{color:var(--dim)} .tree.none h4 b{color:var(--dim)}
+  .tgrid{position:relative;width:max-content;margin:0 auto;display:grid;grid-template-columns:repeat(4,44px);grid-template-rows:repeat(7,44px);gap:7px 9px;justify-content:center}
+  .tgrid svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+  .tgrid svg path{stroke:#3a404d;stroke-width:3;fill:none} .tgrid svg path.on{stroke:#d9a93a}
+  .tl{position:relative;width:44px;height:44px;border-radius:7px;border:2px solid #2a2f3a;background:#151922;cursor:pointer;padding:0}
+  .tl i{position:absolute;inset:1px;border-radius:5px;background-image:var(--tspr);background-size:1200% calc(var(--trows)*100%)}
+  .tl.off i{filter:grayscale(1) brightness(.45)} .tl.off.noicon i{display:none}
+  .tl.off.noicon::after{content:attr(data-ab);position:absolute;inset:0;display:grid;place-items:center;font:700 11px Cinzel,serif;color:#4c5363}
+  .tl.on{border-color:#56d364;box-shadow:0 0 8px rgba(86,211,100,.35)} .tl.max{border-color:#e3b341;box-shadow:0 0 10px rgba(227,179,65,.45)}
+  .tl em{position:absolute;right:-6px;bottom:-6px;font:700 9.5px/1 system-ui,sans-serif;font-style:normal;background:#0b0d13;border:1px solid #3a404d;border-radius:4px;padding:2px 3px;color:#8b93a3}
+  .tl.on em{color:#56d364;border-color:#56d364} .tl.max em{color:#e3b341;border-color:#e3b341}
+  .tl.sel{outline:2px solid #fff;outline-offset:2px}
+  .tinfo{position:sticky;bottom:8px;z-index:2;box-shadow:0 -6px 18px rgba(0,0,0,.5);margin:0 12px;min-height:54px;padding:9px 11px;border-radius:9px;background:#0b0d13;border:1px solid rgba(255,255,255,.07);font-size:12.5px;color:var(--muted)}
+  .tinfo b{color:var(--text);font-size:13.5px} .tinfo .rk{margin-left:6px;color:var(--gold);font-weight:700}
+  .tabout{padding:10px 14px 14px;font-size:12px;color:var(--muted)} .tabout p{margin:6px 0} .tabout .ok{color:#56d364} .tabout .bad{color:#ff7b72} .tabout a{margin-right:10px}
+  .tabout .flavor{color:var(--text)} .tabout .src{font-size:10.5px;color:var(--dim)}
+  @media (max-width:640px){ #talwrap{padding:0} .tal{border-radius:0;min-height:100%} .tgrid{grid-template-columns:repeat(4,48px);grid-template-rows:repeat(7,48px)} .tl{width:48px;height:48px} }
   @media (prefers-reduced-motion:reduce){.card,.cname{animation:none!important}.flip{transition:none}}
 
   /* ---------- phones ---------- */
@@ -245,7 +289,7 @@
     <span class="fact">Level cap <b>60</b></span>
     <span class="fact">World first 60 <b>Team JokerD · ~52h</b></span>
     <span class="fact">Raids unlock <b>9 Dec</b> <span id="raidCountdown"></span></span>
-    <span class="fact">Armory checked <b id="checked">20 Nov, 3:40 PM AEDT</b> · every 6h</span>
+    <span class="fact">Armory checked <b id="checked">20 Nov, 4:35 PM AEDT</b> · every 6h</span>
   </div>
   <div class="legend"><span>Tap a card to flip it to its gear. Tap or hover an item for its tooltip, where it comes from and the Forever vs Classic changes:</span>
     <span><span class="sw" style="background:var(--new)"></span>new in Forever</span>
@@ -283,7 +327,8 @@
   </footer>
 </main>
 
-<script src="gear-data.js?v=8776a46c1fb19c33"></script>
+<script src="gear-data.js?v=340942bc3b1eedc1"></script>
+<script src="chars.js?v=aea3e8f0f695"></script>
 <script>
 const TRIGGER_ID = "trig_011d1aJi7Mn7usJnVKVc7MTU";
 const CLASS = {
@@ -370,6 +415,12 @@ const ROSTER = [
     chars:[{name:"Gingi Totemhugger", slug:"eu/gingi-totemhugger", render:"253/1049341", bg:"windshaper_skyborne", region:"EU",
       level:52, ilvl:46, race:"Windshaper Skyborne", cls:"Shaman", spec:"Enhancement", faction:"horde", ruleset:"PvP", guild:"Echo",
       profs:[["Skinning",25,75],["Cooking",16,75],["First Aid",10,75]], rep:["Orgrimmar","Honored",41]}]},
+  { ch:"xaryu", streamer:"Xaryu", added:true,
+    flavor:"Added from the tracker page on 20 Nov 2026.",
+    how:"Found on the Armory: “Xaryu Forever”, a level 52 Gnome Mage in Phase IX, the same guild as his “Xaryu Viewer” character (Out of Games Armory search).", fixed:"",
+    chars:[{name:"Xaryu Forever", slug:"xaryu-forever", render:"7/1494791", bg:"gnome",
+      level:52, ilvl:41, race:"Gnome", cls:"Mage", spec:"Frost", faction:"ally", ruleset:"PvP", guild:"Phase IX",
+      profs:[["First Aid",259,300],["Tailoring",204,225],["Enchanting",170,225],["Cooking",67,150],["Fishing",1,75]], rep:["Stormwind","Revered",52]}]},
   { ch:"quin69", streamer:"Quin69",
     flavor:"Busy in Wraeclast, not Azeroth: live in Path of Exile for the Umbra league launch (HC SSF).",
     how:"Checked his live stream on 14 Nov and the Armory. “Bald Fraud” returns 0 results.",
@@ -518,6 +569,30 @@ function hideTipSoon(){ clearTimeout(ttTimer); ttTimer = setTimeout(hideTip, 260
 function rarityRing(l){ return l==null?"#b8bcc4":l>=55?"#ff8a1c":l>=45?"#b25bff":l>=30?"#3a8bff":"#b8bcc4"; }
 const STANDCOL={Exalted:"#ff8000",Revered:"#a335ee",Honored:"#0070dd",Friendly:"#1eff00",Neutral:"#ffffff",Unfriendly:"#9d9d9d",Hostile:"#e04848",Hated:"#b02020"};
 const PSHORT={Blacksmithing:"Smithing",Leatherworking:"Leatherwork",Engineering:"Engineer",Enchanting:"Enchant",Jewelcrafting:"Jewelcraft"};
+
+// ---------- side panel: character stats (default) or professions, switched by the tab ----------
+const CH = (window.CHARS && window.CHARS.C) || {};
+const showProfs = new Set();
+const CASTER = new Set(["Mage","Warlock","Priest","Balance","Restoration","Elemental","Elemental Combat","Holy","Discipline","Shadow"]);
+function fmt(n){ return n==null?"—":n>=10000?(n/1000).toFixed(1)+"k":String(Math.round(n)); }
+function pct(n){ return n==null?"—":(Math.round(n*10)/10)+"%"; }
+function statsBoxHTML(c){
+  const d = c.slug && CH[c.slug]; if (!d) return "";
+  const s = d.s, caster = CASTER.has(c.cls) || CASTER.has(c.spec);
+  const rows = [["hp","HP",fmt(s.hp)]];
+  rows.push(s.mp>0 ? ["mp","Mana",fmt(s.mp)] : ["","Armor",fmt(s.arm)]);
+  rows.push(["","Str",fmt(s.str)],["","Agi",fmt(s.agi)],["","Sta",fmt(s.sta)],["","Int",fmt(s.int)]);
+  rows.push(caster ? ["","Spell",fmt(s.sp)] : ["","AP",fmt(s.ap)]);
+  rows.push(s.mp>0 ? ["","Armor",fmt(s.arm)] : ["","Dodge",pct(s.dodge)]);
+  rows.push(["","Crit",pct(s.crit)], caster ? ["","MP5",fmt(s.mp5)] : ["","Parry",pct(s.parry)]);
+  return `<div class="cstats">${rows.map(([k,l,v])=>`<div class="${k}">${l}<b>${v}</b></div>`).join("")}</div>`;
+}
+function sideBoxHTML(e, c){
+  const st = statsBoxHTML(c), pr = profsHTML(c);
+  if (!st) return pr;
+  const profsOn = showProfs.has(e.ch) && pr;
+  return `<div class="pbox"><button type="button" class="ptab" data-ptab="${e.ch}" title="${profsOn?"Show character stats":"Show professions"}">${profsOn?"Stats":"Profs"}</button>${profsOn?pr:st}</div>`;
+}
 function profsHTML(c){
   if (c.profs===null || c.profs===undefined) return "";
   if (!c.profs.length) return `<div class="profs"><div class="noprof">No professions</div></div>`;
@@ -587,23 +662,15 @@ function card(e){
     <div class="art">${art}
       <div class="side">
         <div class="lvl" style="--fc:${fcol}" title="${c.faction==="ally"?"Alliance":c.faction==="horde"?"Horde":""}"><b>${c.level??"?"}</b><small>LVL</small></div>
-        ${profsHTML(c)}
+        ${sideBoxHTML(e, c)}
       </div>
     </div>
     <div class="typeline"><span class="cls">${esc((String(c.race||"").replace(/^.*\bSkyborne$/,"Skyborne")+" "+(c.cls==="Unknown"?"":c.cls)).trim()||"Unknown")}${c.spec?`<span class="spec"> ${esc(c.spec)}</span>`:""}</span><span class="rs">${c.ilvl!=null?`ILVL <b>${c.ilvl}</b>`:""}</span></div>
     ${statsHTML(c, status)}
-    <div class="details ${open.has(e.ch)?"open":""}">
-      <div class="flavor">${esc(c.note||e.flavor)}</div>
-      ${np}
-      ${live && s.thumb ? `<img class="thumbwide" alt="Live stream preview" src="${s.thumb}" onerror="this.remove()">` : ""}
-      ${e.how?`<p><span class="ok">✓</span> ${esc(e.how)}</p>`:""}
-      ${e.fixed?`<p><span class="bad">✗</span> ${e.fixed}</p>`:""}
-      <p><a href="https://www.twitch.tv/${e.ch}/videos?filter=archives" target="_blank" rel="noopener">VODs</a><a href="https://www.twitch.tv/${e.ch}/clips?filter=clips&range=7d" target="_blank" rel="noopener">Clips</a><a href="https://worldfirst60.com/twitch/${e.ch}" target="_blank" rel="noopener">Race archive</a></p>
-    </div>
     <div class="foot">
       <a class="tw" href="https://www.twitch.tv/${e.ch}" target="_blank" rel="noopener">Twitch</a>
       <a href="${armory}" target="_blank" rel="noopener">Armory</a>
-      <button type="button" data-more="${e.ch}">${open.has(e.ch)?"Less":"Notes"}</button>
+      <button type="button" data-tal="${e.ch}">Talents</button>
     </div>
    </div>${hasGear?gearBackHTML(e,c,stack):""}</div></article>`;
 }
@@ -646,7 +713,8 @@ function raidCountdown(){ const d=Math.ceil((new Date("2026-12-09T23:00:00Z")-Da
 const grid=document.getElementById("grid");
 grid.addEventListener("click",ev=>{
   const t=ev.target;
-  const more=t.closest("[data-more]"); if(more){ const ch=more.dataset.more; open.has(ch)?open.delete(ch):open.add(ch); render(); return; }
+  const tb=t.closest("[data-tal]"); if(tb){ openTalents(tb.dataset.tal); return; }
+  const pt=t.closest("[data-ptab]"); if(pt){ const ch=pt.dataset.ptab; showProfs.has(ch)?showProfs.delete(ch):showProfs.add(ch); render(); return; }
   const it=t.closest("[data-item]"); if(it){ ev.stopPropagation(); const x=itemFor(it); if(x) showTip(x,it); return; }
   const hit=t.closest(".hit"); if(hit){ playMove(hit.closest(".art")); return; }
   const sw=t.closest("[data-swap]");
@@ -662,6 +730,62 @@ grid.addEventListener("mouseout",ev=>{ if(isPhone()) return; const it=ev.target.
 document.addEventListener("scroll",()=>{ if(!isPhone()) hideTip(); },{passive:true});
 document.addEventListener("click",ev=>{ const t=ev.target; if(t.closest("[data-item]")) return; if(t.closest("#tt") && !t.closest(".ttclose")) return; hideTip(); });
 document.getElementById("refresh").addEventListener("click",refreshAll);
+
+
+// ---------- talents popup ----------
+let treesReady = null;
+function loadTrees(){ if (window.TREES) return Promise.resolve(); if (!treesReady) treesReady = new Promise((ok,bad)=>{ const sc=document.createElement("script"); sc.src="talent-trees.js?v=d71e6c614969"; sc.onload=ok; sc.onerror=bad; document.head.appendChild(sc); }); return treesReady; }
+const TW = document.createElement("div"); TW.id="talwrap"; document.body.appendChild(TW);
+try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=aea3e8f0f695)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
+let talCur = null;
+function iconPos(ix){ const rows=Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12)); return `background-position:${(ix%12)/11*100}% ${rows>1?Math.floor(ix/12)/(rows-1)*100:0}%`; }
+function knownIcons(cls){ const m={}; ROSTER.forEach(r=>r.chars.forEach(c=>{ if(c.cls!==cls||!c.slug||!CH[c.slug]) return; Object.values(CH[c.slug].t).forEach(a=>a.forEach(t=>{ if(t[2]>=0) m[t[0]]=t[2]; })); })); return m; }
+function treeHTML(tr, mine, icons, isMain){
+  const [tname, list] = tr; const got = {}; (mine||[]).forEach(t=>got[t[0]]=t);
+  const pts = (mine||[]).reduce((a,t)=>a+t[1],0);
+  const W=53, H=51, cx=c=>c*W+22, cy=r=>r*H+22;
+  const paths = list.map(t=>{ if(t[4]<0) return ""; const q=list[t[4]]; const on=got[q[0]]&&got[q[0]][1]>=q[3];
+    const d = q[2]===t[2] ? `M${cx(q[2])} ${cy(q[1])+22} V${cy(t[1])-22}` : q[1]===t[1] ? `M${cx(q[2])+(t[2]>q[2]?22:-22)} ${cy(q[1])} H${cx(t[2])+(t[2]>q[2]?-22:22)}` : `M${cx(q[2])+(t[2]>q[2]?22:-22)} ${cy(q[1])} H${cx(t[2])} V${cy(t[1])-22}`;
+    return `<path class="${on?"on":""}" d="${d}"/>`; }).join("");
+  const cells = list.map((t,i)=>{ const g=got[t[0]]; const ix = g&&g[2]>=0 ? g[2] : (icons[t[0]]??-1); const rank=g?g[1]:0;
+    const cls = rank>=t[3]?"on max":rank>0?"on":"off"+(ix<0?" noicon":"");
+    const ab = t[0].split(/\s+/).map(w=>w[0]).join("").slice(0,3);
+    return `<button type="button" class="tl ${cls}" style="grid-row:${t[1]+1};grid-column:${t[2]+1}" data-t="${esc(tname)}|${i}" data-ab="${esc(ab)}" aria-label="${esc(t[0])}, rank ${rank} of ${t[3]}"><i style="${ix>=0?iconPos(ix):""}"></i><em>${rank}/${t[3]}</em></button>`; }).join("");
+  return `<div class="tree ${isMain?"main":""} ${pts?"":"none"}"><h4>${esc(tname)}<b>${pts}</b></h4><div class="tgrid"><svg viewBox="0 0 203 351" preserveAspectRatio="none">${paths}</svg>${cells}</div></div>`;
+}
+function talInfo(el){
+  if (!talCur || !el) return; const [tn, i] = el.dataset.t.split("|"); const tr = talCur.trees.find(x=>x[0]===tn); const t = tr && tr[1][+i]; if (!t) return;
+  const g = talCur.mine(tn).find(x=>x[0]===t[0]); const rank = g?g[1]:0;
+  const desc = g ? g[3] : t[5];
+  TW.querySelectorAll(".tl.sel").forEach(x=>x.classList.remove("sel")); el.classList.add("sel");
+  TW.querySelector(".tinfo").innerHTML = `<b>${esc(t[0])}</b><span class="rk">${rank}/${t[3]}</span><br>${esc(desc)}${!g&&t[3]>1?`<br><span style="color:var(--dim)">Max rank: ${esc(t[6])}</span>`:""}`;
+}
+async function openTalents(ch){
+  const e = ROSTER.find(x=>x.ch===ch); if (!e) return; const c = cur(e); const k = CLASS[c.cls]||CLASS.Unknown;
+  const np = (state[ch]||{}).title ? `<p>${state[ch].live?"Now":"Last"}: <b>${esc(state[ch].game||"")}</b> · ${esc(state[ch].title)}</p>` : "";
+  const about = `<div class="tabout"><div class="flavor">${esc(c.note||e.flavor)}</div>${np}
+      ${e.how?`<p><span class="ok">✓</span> ${esc(e.how)}</p>`:""}${e.fixed?`<p><span class="bad">✗</span> ${e.fixed}</p>`:""}
+      <p><a href="https://www.twitch.tv/${e.ch}/videos?filter=archives" target="_blank" rel="noopener">VODs</a><a href="https://www.twitch.tv/${e.ch}/clips?filter=clips&range=7d" target="_blank" rel="noopener">Clips</a><a href="https://worldfirst60.com/twitch/${e.ch}" target="_blank" rel="noopener">Race archive</a></p>
+      <p class="src">Talents from the Armory. Tree layout from timesaver.gg’s WoW Forever talent calculator.</p></div>`;
+  const head = `<header><div><h3>${esc(c.name)}</h3><div class="who">${esc(e.streamer)} · ${esc(c.spec?c.spec+" ":"")}${esc(c.cls)} · level ${c.level??"?"}</div></div><span class="pts"></span><button type="button" class="talx" data-talx aria-label="Close">✕</button></header>`;
+  TW.innerHTML = `<div class="tal" style="--cc:${k.c}">${head}<div class="trees"><div class="tinfo">Loading talents…</div></div>${about}</div>`;
+  TW.classList.add("on"); document.body.style.overflow="hidden";
+  const d = c.slug && CH[c.slug];
+  try { await loadTrees(); } catch(err) {}
+  const trees = (window.TREES||{})[c.cls];
+  if (!d || !trees) { TW.querySelector(".trees").innerHTML = `<div class="tinfo">No talent data for this character yet.</div>`; return; }
+  const norm = n => n.replace(/ Combat$/,"");
+  const mine = tn => { const key = Object.keys(d.t).find(k=>norm(k)===norm(tn)); return key ? d.t[key] : []; };
+  talCur = { trees, mine };
+  const sums = trees.map(tr=>mine(tr[0]).reduce((a,t)=>a+t[1],0)); const top = Math.max(...sums);
+  const icons = knownIcons(c.cls);
+  TW.querySelector(".pts").textContent = sums.join(" / ");
+  TW.querySelector(".trees").outerHTML = `<div class="trees">${trees.map((tr,i)=>treeHTML(tr, mine(tr[0]), icons, sums[i]===top&&top>0)).join("")}</div><div class="tinfo">Tap or hover a talent to read it.</div>`;
+}
+function closeTalents(){ TW.classList.remove("on"); TW.innerHTML=""; talCur=null; document.body.style.overflow=""; }
+TW.addEventListener("click", ev=>{ if (ev.target===TW || ev.target.closest("[data-talx]")) { closeTalents(); return; } const tl=ev.target.closest(".tl"); if (tl) talInfo(tl); });
+TW.addEventListener("mouseover", ev=>{ const tl=ev.target.closest(".tl"); if (tl && !isPhone()) talInfo(tl); });
+document.addEventListener("keydown", ev=>{ if (ev.key==="Escape" && TW.classList.contains("on")) closeTalents(); });
 
 // ---------- add a streamer: saved for the tracker's refresh task, which starts right away when it can ----------
 const addMsg = document.getElementById("addMsg");
