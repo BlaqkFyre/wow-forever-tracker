@@ -73,7 +73,7 @@
     background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--fc) 75%,#fff 10%),color-mix(in srgb,var(--fc) 70%,#000));border:2.5px solid var(--cc);box-shadow:0 0 12px color-mix(in srgb,var(--cc) 55%,transparent),inset 0 0 8px rgba(0,0,0,.5)}
   .lvl b{font:800 18px/1 Cinzel,serif;text-shadow:0 1px 2px #000}
   .lvl small{position:absolute;bottom:-8px;font-size:8px;font-weight:700;letter-spacing:.8px;background:#0d0f14;border:1px solid var(--cc);color:var(--ccl);padding:0 5px;border-radius:5px}
-  .profs{margin-top:auto;width:100%;display:flex;flex-direction:column;gap:3px;padding:5px 6px;background:rgba(8,10,14,.72);border:1px solid rgba(255,255,255,.08);border-radius:8px}
+  .profs{margin-top:auto;flex:none;width:100%;display:flex;flex-direction:column;gap:3px;padding:5px 6px;background:rgba(8,10,14,.72);border:1px solid rgba(255,255,255,.08);border-radius:8px}
   .prof{font-size:9px}
   .prof .top{display:flex;justify-content:space-between;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
   .prof .top span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-right:4px}
@@ -172,17 +172,17 @@
   footer{color:var(--dim);font-size:11.5px;margin-top:26px}
 
   /* side panel: stats / profs tab */
-  .pbox{margin-top:auto;width:100%;position:relative;padding-top:15px}
+  .pbox{margin-top:auto;flex:none;width:100%;min-width:142px;position:relative;padding-top:15px}
   .pbox .profs,.pbox .cstats{margin-top:0;border-top-left-radius:0}
   .ptab{position:absolute;top:0;left:0;height:16px;padding:0 9px;font:700 8.5px/16px system-ui,sans-serif;letter-spacing:.9px;text-transform:uppercase;
     color:var(--ccl,#ddd);background:rgba(8,10,14,.86);border:1px solid rgba(255,255,255,.12);border-bottom:none;border-radius:7px 7px 0 0;cursor:pointer;z-index:2}
   .ptab:hover{color:#fff;border-color:var(--cc)}
   .ptab::before{content:"";display:inline-block;width:5px;height:5px;margin-right:5px;border-radius:50%;background:var(--cc);vertical-align:1px}
-  .cstats{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;padding:5px 7px;background:rgba(8,10,14,.72);border:1px solid rgba(255,255,255,.08);border-radius:8px}
-  .cstats div{display:flex;justify-content:space-between;align-items:baseline;font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:600;white-space:nowrap}
-  .cstats b{font:800 10.5px Cinzel,serif;color:var(--text);letter-spacing:0;text-transform:none}
+  .cstats{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:2px 9px;padding:5px 7px;background:rgba(8,10,14,.72);border:1px solid rgba(255,255,255,.08);border-radius:8px}
+  .cstats div{display:flex;justify-content:space-between;align-items:baseline;gap:4px;min-width:0;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;font-weight:600;white-space:nowrap}
+  .cstats b{font:700 10px/1.25 Inter,system-ui,sans-serif;font-variant-numeric:tabular-nums;color:var(--text);letter-spacing:0;text-transform:none}
   .cstats .hp b{color:#5fd36b} .cstats .mp b{color:#5aa6ff}
-  @media (max-width:640px){ .cstats div{font-size:9.5px} .cstats b{font-size:12px} .ptab{height:19px;line-height:19px;font-size:9.5px} .pbox{padding-top:18px} }
+  @media (max-width:640px){ .cstats div{font-size:9px} .cstats b{font-size:11px} .ptab{height:19px;line-height:19px;font-size:9.5px} .pbox{padding-top:18px} }
 
   /* talents popup */
   #talwrap{position:fixed;inset:0;z-index:9000;display:none;align-items:flex-start;justify-content:center;background:rgba(3,4,7,.78);backdrop-filter:blur(3px);overflow-y:auto;padding:24px 12px}
@@ -582,7 +582,7 @@ function statsBoxHTML(c){
   const rows = [["hp","HP",fmt(s.hp)]];
   rows.push(s.mp>0 ? ["mp","Mana",fmt(s.mp)] : ["","Armor",fmt(s.arm)]);
   rows.push(["","Str",fmt(s.str)],["","Agi",fmt(s.agi)],["","Sta",fmt(s.sta)],["","Int",fmt(s.int)]);
-  rows.push(caster ? ["","Spell",fmt(s.sp)] : ["","AP",fmt(s.ap)]);
+  rows.push(caster ? ["","SP",fmt(s.sp)] : ["","AP",fmt(s.ap)]);
   rows.push(s.mp>0 ? ["","Armor",fmt(s.arm)] : ["","Dodge",pct(s.dodge)]);
   rows.push(["","Crit",pct(s.crit)], caster ? ["","MP5",fmt(s.mp5)] : ["","Parry",pct(s.parry)]);
   return `<div class="cstats">${rows.map(([k,l,v])=>`<div class="${k}">${l}<b>${v}</b></div>`).join("")}</div>`;
