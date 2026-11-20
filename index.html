@@ -82,13 +82,14 @@
   .prof .bar i{display:block;height:100%;background:linear-gradient(90deg,#8a6a1c,var(--gold))}
   .prof.max .bar i{background:linear-gradient(90deg,#2f8f4e,#56d364)}
   .noprof{font-size:10px;color:var(--dim);font-style:italic}
-  .livebadge,.offbadge{position:absolute;right:7px;top:7px;z-index:2;font-size:10px;padding:1px 6px;border-radius:6px}
-  .livebadge{font-weight:700;background:var(--live);color:#fff} .offbadge{color:var(--muted);background:rgba(0,0,0,.6)}
+  .stat .tw{margin-top:4px;display:flex;justify-content:center}
+  .livebadge,.offbadge{font-size:9.5px;padding:1px 7px;border-radius:6px;white-space:nowrap}
+  .livebadge{font-weight:700;background:var(--live);color:#fff} .offbadge{color:var(--muted);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
 
   .typeline{display:flex;justify-content:space-between;gap:6px;padding:5px 10px;font-size:11.5px;font-weight:600;background:rgba(255,255,255,.035);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
   .typeline .cls{color:var(--ccl);white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .typeline .spec{color:#c5ccd8;font-weight:500;margin-left:3px}
   .typeline .rs{color:var(--muted);font-weight:600;font-size:10px;letter-spacing:.6px;white-space:nowrap} .typeline .rs b{color:var(--text);font:800 13px Cinzel,serif;letter-spacing:0;margin-left:2px}
-  .stats{flex:1;display:grid;grid-template-columns:1fr 2fr;align-items:center;padding:7px 4px 6px}
+  .stats{flex:1;display:grid;grid-template-columns:2fr 1fr;align-items:center;padding:7px 4px 6px}
   .stat{text-align:center;padding:0 6px;min-width:0;display:flex;flex-direction:column;justify-content:center}
   .stat+.stat{border-left:1px solid rgba(255,255,255,.08)}
   .stat .lb{font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:600}
@@ -207,7 +208,7 @@
   @keyframes brace{0%{transform:translateX(-50%)}30%{transform:translateX(-53%) scale(1.03)}55%{transform:translateX(-49%) scale(.99)}100%{transform:translateX(-50%)}}
   @keyframes cast{0%{transform:translateX(-50%)}35%{transform:translateX(-50%) translateY(-5px) scale(1.02)}70%{transform:translateX(-50%) translateY(-2px)}100%{transform:translateX(-50%)}}
   .fx{position:absolute;inset:0;pointer-events:none;z-index:1;opacity:0}
-  .art .render{z-index:2} .side{z-index:3!important} .livebadge,.offbadge{z-index:3}
+  .art .render{z-index:2} .art .hit{position:absolute;top:0;bottom:0;left:45%;right:0;z-index:3;cursor:pointer} .side{z-index:3!important}
   .art.act .fx{animation:fxfade 1.2s ease-out 1}
   @keyframes fxfade{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
   .fx-melee{background:linear-gradient(118deg,transparent 52%,rgba(255,255,255,.9) 56%,var(--ccl) 58%,transparent 63%) no-repeat;background-size:100% 100%}
@@ -522,14 +523,14 @@ function profsHTML(c){
   if (!c.profs.length) return `<div class="profs"><div class="noprof">No professions</div></div>`;
   return `<div class="profs">${c.profs.slice(0,4).map(([n,v,m])=>`<div class="prof ${v>=m?"max":""}"><div class="top"><span>${esc(PSHORT[n]||n)}</span><b>${v}<i>/${m}</i></b></div><div class="bar"><i style="width:${Math.round(v/m*100)}%"></i></div></div>`).join("")}</div>`;
 }
-function statsHTML(c){
+function statsHTML(c, status){
   let first;
   if (c.level == null) first = `<div class="stat"><div class="lb">Progress</div><div class="v">—</div></div>`;
   else if (c.level >= 60 && c.rep) first = `<div class="stat" title="${esc(c.rep[0])} · ${esc(c.rep[1])}: ${c.rep[2]}% of the way to Exalted"><div class="lb">Top rep</div><div class="v">${c.rep[2]}%</div><div class="sub">${esc(c.rep[0])}</div><div class="sub" style="color:${STANDCOL[c.rep[1]]||"var(--muted)"};font-weight:600">${esc(c.rep[1])}</div></div>`;
   else { const p = Math.round(c.level/60*100); first = `<div class="stat"><div class="lb">To lvl 60</div><div class="v">${p}%</div><div class="mbar"><i style="width:${p}%"></i></div></div>`; }
   const g = c.guild || "—";
-  return `<div class="stats">${first}
-    <div class="stat" title="${esc(g)}"><div class="lb">Guild <span class="realm">${esc(c.ruleset||"")} realm${c.slug&&c.slug.includes("/")?" · "+c.slug.split("/")[0].toUpperCase():""}</span></div><div class="v ${g.length>8?"sm":""}">${esc(g)}</div></div></div>`;
+  return `<div class="stats">
+    <div class="stat gld" title="${esc(g)}"><div class="lb">Guild <span class="realm">${esc(c.ruleset||"")} realm${c.slug&&c.slug.includes("/")?" · "+c.slug.split("/")[0].toUpperCase():""}</span></div><div class="v ${g.length>8?"sm":""}">${esc(g)}</div>${status?`<div class="tw">${status}</div>`:""}</div>${first}</div>`;
 }
 function gearBackHTML(e, c, stack){
   const g = c.slug && gearOf(c.slug);
@@ -572,7 +573,7 @@ function card(e){
   const status = live ? `<span class="livebadge">● LIVE${s.uptime?" · "+esc(s.uptime):""}</span>` : s.live===false ? `<span class="offbadge">Offline</span>` : "";
   const img = c.slug ? `renders/${c.slug}.webp?v=${(GD.v||"").slice(0,8)}` : null;
   const art = (c.bg?`<img class="bgimg" alt="" src="${BG}${c.bg}.jpg" onerror="this.remove()">`:"")
-    + (img?`<div class="fx fx-${fxType(c)}"></div><img class="render" alt="${esc(c.name)}" src="${img}" onerror="if(!this.dataset.f&&'${c.render||""}'){this.dataset.f=1;this.src='${RENDER}${c.render||""}-main-raw.png'}else{this.nextElementSibling.style.display='grid';this.remove()}">`:"")
+    + (img?`<div class="fx fx-${fxType(c)}"></div><div class="hit" title="Tap the character"></div><img class="render" alt="${esc(c.name)}" src="${img}" onerror="if(!this.dataset.f&&'${c.render||""}'){this.dataset.f=1;this.src='${RENDER}${c.render||""}-main-raw.png'}else{this.nextElementSibling.style.display='grid';this.remove()}">`:"")
     + `<div class="glyph"${img?' style="display:none"':''}><svg viewBox="0 0 100 100">${k.g}</svg></div>`;
   const np = s.title ? `<p>${live?"Now":"Last"}: <b>${esc(s.game||"")}</b> · ${esc(s.title)}</p>` : "";
   return `<article class="card ${live?"is-live":""} ${stack?"stack":""} ${flipped.has(e.ch)&&hasGear?"back":""}" style="--cc:${k.c};${next?`--cc2:${(CLASS[next.cls]||CLASS.Unknown).c}`:""}" data-ch="${e.ch}">
@@ -587,10 +588,10 @@ function card(e){
       <div class="side">
         <div class="lvl" style="--fc:${fcol}" title="${c.faction==="ally"?"Alliance":c.faction==="horde"?"Horde":""}"><b>${c.level??"?"}</b><small>LVL</small></div>
         ${profsHTML(c)}
-      </div>${status}
+      </div>
     </div>
     <div class="typeline"><span class="cls">${esc((String(c.race||"").replace(/^.*\bSkyborne$/,"Skyborne")+" "+(c.cls==="Unknown"?"":c.cls)).trim()||"Unknown")}${c.spec?`<span class="spec"> ${esc(c.spec)}</span>`:""}</span><span class="rs">${c.ilvl!=null?`ILVL <b>${c.ilvl}</b>`:""}</span></div>
-    ${statsHTML(c)}
+    ${statsHTML(c, status)}
     <div class="details ${open.has(e.ch)?"open":""}">
       <div class="flavor">${esc(c.note||e.flavor)}</div>
       ${np}
@@ -647,6 +648,7 @@ grid.addEventListener("click",ev=>{
   const t=ev.target;
   const more=t.closest("[data-more]"); if(more){ const ch=more.dataset.more; open.has(ch)?open.delete(ch):open.add(ch); render(); return; }
   const it=t.closest("[data-item]"); if(it){ ev.stopPropagation(); const x=itemFor(it); if(x) showTip(x,it); return; }
+  const hit=t.closest(".hit"); if(hit){ playMove(hit.closest(".art")); return; }
   const sw=t.closest("[data-swap]");
   if(sw){ const ch=sw.dataset.swap; const cardEl=sw.closest(".card"); cardEl.classList.add("flipping");
     setTimeout(()=>{ idx[ch]=(idx[ch]||0)+1; render(); const n=document.querySelector(`.card[data-ch="${ch}"]`); if(n){n.classList.add("flipping");setTimeout(()=>n.classList.remove("flipping"),400);} },190); return; }
@@ -654,6 +656,7 @@ grid.addEventListener("click",ev=>{
   const card=t.closest(".card"); if(!card || !card.querySelector(".gb")) return;
   if(t.closest("[data-flip]") || t.closest(".gb")){ const ch=card.dataset.ch; hideTip(); flipped.has(ch)?flipped.delete(ch):flipped.add(ch); card.classList.toggle("back",flipped.has(ch)); }
 });
+grid.addEventListener("mouseover",ev=>{ const h=ev.target.closest(".hit"); if(h && !h.contains(ev.relatedTarget) && !isPhone()) playMove(h.closest(".art")); });
 grid.addEventListener("mouseover",ev=>{ if(isPhone()) return; const it=ev.target.closest("[data-item]"); if(it){ const x=itemFor(it); if(x) showTip(x,it); } });
 grid.addEventListener("mouseout",ev=>{ if(isPhone()) return; const it=ev.target.closest("[data-item]"); if(it && !it.contains(ev.relatedTarget)) hideTipSoon(); });
 document.addEventListener("scroll",()=>{ if(!isPhone()) hideTip(); },{passive:true});
@@ -697,17 +700,13 @@ const SPECFX={Arms:"melee",Fury:"melee",Retribution:"melee",Feral:"melee",Enhanc
   Elemental:"shock",Restoration:"heal",Holy:"heal",Discipline:"heal","Beast Mastery":"melee",Marksmanship:"melee",Survival:"melee"};
 const MOVE={melee:"lunge",shock:"lunge",shield:"brace",cast:"cast",heal:"cast"};
 function fxType(c){ return SPECFX[c.spec] || ({Warrior:"melee",Rogue:"melee",Hunter:"melee",Paladin:"shield",Druid:"cast",Mage:"cast",Warlock:"cast",Priest:"heal",Shaman:"shock"})[c.cls] || "cast"; }
-let animTick = 0;
-setInterval(() => {
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches || document.hidden) return;
-  const arts = [...document.querySelectorAll(".card:not(.back) .inner.gf .art")]; if (!arts.length) return;
-  animTick++;
-  arts.forEach((a, i) => { if ((i + animTick) % 4 !== 0) return;           // each card moves every ~8 s (4 ticks x 2 s), staggered
-    const fx = a.querySelector(".fx"); if (!fx) return;
-    a.style.setProperty("--move", MOVE[(fx.className.match(/fx-(\w+)/)||[])[1]] || "cast");
-    a.classList.remove("act"); void a.offsetWidth; a.classList.add("act");
-    setTimeout(() => a.classList.remove("act"), 1300); });
-}, 2000);
+function playMove(a){
+  if (!a || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const fx = a.querySelector(".fx"); if (!fx || a.classList.contains("act")) return;
+  a.style.setProperty("--move", MOVE[(fx.className.match(/fx-(\w+)/)||[])[1]] || "cast");
+  void a.offsetWidth; a.classList.add("act");
+  setTimeout(() => a.classList.remove("act"), 1300);
+}
 try{ document.getElementById("gearChecked").textContent = GD.checked; document.getElementById("fcBuild").textContent = GD.fc; }catch(e){}
 raidCountdown(); render(); refreshAll(); loadQueue();
 setInterval(refreshAll,REFRESH_MS); setInterval(raidCountdown,3600000);
