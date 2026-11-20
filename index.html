@@ -184,6 +184,18 @@
   .cstats .hp b{color:#5fd36b} .cstats .mp b{color:#5aa6ff}
   @media (max-width:640px){ .cstats div{font-size:9px} .cstats b{font-size:11px} .ptab{height:19px;line-height:19px;font-size:9.5px} .pbox{padding-top:18px} }
 
+
+  /* level badge lives in the title bar; side panel is one slim column from the top of the art */
+  .tb-front{position:relative;z-index:4;padding-left:58px;min-height:44px}
+  .tb-front .lvl{position:absolute;left:8px;top:5px;width:42px;height:42px}
+  .tb-front .lvl b{font-size:17px}
+  .side{top:14px;bottom:6px;width:clamp(120px,41%,134px);gap:0}
+  .prof .top{letter-spacing:.2px} .prof .top b{font-size:9.5px} .prof .top b i{font-size:8px}
+  .pbox{margin-top:0;min-width:0}
+  .profs{margin-top:0}
+  .cstats{grid-template-columns:1fr;gap:1px;padding:4px 7px}
+  .cstats div{font-size:8px}
+  @media (max-width:640px){ .tb-front{padding-left:66px;min-height:52px} .tb-front .lvl{width:50px;height:50px} .tb-front .lvl b{font-size:20px} .side{top:18px;width:clamp(122px,36%,144px)} .cstats{gap:2px} }
   /* talents popup */
   #talwrap{position:fixed;inset:0;z-index:9000;display:none;align-items:flex-start;justify-content:center;background:rgba(3,4,7,.78);backdrop-filter:blur(3px);overflow-y:auto;padding:24px 12px}
   #talwrap.on{display:flex}
@@ -653,7 +665,8 @@ function card(e){
   const np = s.title ? `<p>${live?"Now":"Last"}: <b>${esc(s.game||"")}</b> · ${esc(s.title)}</p>` : "";
   return `<article class="card ${live?"is-live":""} ${stack?"stack":""} ${flipped.has(e.ch)&&hasGear?"back":""}" style="--cc:${k.c};${next?`--cc2:${(CLASS[next.cls]||CLASS.Unknown).c}`:""}" data-ch="${e.ch}">
    <div class="flip"><div class="inner gf" ${hasGear?`data-flip="${e.ch}"`:""}>
-    <div class="titlebar">
+    <div class="titlebar tb-front">
+      <div class="lvl" style="--fc:${fcol}" title="${c.faction==="ally"?"Alliance":c.faction==="horde"?"Horde":""}"><b>${c.level??"?"}</b><small>LVL</small></div>
       <div class="tname"><div class="cname" title="${esc(c.name)}">${esc(c.name)}</div>
       <div class="streamer">${esc(e.streamer)}${e.added?" · added":""}${stack?` · ${n===0?"main":"alt"} ${n+1}/${e.chars.length}`:""}</div></div>
       ${stack?`<button class="ibtn" type="button" data-swap="${e.ch}" title="Swap to ${esc(next.name)}" aria-label="Swap character">${ICO_SWAP}</button>`:""}
@@ -661,7 +674,6 @@ function card(e){
     </div>
     <div class="art">${art}
       <div class="side">
-        <div class="lvl" style="--fc:${fcol}" title="${c.faction==="ally"?"Alliance":c.faction==="horde"?"Horde":""}"><b>${c.level??"?"}</b><small>LVL</small></div>
         ${sideBoxHTML(e, c)}
       </div>
     </div>
