@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WoW Forever Streamer Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0d12;--panel:#141821;--line:#262c38;--text:#ece8dc;--muted:#9aa3b2;--dim:#6b7484;--gold:#e3b341;--live:#ff3b47;--info:#7fb2ff;
+    --new:#a6ff3c;--rew:#ffd84a;--ally:#1f4fb0;--horde:#a3161d}
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--text);font:14px/1.4 Inter,system-ui,"Segoe UI",sans-serif;background:radial-gradient(1200px 600px at 50% -200px,#1d2333 0%,var(--bg) 60%) fixed,var(--bg)}
+  a{color:var(--info);text-decoration:none} a:hover{text-decoration:underline}
+  button{background:#1b2130;color:var(--text);border:1px solid var(--line);border-radius:7px;padding:5px 11px;font:inherit;font-size:12px;cursor:pointer}
+  button:hover{border-color:var(--gold)}
+  header{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 18px}
+  .hrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;max-width:1240px;margin:0 auto}
+  h1{font:800 19px Cinzel,serif;margin:0;letter-spacing:.5px} h1 span{color:var(--gold)}
+  .meta{color:var(--muted);font-size:12px} .spacer{flex:1}
+  .banner{max-width:1240px;margin:8px auto 0;font-size:12px;padding:6px 10px;border-radius:7px;background:#211a0b;border:1px solid #4a3b12;color:#e8d29a;display:none}
+  main{max-width:1240px;margin:0 auto;padding:16px 18px 40px}
+  .facts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .fact{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12px;color:var(--muted)} .fact b{color:var(--text);font-weight:600}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 16px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:5px}
+
+  /* ---------- cards ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+  .card{--cc:#888;--ccd:color-mix(in srgb,var(--cc) 45%,#000);--ccl:color-mix(in srgb,var(--cc) 55%,#fff);
+    position:relative;border-radius:14px;padding:4px;
+    background:linear-gradient(115deg,var(--ccd) 0%,var(--cc) 18%,var(--ccl) 28%,#fff 33%,var(--cc) 40%,var(--ccd) 55%,var(--cc) 72%,var(--ccl) 84%,var(--cc) 100%);
+    background-size:300% 300%;animation:foil 9s linear infinite;
+    box-shadow:0 10px 26px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06)}
+  @keyframes foil{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+  .card.is-live{box-shadow:0 10px 26px rgba(0,0,0,.55),0 0 0 2px var(--live),0 0 20px rgba(255,59,71,.45)}
+  .stack{margin:0}
+  .stack::before,.stack::after{content:"";position:absolute;inset:0;border-radius:14px;z-index:-1;background:linear-gradient(145deg,var(--cc2,#444),#0d0f14 60%);border:1px solid rgba(255,255,255,.08)}
+  .stack::before,.stack::after{background:linear-gradient(180deg,color-mix(in srgb,var(--cc2,#444) 55%,transparent),color-mix(in srgb,var(--cc2,#444) 25%,transparent));border:1px solid color-mix(in srgb,var(--cc2,#666) 60%,transparent);inset:6px 0 6px 0}
+  .stack::before{transform:translateX(6px);opacity:.75}
+  .stack::after{transform:translateX(11px);opacity:.4;inset:12px 0 12px 0}
+  .card.flipping{animation:foil 9s linear infinite,swapflip .38s ease}
+  @keyframes swapflip{0%{transform:rotateY(0)}50%{transform:rotateY(90deg) scale(.96)}100%{transform:rotateY(0)}}
+
+  .flip{position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.3,.7,.2,1);height:100%}
+  .card.back .flip{transform:rotateY(180deg)}
+  .inner{position:relative;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#191e29,#10131a);height:100%;display:flex;flex-direction:column;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+  .inner.gb{position:absolute;inset:0;transform:rotateY(180deg)}
+  .card.back .inner.gf,.card:not(.back) .inner.gb{pointer-events:none}
+
+  .titlebar{display:flex;align-items:center;gap:6px;padding:7px 8px 6px 10px;background:linear-gradient(90deg,color-mix(in srgb,var(--cc) 28%,#0d1016),#0d1016 75%);border-bottom:1px solid color-mix(in srgb,var(--cc) 40%,transparent)}
+  .tname{min-width:0;flex:1}
+  .cname{font:900 15px/1.15 Cinzel,serif;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    background:linear-gradient(100deg,var(--ccl) 0%,#fff 18%,var(--cc) 36%,var(--ccl) 52%,#fff 64%,var(--cc) 82%,var(--ccl) 100%);background-size:250% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;animation:foiltxt 6s linear infinite;filter:drop-shadow(0 1px 0 rgba(0,0,0,.85))}
+  @keyframes foiltxt{0%{background-position:0% 0}100%{background-position:250% 0}}
+  .streamer{font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ibtn{flex:none;width:26px;height:26px;padding:0;border-radius:7px;display:grid;place-items:center;background:rgba(0,0,0,.35);border:1px solid color-mix(in srgb,var(--cc) 60%,transparent);color:var(--ccl)}
+  .ibtn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .ibtn:hover{border-color:var(--ccl);background:color-mix(in srgb,var(--cc) 25%,#000)}
+
+  .inner.gf{min-height:352px}
+  .art{position:relative;height:182px;overflow:hidden;background:radial-gradient(circle at 50% 60%,color-mix(in srgb,var(--cc) 50%,transparent),transparent 62%),repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0 6px,transparent 6px 12px),#0c0f15}
+  .art .bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5}
+  .art .render{position:absolute;bottom:-6px;left:71%;transform:translateX(-50%);height:96%;max-width:56%;object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.7));z-index:1}
+  .art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 58%,rgba(10,12,16,.85));z-index:1;pointer-events:none}
+  .glyph{position:absolute;inset:0;display:grid;place-items:center} .glyph svg{width:42%;filter:drop-shadow(0 4px 14px rgba(0,0,0,.6))}
+  .side{position:absolute;left:7px;top:7px;bottom:7px;width:44%;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+  .ilv{margin:5px 0 0 0;text-align:center;width:44px;line-height:1}
+  .ilv small{display:block;font-size:8px;font-weight:700;letter-spacing:.8px;color:var(--ccl)}
+  .ilv b{display:block;font:800 13px/1.1 Cinzel,serif;text-shadow:0 1px 2px #000}
+  .lvl{position:relative;flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+    background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--fc) 75%,#fff 10%),color-mix(in srgb,var(--fc) 70%,#000));border:2.5px solid var(--cc);box-shadow:0 0 12px color-mix(in srgb,var(--cc) 55%,transparent),inset 0 0 8px rgba(0,0,0,.5)}
+  .lvl b{font:800 18px/1 Cinzel,serif;text-shadow:0 1px 2px #000}
+  .lvl small{position:absolute;bottom:-8px;font-size:8px;font-weight:700;letter-spacing:.8px;background:#0d0f14;border:1px solid var(--cc);color:var(--ccl);padding:0 5px;border-radius:5px}
+  .profs{margin-top:auto;width:100%;display:flex;flex-direction:column;gap:3px;padding:5px 6px;background:rgba(8,10,14,.72);border:1px solid rgba(255,255,255,.08);border-radius:8px}
+  .prof{font-size:9px}
+  .prof .top{display:flex;justify-content:space-between;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+  .prof .top span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-right:4px}
+  .prof .top b{color:var(--text);font:800 10.5px Cinzel,serif} .prof .top b i{font-style:normal;color:var(--dim);font-size:9px}
+  .prof .bar{height:3px;background:#0a0c10;border-radius:3px;margin-top:1px;overflow:hidden}
+  .prof .bar i{display:block;height:100%;background:linear-gradient(90deg,#8a6a1c,var(--gold))}
+  .prof.max .bar i{background:linear-gradient(90deg,#2f8f4e,#56d364)}
+  .noprof{font-size:10px;color:var(--dim);font-style:italic}
+  .livebadge,.offbadge{position:absolute;right:7px;top:7px;z-index:2;font-size:10px;padding:1px 6px;border-radius:6px}
+  .livebadge{font-weight:700;background:var(--live);color:#fff} .offbadge{color:var(--muted);background:rgba(0,0,0,.6)}
+
+  .typeline{display:flex;justify-content:space-between;gap:6px;padding:5px 10px;font-size:11.5px;font-weight:600;background:rgba(255,255,255,.035);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+  .typeline .cls{color:var(--ccl);white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .typeline .spec{color:#c5ccd8;font-weight:500;margin-left:3px}
+  .typeline .rs{color:var(--muted);font-weight:600;font-size:10px;letter-spacing:.6px;white-space:nowrap} .typeline .rs b{color:var(--text);font:800 13px Cinzel,serif;letter-spacing:0;margin-left:2px}
+  .stats{flex:1;display:grid;grid-template-columns:1fr 2fr;align-items:center;padding:7px 4px 6px}
+  .stat{text-align:center;padding:0 6px;min-width:0;display:flex;flex-direction:column;justify-content:center}
+  .stat+.stat{border-left:1px solid rgba(255,255,255,.08)}
+  .stat .lb{font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:600}
+  .stat .lb .realm{color:#6f7787;margin-left:4px;letter-spacing:.6px}
+  .stat .v{font:800 17px/1.15 Cinzel,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stat .v.sm{font-size:12.5px;line-height:1.5}
+  .stat .sub{font-size:9.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stat .mbar{height:3px;background:#0a0c10;border-radius:2px;margin:3px 6px 0;overflow:hidden} .stat .mbar i{display:block;height:100%;background:linear-gradient(90deg,var(--ccd),var(--ccl))}
+  .foot{margin-top:auto;display:flex;gap:4px;padding:6px 7px 7px;border-top:1px solid rgba(255,255,255,.06)}
+  .foot a,.foot button{flex:1;text-align:center;font-size:10.5px;font-weight:600;padding:4px 3px;border-radius:6px;background:#1b2130;border:1px solid var(--line);color:var(--text)}
+  .foot a:hover,.foot button:hover{border-color:var(--cc);text-decoration:none}
+  .foot a.tw{background:#3a2a66;border-color:#5b44a0}
+  .details{display:none;padding:6px 9px 9px;font-size:11.5px;color:var(--muted);border-top:1px solid rgba(255,255,255,.06)}
+  .details.open{display:block} .details p{margin:5px 0} .details .ok{color:#56d364} .details .bad{color:#ff7b72} .details a{margin-right:8px}
+  .flavor{font-style:italic;color:#cfc6ae;border-left:2px solid var(--cc);padding-left:8px;margin-bottom:6px}
+  .thumbwide{display:block;width:100%;border-radius:6px;border:2px solid var(--live);margin:0 0 6px}
+  .x{position:absolute;top:-8px;right:-8px;z-index:5;border-radius:50%;width:24px;height:24px;padding:0;font-size:12px}
+
+  /* ---------- gear side ---------- */
+  .sheet{--t:22px;flex:1 1 auto;min-height:0;display:grid;grid-template-columns:calc(var(--t) + 6px) 1fr calc(var(--t) + 6px);gap:4px;padding:9px 8px 4px;align-items:start;
+    background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--sq) 22%,transparent),transparent 62%),#10131a}
+  .col{display:flex;flex-direction:column;gap:5px;align-items:center}
+  .scase{align-self:center;display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;min-width:0}
+  .scase .lbl{font:700 9px Cinzel,serif;letter-spacing:2px;color:var(--gold)}
+  .scase .nm{font:800 11.5px/1.15 Cinzel,serif;max-width:100%}
+  .scase .il2{font-size:10px;color:#ffd100}
+  .bottom{--t:30px;flex:none;display:flex;justify-content:center;gap:12px;padding:6px 0 8px;background:#10131a}
+  .counts{flex:none;display:flex;gap:10px;justify-content:center;align-items:baseline;font-size:10.5px;color:var(--muted);padding:5px 6px 7px;background:#0d1016;border-top:1px solid rgba(255,255,255,.06)}
+  .counts b{color:var(--text)} .counts b.n{color:var(--new)} .counts b.c{color:var(--rew)} .counts .av b{font:800 12px Cinzel,serif}
+  .ico{background-color:#0a0c10;background-image:var(--spr);background-repeat:no-repeat;
+    background-size:calc(var(--sz) * 12) calc(var(--sz) * var(--rows,10));background-position:calc(var(--c) * var(--sz) * -1) calc(var(--r) * var(--sz) * -1)}
+  .ico.hi{background-image:var(--sprs);background-size:calc(var(--sz) * 4) calc(var(--sz) * var(--srows,2))}
+  .tile{--sz:var(--t);position:relative;width:var(--t);height:var(--t);border-radius:4px;cursor:help;flex:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+  .tile.new{box-shadow:inset 0 0 0 2px var(--new),0 0 4px rgba(166,255,60,.55)}
+  .tile.changed{box-shadow:inset 0 0 0 2px var(--rew),0 0 4px rgba(255,216,74,.5)}
+  .tile.empty{background:#0d1016;box-shadow:inset 0 0 0 1px #2b3240;cursor:default}
+  .tile .il{position:absolute;right:-5px;bottom:-6px;font:800 8px/1 Inter,sans-serif;color:#111;background:var(--qc);padding:1px 3px;border-radius:3px;pointer-events:none;box-shadow:0 1px 2px rgba(0,0,0,.8)}
+  .tile .il.lt{color:#fff}
+  .bottom .tile .il{font-size:9px}
+  .bigicon{--sz:88px;width:88px;height:88px;border-radius:12px;cursor:help;box-shadow:inset 0 0 0 2px var(--hl,rgba(255,255,255,.2)),0 0 0 3px #0d1016,0 0 0 4px var(--qc),0 0 22px var(--hlg,transparent),0 0 34px color-mix(in srgb,var(--qc) 45%,transparent)}
+  .pill{display:inline-block;font-size:8.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:1px 6px;border-radius:5px;border:1px solid}
+  .pill.new{color:var(--new);border-color:var(--new);background:rgba(166,255,60,.1)}
+  .pill.changed{color:var(--rew);border-color:var(--rew);background:rgba(255,216,74,.1)}
+  .pill.same{color:var(--muted);border-color:#3a414e}
+  .nogear{flex:1;display:grid;place-items:center;color:var(--dim);font-size:12px;font-style:italic;padding:20px;text-align:center}
+
+  /* ---------- tooltip ---------- */
+  #tt{position:fixed;z-index:60;display:none;width:310px;max-height:calc(100vh - 16px);overflow:auto;
+    background:linear-gradient(180deg,rgba(18,22,40,.98),rgba(10,12,24,.98));border:1px solid #6d7aa8;border-radius:5px;
+    box-shadow:0 0 0 1px #000,0 10px 28px rgba(0,0,0,.7);padding:8px 10px;font:12.5px/1.35 Arial,"Segoe UI",sans-serif;color:#fff}
+  .tt-badge{display:inline-block;font:700 9px Inter,sans-serif;letter-spacing:.8px;text-transform:uppercase;padding:1px 6px;border-radius:4px;margin-bottom:5px}
+  .tt-badge.new{background:var(--new);color:#132300} .tt-badge.changed{background:var(--rew);color:#2a2000} .tt-badge.same{background:#2b3240;color:#cfd5df}
+  .tt-name{font-size:14.5px;font-weight:700} .tt-ilvl{color:#ffd100}
+  .tt-row{display:flex;justify-content:space-between;gap:10px}
+  .tt-green{color:#1eff00} .tt-set{color:#ffd100;margin-top:3px} .tt-bonus{color:#9d9d9d} .tt-flav{color:#ffd100}
+  .tt-src{margin-top:7px;padding-top:6px;border-top:1px solid #2c3352;font-size:12px;color:#c9cfdc}
+  .tt-src b{color:#ffd100;font-weight:700}
+  .tt-disc{color:#ff8a1c;margin-top:4px;font-weight:700}
+  .cmp{margin-top:8px;border-top:1px solid #39426a;padding-top:6px}
+  .cmp-h{font:700 10px Inter,sans-serif;letter-spacing:1px;text-transform:uppercase;color:#aeb7d6;margin-bottom:4px;display:flex;justify-content:space-between} .cmp-h span{color:#ffd100;letter-spacing:.3px}
+  .cmp-note{font-size:11.5px;color:#c9cfdc} .cmp-note.new{color:var(--new);font-weight:700}
+  .cmp-l{font-size:11.5px;padding:1px 5px;border-radius:3px;margin:1px 0}
+  .cmp-l.add{background:rgba(46,160,67,.32);border-left:3px solid #3fd16b}
+  .cmp-l.del{background:rgba(218,54,51,.28);border-left:3px solid #ff5b55;color:#ffd7d5;margin-bottom:4px}
+  .ttclose{display:none;position:sticky;top:0;float:right;margin:-4px -6px 0 8px;width:30px;height:30px;padding:0;border-radius:50%;font-size:14px;background:#1b2130;border:1px solid #39426a;color:#fff}
+
+  /* ---------- add a streamer ---------- */
+  .addbox{margin-top:22px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;max-width:620px}
+  .addbox h2{margin:0 0 4px}
+  .addbox .row{display:flex;gap:6px;flex-wrap:wrap}
+  .addbox input{flex:1 1 160px;background:#1b2130;border:1px solid var(--line);border-radius:7px;color:var(--text);padding:7px 9px;font:inherit;font-size:12.5px}
+  .addbox .msg{font-size:12px;color:var(--muted);margin-top:6px;min-height:1em}
+  .addbox .msg.ok{color:#56d364} .add .msg.warn{color:#e8d29a}
+  .queue{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .queue span{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .queue span.needs{border-color:#6b4a12;color:#e8d29a}
+  section{margin-top:26px}
+  h2{font:600 13px Cinzel,serif;margin:0 0 8px;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
+  .srcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:5px 16px;font-size:12px;color:var(--muted)}
+  footer{color:var(--dim);font-size:11.5px;margin-top:26px}
+  @media (prefers-reduced-motion:reduce){.card,.cname{animation:none!important}.flip{transition:none}}
+
+  /* ---------- phones ---------- */
+  @media (max-width:640px){
+    header{padding:8px 12px;position:relative} h1{font-size:16px} .hrow{gap:8px} #lastCheck{display:none}
+    .banner{font-size:11px;padding:5px 8px}
+    main{padding:12px 12px 32px}
+    .facts{flex-wrap:nowrap;overflow-x:auto;gap:6px;margin:0 -12px 10px;padding:0 12px 2px;scrollbar-width:none} .facts::-webkit-scrollbar{display:none}
+    .fact{white-space:nowrap;font-size:11px;padding:4px 10px}
+    .legend{gap:8px;font-size:11px} .legend>span:first-child{flex-basis:100%}
+    .grid{grid-template-columns:1fr;gap:18px;max-width:440px;margin:0 auto}
+    .cname{font-size:18px} .streamer{font-size:11.5px}
+    .ibtn{width:34px;height:34px;border-radius:9px} .ibtn svg{width:18px;height:18px}
+    .inner.gf{min-height:456px}
+    .art{height:236px} .lvl{width:52px;height:52px} .lvl b{font-size:21px} .side{width:46%}
+    .prof{font-size:10px} .prof .top b{font-size:12px}
+    .typeline{font-size:12.5px;padding:7px 10px}
+    .stat .v{font-size:20px} .stat .v.sm{font-size:14px} .stat .lb{font-size:9.5px} .stat .sub{font-size:10.5px}
+    .foot a,.foot button{padding:9px 4px;font-size:12px}
+    .sheet{--t:30px;padding:12px 12px 4px} .col{gap:7px}
+    .bottom{--t:40px;gap:16px;padding:8px 0 10px}
+    .bigicon{--sz:104px;width:104px;height:104px}
+    .scase .nm{font-size:14px} .scase .il2{font-size:11.5px} .pill{font-size:10px}
+    .tile .il{font-size:9.5px} .bottom .tile .il{font-size:10.5px}
+    .counts{font-size:12px;padding:8px 6px 10px} .counts .av b{font-size:14px}
+    #tt{left:8px!important;right:8px;top:auto!important;bottom:8px;width:auto;max-height:62vh;background:#0f1322;border-radius:12px;padding:12px 14px 14px;font-size:13.5px;box-shadow:0 -8px 30px rgba(0,0,0,.8)}
+    #tt .ttclose{display:block}
+    .cmp-l{font-size:12.5px;padding:3px 6px}
+  }
+
+  /* ---------- character animation: idle breathing + a spec move every ~8s ---------- */
+  .art .render{transform-origin:50% 100%;animation:idle 4.2s ease-in-out infinite}
+  @keyframes idle{0%,100%{transform:translateX(-50%) scale(1,1)}50%{transform:translateX(-50%) translateY(-1.5px) scale(1.006,1.014)}}
+  .art.act .render{animation:var(--move) 1.1s ease-out 1}
+  @keyframes lunge{0%{transform:translateX(-50%)}25%{transform:translateX(-58%) rotate(-2deg)}45%{transform:translateX(-38%) rotate(3deg) scale(1.04)}70%{transform:translateX(-52%) rotate(-1deg)}100%{transform:translateX(-50%)}}
+  @keyframes brace{0%{transform:translateX(-50%)}30%{transform:translateX(-53%) scale(1.03)}55%{transform:translateX(-49%) scale(.99)}100%{transform:translateX(-50%)}}
+  @keyframes cast{0%{transform:translateX(-50%)}35%{transform:translateX(-50%) translateY(-5px) scale(1.02)}70%{transform:translateX(-50%) translateY(-2px)}100%{transform:translateX(-50%)}}
+  .fx{position:absolute;inset:0;pointer-events:none;z-index:1;opacity:0}
+  .art .render{z-index:2} .side{z-index:3!important} .livebadge,.offbadge{z-index:3}
+  .art.act .fx{animation:fxfade 1.2s ease-out 1}
+  @keyframes fxfade{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
+  .fx-melee{background:linear-gradient(118deg,transparent 52%,rgba(255,255,255,.9) 56%,var(--ccl) 58%,transparent 63%) no-repeat;background-size:100% 100%}
+  .art.act .fx-melee{animation:fxfade 1.2s ease-out 1,slash .45s ease-out .3s 1}
+  @keyframes slash{0%{background-position:-60px 30px}100%{background-position:60px -30px}}
+  .fx-shield{background:radial-gradient(circle at 71% 55%,rgba(255,226,120,.75),rgba(255,200,60,.25) 22%,transparent 42%)}
+  .fx-cast{background:radial-gradient(circle at 71% 30%,color-mix(in srgb,var(--ccl) 85%,#fff) 0,color-mix(in srgb,var(--cc) 55%,transparent) 14%,transparent 38%)}
+  .fx-cast::before,.fx-heal::before{content:"";position:absolute;left:52%;width:40%;bottom:10%;height:70%;
+    background:radial-gradient(circle,#fff 0 1.5px,transparent 2px) 0 0/18px 22px,radial-gradient(circle,var(--ccl) 0 1.5px,transparent 2px) 9px 11px/18px 22px;
+    -webkit-mask:linear-gradient(transparent,#000 30%,#000 70%,transparent);mask:linear-gradient(transparent,#000 30%,#000 70%,transparent)}
+  .art.act .fx-cast::before,.art.act .fx-heal::before{animation:rise 1.2s linear 1}
+  @keyframes rise{0%{transform:translateY(20px)}100%{transform:translateY(-30px)}}
+  .fx-heal{background:radial-gradient(ellipse at 71% 92%,rgba(120,255,150,.65),rgba(80,220,120,.2) 30%,transparent 55%)}
+  .fx-heal::before{background:radial-gradient(circle,#c9ffd4 0 1.5px,transparent 2px) 0 0/16px 20px,radial-gradient(circle,#7dff9a 0 1.5px,transparent 2px) 8px 10px/16px 20px}
+  .fx-shock{background:linear-gradient(100deg,transparent 60%,rgba(170,210,255,.9) 61%,transparent 62.5%),linear-gradient(80deg,transparent 70%,rgba(200,230,255,.8) 71%,transparent 72%),radial-gradient(circle at 71% 45%,rgba(120,170,255,.45),transparent 40%)}
+  @media (prefers-reduced-motion:reduce){.art .render,.art.act .render,.art.act .fx,.art.act .fx::before{animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <h1>WoW <span>Forever</span> · Streamer Cards</h1>
+    <span class="spacer"></span>
+    <span class="meta" id="liveCount"></span>
+    <span class="meta" id="lastCheck">Checking Twitch…</span>
+    <button id="refresh" type="button">Refresh</button>
+  </div>
+  <div class="banner" id="banner">Live Twitch status can’t load in this viewer (outside data is blocked here). Open the HTML file from your tracker folder in your browser to see who’s live.</div>
+</header>
+
+<main>
+  <div class="facts">
+    <span class="fact">Launched <b>4 Nov 2026</b></span>
+    <span class="fact">Level cap <b>60</b></span>
+    <span class="fact">World first 60 <b>Team JokerD · ~52h</b></span>
+    <span class="fact">Raids unlock <b>9 Dec</b> <span id="raidCountdown"></span></span>
+    <span class="fact">Armory checked <b id="checked">20 Nov, 3:40 PM AEDT</b> · every 6h</span>
+  </div>
+  <div class="legend"><span>Tap a card to flip it to its gear. Tap or hover an item for its tooltip, where it comes from and the Forever vs Classic changes:</span>
+    <span><span class="sw" style="background:var(--new)"></span>new in Forever</span>
+    <span><span class="sw" style="background:var(--rew)"></span>Classic item, reworked</span>
+    <span><span class="sw" style="background:#2b3240"></span>unchanged</span></div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="addbox">
+    <h2>Add a streamer</h2>
+    <div class="row">
+      <input id="addCh" placeholder="Twitch channel (e.g. pikabooirl)" aria-label="Twitch channel">
+      <input id="addName" placeholder="Character name, if you know it" aria-label="Character name">
+      <button id="addBtn" type="button">Add</button>
+    </div>
+    <div class="msg" id="addMsg"></div>
+    <div class="queue" id="queue"></div>
+  </div>
+
+  <section>
+    <h2>Live leaderboards &amp; trackers</h2>
+    <div class="srcs">
+      <div><a href="https://worldofwarcraft.blizzard.com/en-us/forever/us/armory" target="_blank" rel="noopener">Official WoW Forever Armory (US)</a>: search any character</div>
+      <div><a href="https://forevertracker.com/streamers" target="_blank" rel="noopener">ForeverTracker</a>: every WoW Forever streamer live now</div>
+      <div><a href="https://race.aotc.gg/" target="_blank" rel="noopener">race.aotc.gg</a>: live top-100 level leaderboard</div>
+      <div><a href="https://worldfirst60.com/" target="_blank" rel="noopener">worldfirst60.com</a>: launch-race archive with stream frames</div>
+      <div><a href="https://foreverchanges.pro/items?pieces=1" target="_blank" rel="noopener">ForeverChanges</a>: every new and reworked item vs Classic</div>
+    </div>
+  </section>
+
+  <footer>
+    Character name, level, race, class, guild, professions and top reputation come from each character’s official Armory page, re-checked automatically every 6 hours (time shown at the top).
+    Gear on the back of each card is what the character had equipped at the last gear check (<span id="gearChecked"></span>). New and reworked flags, item sources and the Forever vs Classic stat lines come from <a href="https://foreverchanges.pro/items?pieces=1" target="_blank" rel="noopener">ForeverChanges</a> (build <span id="fcBuild"></span>), which doesn’t record who discovered an item.
+    Character names were matched to streamers from their stream frames or the worldfirst60 tracker. Live status comes from Twitch through DecAPI (decapi.me) and refreshes every 2 minutes.
+  </footer>
+</main>
+
+<script src="gear-data.js?v=8776a46c1fb19c33"></script>
+<script>
+const TRIGGER_ID = "trig_011d1aJi7Mn7usJnVKVc7MTU";
+const CLASS = {
+  Druid:{c:"#ff7c0a", g:'<path d="M50 8c-6 14-22 18-22 36 0 12 9 22 22 22s22-10 22-22C72 26 56 22 50 8z" fill="#ff7c0a"/>'},
+  Warrior:{c:"#c69b6d", g:'<path d="M30 14l40 40M70 14L30 54" stroke="#e8cfa9" stroke-width="8" stroke-linecap="round"/>'},
+  Mage:{c:"#3fc7eb", g:'<path d="M50 6l9 26 27 1-21 17 8 27-23-15-23 15 8-27-21-17 27-1z" fill="#3fc7eb"/>'},
+  Paladin:{c:"#f48cba", g:'<path d="M50 8l32 12v24c0 22-14 38-32 46C32 82 18 66 18 44V20z" fill="#f48cba"/>'},
+  Warlock:{c:"#8788ee", g:'<circle cx="50" cy="50" r="30" fill="none" stroke="#8788ee" stroke-width="6"/>'},
+  Hunter:{c:"#aad372", g:'<path d="M20 80L80 20M60 20h20v20" stroke="#aad372" stroke-width="7" fill="none" stroke-linecap="round"/>'},
+  Rogue:{c:"#fff468", g:'<path d="M30 80L70 20l4 10-36 52z" fill="#fff468"/>'},
+  Priest:{c:"#ffffff", g:'<path d="M50 10v80M30 32h40" stroke="#fff" stroke-width="8" stroke-linecap="round"/>'},
+  Shaman:{c:"#0070dd", g:'<path d="M55 8L28 55h20l-6 37 30-50H52z" fill="#3a8bff"/>'},
+  Unknown:{c:"#5b6170", g:'<text x="50" y="66" text-anchor="middle" font-size="58" font-family="Cinzel,serif" font-weight="800" fill="#8a90a0">?</text>'}
+};
+const BG = "https://render.worldofwarcraft.com/profile-backgrounds/v2/armory_bg_race_";
+const RENDER = "https://render.worldofwarcraft.com/forever-us/character/";
+const ICO_TAP = '<svg viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0v4.5c0 3.3-2.2 6-5.5 6H11c-2 0-3.2-.9-4.3-2.4L4.4 15a1.5 1.5 0 0 1 2.3-1.9L9 15"/><path d="M6 6.5a4.5 4.5 0 0 1 9 0" opacity=".55"/></svg>';
+const ICO_SWAP = '<svg viewBox="0 0 24 24"><path d="M7 7h12l-3-3M17 17H5l3 3"/></svg>';
+const ICO_BACK = '<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></svg>';
+
+// Each streamer has one or more characters; ⇄ swaps between them.
+const ROSTER = [
+  { ch:"sodapoppin", streamer:"Sodapoppin",
+    flavor:"Ran the $1M launch LAN with Mitch & Nick, then went from 29 to 60 in under two weeks.",
+    how:"Read off the damage meter in his stream frame (worldfirst60 capture), matched on the Armory.",
+    fixed:"Your list said <s>“Pee Collector”</s>: no such character on the Armory.",
+    chars:[{name:"Gay Kitten", slug:"gay-kitten", render:"67/4356931", bg:"night_elf",
+      level:60, ilvl:59, race:"Night Elf", cls:"Druid", spec:"Balance", faction:"ally", ruleset:"PvP", guild:"gay",
+      profs:[["Skinning",300,300],["Leatherworking",251,300],["First Aid",214,225],["Cooking",58,75],["Fishing",1,75]], rep:["Darnassus","Revered",52]}]},
+  { ch:"towelliee", streamer:"Towelliee",
+    flavor:"240+ hour marathon took his Undead Paladin to 60. Also levelling a Horde Warlock alt.",
+    how:"Main confirmed by you and the Armory. Ghalon Carter read from his live stream and 12 Nov VOD, then confirmed on the Armory in the same guild (Hammer Squad). Other VOD samples were all his main. “Towelliee Fanboy” on the Armory looks like a fan.",
+    fixed:"Your list said <s>Human Prot Paladin “Big Tank”, 13</s>: he’s an <b>Undead</b> (Horde) Paladin.",
+    chars:[
+      {name:"Towelliee Forever", slug:"towelliee-forever", render:"254/546046", bg:"undead",
+        level:60, ilvl:54, race:"Undead", cls:"Paladin", spec:"Protection", faction:"horde", ruleset:"Normal", guild:"Hammer Squad",
+        profs:[["Mining",300,300],["Blacksmithing",249,300],["First Aid",50,75],["Cooking",19,75]], rep:["Undercity","Revered",60]},
+      {name:"Ghalon Carter", slug:"ghalon-carter", render:"129/43094401", bg:"troll",
+        level:12, ilvl:3, race:"Troll", cls:"Warlock", spec:"Affliction", faction:"horde", ruleset:"Normal", guild:"Hammer Squad",
+        profs:[["Herbalism",3,75],["Cooking",1,75]], rep:["Darkspear Trolls","Friendly",17],
+        note:"Horde alt, first seen live in Ragefire Chasm on 14 Nov. In his main’s guild, Hammer Squad."}]},
+  { ch:"esfandtv", streamer:"Esfand", added:true,
+    flavor:"Leads the Alliance PvP guild Crusade. A fan tracker claimed he hit 60 on day 3; he’s actually 53.",
+    how:"worldfirst60 tracker entry, confirmed on the Armory.", fixed:"",
+    chars:[{name:"Esfand Television", slug:"esfand-television", render:"76/7621452", bg:"human",
+      level:52, ilvl:49, race:"Human", cls:"Paladin", spec:"Retribution", faction:"ally", ruleset:"PvP", guild:"Crusade",
+      profs:[["First Aid",225,300],["Blacksmithing",215,225],["Engineering",200,225],["Cooking",1,75],["Fishing",1,75]], rep:["Stormwind","Revered",55]}]},
+  { ch:"imaqtpie", streamer:"imaqtpie",
+    flavor:"65 honorable kills on the PvP ruleset. Up from 24 at the end of the launch race to 55.",
+    how:"Name from you. Confirmed on the Armory and the worldfirst60 tracker.", fixed:"",
+    chars:[{name:"Abg Slayer", slug:"abg-slayer", render:"43/6998315", bg:"night_elf",
+      level:52, ilvl:48, race:"Night Elf", cls:"Warrior", spec:"Protection", faction:"ally", ruleset:"PvP", guild:"Jorkers",
+      profs:[["Mining",281,300],["Blacksmithing",129,150],["First Aid",50,150],["Fishing",28,75],["Cooking",1,75]], rep:["Darnassus","Honored",43]}]},
+  { ch:"nmplol", streamer:"Nmplol", added:true,
+    flavor:"Third member of the launch LAN, in the same guild as Soda and Mitch.",
+    how:"worldfirst60 tracker entry, confirmed on the Armory.", fixed:"",
+    chars:[{name:"Nmp Hatethread", slug:"nmp-hatethread", render:"194/3835842", bg:"gnome",
+      level:51, ilvl:47, race:"Gnome", cls:"Warrior", spec:"Fury", faction:"ally", ruleset:"PvP", guild:"gay",
+      profs:[["Mining",300,300],["First Aid",240,300],["Blacksmithing",231,300],["Cooking",4,75]], rep:["Stormwind","Honored",48]}]},
+  { ch:"hammerdance", streamer:"Hammerdance",
+    flavor:"“Best Feral NA.” Last seen in a party wipe in Krol’dok Stronghold, Riverglades.",
+    how:"Read off the party frame in his 14 Nov VOD (1:30:00 mark), confirmed on the Armory.",
+    fixed:"Your list said <s>Orc Hunter “Fast Path”, 33+</s>: he’s an Alliance Feral Druid.",
+    chars:[{name:"Hammer Xx", slug:"hammer-xx", render:"144/6930320", bg:"night_elf",
+      level:48, ilvl:43, race:"Night Elf", cls:"Druid", spec:"Feral", faction:"ally", ruleset:"PvP", guild:"The Tavern",
+      profs:[["Alchemy",300,300],["Skinning",295,300],["Cooking",289,300],["Fishing",77,150]], rep:["Stormwind","Honored",47]}]},
+  { ch:"zackrawrr", streamer:"Asmongold",
+    flavor:"Warlord of Olympus, a guild network of ~18,800 by day 2. Never trained a profession.",
+    how:"worldfirst60 tracked this character from his stream, confirmed on the Armory. There are dozens of impostor “Asmongold…” characters.",
+    fixed:"Your list said <s>“Needsashower”</s>: unverified.",
+    chars:[{name:"Asmongold Thereal", slug:"asmongold-thereal", render:"165/4427685", bg:"human",
+      level:45, ilvl:42, race:"Human", cls:"Warrior", spec:"Protection", faction:"ally", ruleset:"Normal", guild:"OLYMPUS GODS",
+      profs:[["Blacksmithing",1,75],["Cooking",1,75],["Engineering",1,75],["First Aid",1,75]], rep:["Stormwind","Revered",55]}]},
+  { ch:"mitchjones", streamer:"Mitch Jones",
+    flavor:"Gave away $1M at the launch LAN, then parked at 24. Mostly gambling streams since.",
+    how:"worldfirst60 had the name cut off. Full name found by Armory search, matched on level, class and guild.",
+    fixed:"Your list said <s>Human Mage “Mitch Jonez”</s>: he’s a <b>Gnome</b> Mage.",
+    chars:[{name:"Watchmeblink Theberger", slug:"watchmeblink-theberger", render:"117/5283957", bg:"gnome",
+      level:24, ilvl:16, race:"Gnome", cls:"Mage", spec:"Arcane", faction:"ally", ruleset:"PvP", guild:"gay", profs:[], rep:["Gnomeregan Exiles","Friendly",19]}]},
+  { ch:"gingitv", streamer:"Gingi", added:true,
+    flavor:"Echo’s 11x MDI champion, levelling a Skyborne Shaman on the EU side.",
+    how:"Added from the tracker page. Read “Gingi Totemhugger” off his player frame in his 18 Nov VOD, then confirmed on the EU Armory (guild Echo).",
+    fixed:"You typed <s>gingi</s>: his Twitch channel is <b>gingitv</b>.",
+    chars:[{name:"Gingi Totemhugger", slug:"eu/gingi-totemhugger", render:"253/1049341", bg:"windshaper_skyborne", region:"EU",
+      level:52, ilvl:46, race:"Windshaper Skyborne", cls:"Shaman", spec:"Enhancement", faction:"horde", ruleset:"PvP", guild:"Echo",
+      profs:[["Skinning",25,75],["Cooking",16,75],["First Aid",10,75]], rep:["Orgrimmar","Honored",41]}]},
+  { ch:"quin69", streamer:"Quin69",
+    flavor:"Busy in Wraeclast, not Azeroth: live in Path of Exile for the Umbra league launch (HC SSF).",
+    how:"Checked his live stream on 14 Nov and the Armory. “Bald Fraud” returns 0 results.",
+    fixed:"Your list said <s>Human Paladin “Bald Fraud”, 15</s>: doesn’t exist.",
+    chars:[{name:"Not in Azeroth", slug:null, render:null, bg:null, level:null, ilvl:null, race:"", cls:"Unknown",
+      faction:"none", ruleset:"—", guild:"—", profs:null}]}
+];
+ROSTER.forEach(r=>r.chars.sort((a,b)=>(b.level??-1)-(a.level??-1)));
+
+// ---------- gear data ----------
+const GD = window.GEAR || {I:{}, C:{}, S:[], n:0, checked:"", fc:""};
+try{ const R=document.documentElement.style; const v=GD.v||"";
+  R.setProperty("--spr", `url(sprite.webp?v=${v})`); R.setProperty("--rows", Math.max(1, Math.ceil((GD.n||0)/12)));
+  R.setProperty("--sprs", `url(showcase.webp?v=${v})`); R.setProperty("--srows", Math.max(1, Math.ceil(((GD.S||[]).length)/4))); }catch(e){}
+ROSTER.forEach(r => r.chars.forEach(c => { const g = c.slug && GD.C[c.slug]; if (g){ c.level = g[0]; c.ilvl = g[1]; } }));
+ROSTER.forEach(r => r.chars.sort((a,b) => (b.level??-1) - (a.level??-1)));
+const QCOL = ["#9d9d9d","#ffffff","#1eff00","#0070dd","#a335ee","#ff8000","#e6cc80","#00ccff"];
+const QNAME = ["Poor","Common","Uncommon","Rare","Epic","Legendary","Artifact","Heirloom"];
+const TSTAT = {n:"new", c:"changed", s:"same"};
+const SLOT_LABEL = {head:"Head",neck:"Neck",shoulder:"Shoulder",back:"Back",chest:"Chest",shirt:"Shirt",tabard:"Tabard",wrist:"Wrist",
+  hand:"Hands",waist:"Waist",leg:"Legs",foot:"Feet",leftFinger:"Finger",rightFinger:"Finger",leftTrinket:"Trinket",rightTrinket:"Trinket",
+  weapon:"Main Hand",offhand:"Off Hand",ranged:"Ranged / Relic"};
+const LEFT = ["head","neck","shoulder","back","chest","shirt","tabard","wrist"];
+const RIGHT = ["hand","waist","leg","foot","leftFinger","rightFinger","leftTrinket","rightTrinket"];
+const BOTTOM = ["weapon","offhand","ranged"];
+const STATUS_LABEL = {new:"New in Forever", changed:"Reworked from Classic", same:"Classic, unchanged"};
+function esc(s){ return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function gearOf(slug){
+  const c = GD.C[slug]; if (!c) return null;
+  return Object.entries(c[2]).map(([s,id]) => { const r = GD.I[id];
+    return {s, id:+id, n:r[0], q:r[1], il:r[2], ic:r[3], t:TSTAT[r[4]]||"same", x:r[5]||[], y:r[6]||null, src:r[7]||null}; });
+}
+function category(it){
+  const x = it.x.join("\n");
+  if (/Relic\t/.test(x) || /^(leftTrinket|rightTrinket)$/.test(it.s)) return 3;
+  if (/Damage\tSpeed/.test(x)) return 0;
+  if (/^(neck|leftFinger|rightFinger)$/.test(it.s)) return 2;
+  return 1;
+}
+function pickShowcase(gear){
+  return gear.filter(g => !["shirt","tabard"].includes(g.s)).sort((a,b) => (b.il-a.il) || (b.q-a.q) || (category(a)-category(b)))[0];
+}
+const icoStyle = it => `--qc:${QCOL[it.q]};--c:${it.ic%12};--r:${Math.floor(it.ic/12)}`;
+function bigStyle(it){
+  const k = (GD.S||[]).indexOf(it.ic);
+  const hl = it.t==="new" ? ";--hl:var(--new);--hlg:rgba(166,255,60,.55)" : it.t==="changed" ? ";--hl:var(--rew);--hlg:rgba(255,216,74,.45)" : "";
+  return k >= 0 ? {cls:"ico hi", st:`--qc:${QCOL[it.q]};--c:${k%4};--r:${Math.floor(k/4)}${hl}`} : {cls:"ico", st:icoStyle(it)+hl};
+}
+function tileHTML(it, slot){
+  if (!it) return `<div class="tile empty" title="${SLOT_LABEL[slot]}: empty"></div>`;
+  return `<div class="tile ico ${it.t}" style="${icoStyle(it)}" data-item="${it.id}" data-slot="${it.s}"><span class="il ${it.q===3||it.q===4?"lt":""}">${it.il}</span></div>`;
+}
+
+// ---------- tooltip ----------
+function sourceHTML(it){
+  const s = it.src;
+  if (!s) return `<div class="tt-src"><b>Source:</b> not recorded yet</div>`;
+  const [t,a,b] = s; const where = String(b||"").replace(/,? ?in Classic$/i,"").replace(/^In Classic$/i,"");
+  const kind = {B:"Dungeon drop",m:"Drop",R:"Rare drop",w:"World drop",q:"Quest",Q:"Quest",V:"Vendor",v:"Vendor",C:"Crafted"}[t] || "Source";
+  let what = a;
+  if (t==="q"||t==="Q") what = String(a).replace(/^Quest:\s*/,"");
+  if (t==="w") what = ""; if (t==="v") what = ""; if (t==="C") what = a;
+  const parts = [what, t==="C" ? "" : where].filter(Boolean).join(" · ");
+  return `<div class="tt-src"><b>${kind}:</b> ${esc(parts || (t==="w"?"from any enemy":"various"))}</div>`;
+}
+function tooltipHTML(it){
+  const L = [`<div class="tt-name" style="color:${QCOL[it.q]}">${esc(it.n)}</div>`];
+  if (it.il > 1) L.push(`<div class="tt-ilvl">Item Level ${it.il}</div>`);
+  it.x.filter(s => !/^sell price/i.test(s)).forEach(s => {
+    if (s.includes("\t")) { const [a,b] = s.split("\t"); L.push(`<div class="tt-row"><span>${esc(a)}</span><span>${esc(b)}</span></div>`); }
+    else if (/^(Equip|Use|Chance on hit):/.test(s)) L.push(`<div class="tt-green">${esc(s)}</div>`);
+    else if (/\(\d+\/\d+\)$/.test(s)) L.push(`<div class="tt-set">${esc(s)}</div>`);
+    else if (/^\(\d+\) Set:/.test(s)) L.push(`<div class="tt-bonus">${esc(s)}</div>`);
+    else if (/^".*"$/.test(s)) L.push(`<div class="tt-flav">${esc(s)}</div>`);
+    else L.push(`<div>${esc(s)}</div>`);
+  });
+  L.push(sourceHTML(it));
+  if (it.disc) L.push(`<div class="tt-disc">★ Discovered by ${esc(it.disc)}</div>`);
+  return L.join("");
+}
+function statKey(line){
+  const l = line.toLowerCase().replace(/^equip:\s*/, ""); let m;
+  if ((m = l.match(/^\((\d)\) set/))) return "set" + m[1];
+  if (/^binds/.test(l)) return "bind"; if (/^unique/.test(l)) return "unique"; if (/requires level/.test(l)) return "reqlvl";
+  if (line.includes("\t") && !/damage/.test(l)) return "slot";
+  if (/damage per second/.test(l)) return "dps"; if (/damage/.test(l) && /speed/.test(l)) return "dmg";
+  if (/^\d+ armor$/.test(l)) return "armor"; if (/^\+\d+ armor$/.test(l) || /bonus armor/.test(l)) return "bonusarmor";
+  if (/^\d+ block$/.test(l)) return "block"; if (/\(\d\/\d\)$/.test(l)) return "setname";
+  if (/dodge/.test(l)) return "dodge"; if (/parry/.test(l)) return "parry"; if (/defense/.test(l)) return "defense";
+  if (/critical strike|crit/.test(l)) return "crit"; if (/chance to hit|hit rating/.test(l)) return "hit";
+  if (/spell power|damage and healing done by magical/.test(l)) return "spellpower";
+  if (/healing done by spells|^\+\d+ healing$/.test(l)) return "healing";
+  if (/attack power/.test(l)) return "ap"; if (/mana (per|every) 5|mana regeneration/.test(l)) return "mp5";
+  if (/all resistances/.test(l)) return "allres";
+  if (/^(use|chance on hit):/.test(l)) return l.slice(0, l.indexOf(":"));
+  if ((m = l.match(/^[+-]?\d+ (.+)$/))) return "stat:" + m[1];
+  return "txt:" + l.replace(/[\d.%]+/g, "#");
+}
+function diffLines(x, y){
+  const clean = a => (a||[]).filter(s => !/^sell price/i.test(s));
+  const F = clean(x), C = clean(y), used = new Array(C.length).fill(false), rows = [];
+  F.forEach(f => { const k = statKey(f);
+    let j = C.findIndex((c,i) => !used[i] && c === f);
+    if (j < 0) j = C.findIndex((c,i) => !used[i] && statKey(c) === k);
+    if (j >= 0) { used[j] = true; rows.push(C[j] === f ? {kind:"same", f} : {kind:"chg", f, c:C[j]}); }
+    else rows.push({kind:"chg", f, c:null}); });
+  C.forEach((c,i) => { if (!used[i]) rows.push({kind:"chg", f:null, c}); });
+  return rows;
+}
+const showL = s => esc(String(s).replace(/\t/g, "  ·  "));
+function comparisonHTML(it){
+  if (it.t === "new") return `<div class="cmp"><div class="cmp-note new">Brand new in WoW Forever: no Classic item.</div></div>`;
+  if (it.t === "same" || !it.y) return `<div class="cmp"><div class="cmp-note">Unchanged from Classic.</div></div>`;
+  const rows = diffLines(it.x, it.y); const n = rows.filter(r => r.kind === "chg").length;
+  return `<div class="cmp"><div class="cmp-h">Forever vs Classic <span>${n ? n + " change" + (n===1?"":"s") : "hidden changes"}</span></div>
+    ${n ? "" : `<div class="cmp-note">Reworked, but every tooltip line matches Classic (the change is to hidden values).</div>`}
+    ${rows.map(r => r.kind === "same" ? `<div class="cmp-l">${showL(r.f)}</div>`
+      : `<div class="cmp-l add">${r.f ? showL(r.f) : "<i>Removed in Forever</i>"}</div><div class="cmp-l del">${r.c ? showL(r.c) : "<i>Not on Classic</i>"}</div>`).join("")}</div>`;
+}
+let TT, ttTimer = 0;
+const isPhone = () => matchMedia("(max-width:640px)").matches;
+function ensureTT(){
+  if (TT) return TT;
+  TT = document.createElement("div"); TT.id = "tt"; document.body.appendChild(TT);
+  TT.addEventListener("mouseenter", () => clearTimeout(ttTimer));
+  TT.addEventListener("mouseleave", () => { if (!isPhone()) hideTip(); });
+  return TT;
+}
+function showTip(it, el){
+  clearTimeout(ttTimer); ensureTT();
+  TT.innerHTML = `<button class="ttclose" type="button" aria-label="Close">✕</button><div class="tt-badge ${it.t}">${STATUS_LABEL[it.t]}</div>${tooltipHTML(it)}${comparisonHTML(it)}`;
+  TT.scrollTop = 0; TT.style.display = "block";
+  if (isPhone()) return;
+  const r = el.getBoundingClientRect(), w = TT.offsetWidth, h = TT.offsetHeight;
+  let x = r.right + 8, y = r.top - 6;
+  if (x + w > innerWidth - 8) x = r.left - w - 8;
+  if (x < 8) x = Math.max(8, Math.min(innerWidth - w - 8, r.left));
+  if (y + h > innerHeight - 8) y = Math.max(8, innerHeight - h - 8);
+  TT.style.left = x + "px"; TT.style.top = y + "px";
+}
+function hideTip(){ clearTimeout(ttTimer); if (TT) TT.style.display = "none"; }
+function hideTipSoon(){ clearTimeout(ttTimer); ttTimer = setTimeout(hideTip, 260); }
+
+// ---------- card faces ----------
+function rarityRing(l){ return l==null?"#b8bcc4":l>=55?"#ff8a1c":l>=45?"#b25bff":l>=30?"#3a8bff":"#b8bcc4"; }
+const STANDCOL={Exalted:"#ff8000",Revered:"#a335ee",Honored:"#0070dd",Friendly:"#1eff00",Neutral:"#ffffff",Unfriendly:"#9d9d9d",Hostile:"#e04848",Hated:"#b02020"};
+const PSHORT={Blacksmithing:"Smithing",Leatherworking:"Leatherwork",Engineering:"Engineer",Enchanting:"Enchant",Jewelcrafting:"Jewelcraft"};
+function profsHTML(c){
+  if (c.profs===null || c.profs===undefined) return "";
+  if (!c.profs.length) return `<div class="profs"><div class="noprof">No professions</div></div>`;
+  return `<div class="profs">${c.profs.slice(0,4).map(([n,v,m])=>`<div class="prof ${v>=m?"max":""}"><div class="top"><span>${esc(PSHORT[n]||n)}</span><b>${v}<i>/${m}</i></b></div><div class="bar"><i style="width:${Math.round(v/m*100)}%"></i></div></div>`).join("")}</div>`;
+}
+function statsHTML(c){
+  let first;
+  if (c.level == null) first = `<div class="stat"><div class="lb">Progress</div><div class="v">—</div></div>`;
+  else if (c.level >= 60 && c.rep) first = `<div class="stat" title="${esc(c.rep[0])} · ${esc(c.rep[1])}: ${c.rep[2]}% of the way to Exalted"><div class="lb">Top rep</div><div class="v">${c.rep[2]}%</div><div class="sub">${esc(c.rep[0])}</div><div class="sub" style="color:${STANDCOL[c.rep[1]]||"var(--muted)"};font-weight:600">${esc(c.rep[1])}</div></div>`;
+  else { const p = Math.round(c.level/60*100); first = `<div class="stat"><div class="lb">To lvl 60</div><div class="v">${p}%</div><div class="mbar"><i style="width:${p}%"></i></div></div>`; }
+  const g = c.guild || "—";
+  return `<div class="stats">${first}
+    <div class="stat" title="${esc(g)}"><div class="lb">Guild <span class="realm">${esc(c.ruleset||"")} realm${c.slug&&c.slug.includes("/")?" · "+c.slug.split("/")[0].toUpperCase():""}</span></div><div class="v ${g.length>8?"sm":""}">${esc(g)}</div></div></div>`;
+}
+function gearBackHTML(e, c, stack){
+  const g = c.slug && gearOf(c.slug);
+  const head = `<div class="titlebar"><div class="tname"><div class="cname">${esc(c.name)}</div><div class="streamer">${esc(e.streamer)} · gear</div></div>
+      ${stack?`<button class="ibtn" type="button" data-swap="${e.ch}" title="Swap character" aria-label="Swap character">${ICO_SWAP}</button>`:""}
+      <button class="ibtn" type="button" data-flip="${e.ch}" title="Back to the front" aria-label="Back to the front">${ICO_BACK}</button></div>`;
+  if (!g || !g.length) return `<div class="inner gb">${head}<div class="nogear">No gear to show for this card.</div></div>`;
+  const by = Object.fromEntries(g.map(x => [x.s, x])); const sc = pickShowcase(g); const big = bigStyle(sc);
+  const cnt = {new:0, changed:0}; g.filter(x => !["shirt","tabard"].includes(x.s)).forEach(x => { if (cnt[x.t] != null) cnt[x.t]++; });
+  return `<div class="inner gb">${head}
+    <div class="sheet" style="--sq:${QCOL[sc.q]}">
+      <div class="col">${LEFT.map(s => tileHTML(by[s], s)).join("")}</div>
+      <div class="scase"><div class="lbl">SHOWCASE</div>
+        <div class="bigicon ${big.cls}" data-item="${sc.id}" data-slot="${sc.s}" style="${big.st}"></div>
+        <div class="nm" style="color:${QCOL[sc.q]}">${esc(sc.n)}</div>
+        <div class="il2">Item Level ${sc.il} · ${SLOT_LABEL[sc.s]}</div>
+        <span class="pill ${sc.t}">${STATUS_LABEL[sc.t]}</span></div>
+      <div class="col">${RIGHT.map(s => tileHTML(by[s], s)).join("")}</div>
+    </div>
+    <div class="bottom">${BOTTOM.map(s => tileHTML(by[s], s)).join("")}</div>
+    <div class="counts"><span class="av">avg ilvl <b>${c.ilvl??"—"}</b></span><span><b class="n">${cnt.new}</b> new</span><span><b class="c">${cnt.changed}</b> reworked</span></div>
+  </div>`;
+}
+
+const REFRESH_MS = 120000;
+const state = {}; const idx = {}; const open = new Set(); const flipped = new Set();
+let blocked=0, attempted=0;
+function store(k,v){try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)||"null"); localStorage.setItem(k,JSON.stringify(v)); }catch(e){ return null; }}
+function entries(){ return ROSTER; }
+function cur(e){ return e.chars[(idx[e.ch]||0) % e.chars.length]; }
+
+function card(e){
+  const s = state[e.ch]||{}; const live = s.live===true; const c = cur(e);
+  const k = CLASS[c.cls]||CLASS.Unknown;
+  const stack = e.chars.length>1; const n=(idx[e.ch]||0)%e.chars.length;
+  const next = stack? e.chars[(n+1)%e.chars.length] : null;
+  const hasGear = !!(c.slug && GD.C[c.slug]);
+  const armory = c.slug? (c.slug.includes("/") ? `https://worldofwarcraft.blizzard.com/en-gb/forever/${c.slug.replace("/","/armory/character/")}` : `https://worldofwarcraft.blizzard.com/en-us/forever/us/armory/character/${c.slug}`) : `https://worldofwarcraft.blizzard.com/en-us/forever/us/armory?q=${encodeURIComponent(c.name)}`;
+  const fcol = c.faction==="ally"?"var(--ally)":c.faction==="horde"?"var(--horde)":"#3a3f4b";
+  const status = live ? `<span class="livebadge">● LIVE${s.uptime?" · "+esc(s.uptime):""}</span>` : s.live===false ? `<span class="offbadge">Offline</span>` : "";
+  const img = c.slug ? `renders/${c.slug}.webp?v=${(GD.v||"").slice(0,8)}` : null;
+  const art = (c.bg?`<img class="bgimg" alt="" src="${BG}${c.bg}.jpg" onerror="this.remove()">`:"")
+    + (img?`<div class="fx fx-${fxType(c)}"></div><img class="render" alt="${esc(c.name)}" src="${img}" onerror="if(!this.dataset.f&&'${c.render||""}'){this.dataset.f=1;this.src='${RENDER}${c.render||""}-main-raw.png'}else{this.nextElementSibling.style.display='grid';this.remove()}">`:"")
+    + `<div class="glyph"${img?' style="display:none"':''}><svg viewBox="0 0 100 100">${k.g}</svg></div>`;
+  const np = s.title ? `<p>${live?"Now":"Last"}: <b>${esc(s.game||"")}</b> · ${esc(s.title)}</p>` : "";
+  return `<article class="card ${live?"is-live":""} ${stack?"stack":""} ${flipped.has(e.ch)&&hasGear?"back":""}" style="--cc:${k.c};${next?`--cc2:${(CLASS[next.cls]||CLASS.Unknown).c}`:""}" data-ch="${e.ch}">
+   <div class="flip"><div class="inner gf" ${hasGear?`data-flip="${e.ch}"`:""}>
+    <div class="titlebar">
+      <div class="tname"><div class="cname" title="${esc(c.name)}">${esc(c.name)}</div>
+      <div class="streamer">${esc(e.streamer)}${e.added?" · added":""}${stack?` · ${n===0?"main":"alt"} ${n+1}/${e.chars.length}`:""}</div></div>
+      ${stack?`<button class="ibtn" type="button" data-swap="${e.ch}" title="Swap to ${esc(next.name)}" aria-label="Swap character">${ICO_SWAP}</button>`:""}
+      ${hasGear?`<button class="ibtn" type="button" data-flip="${e.ch}" title="Flip to gear" aria-label="Flip to gear">${ICO_TAP}</button>`:""}
+    </div>
+    <div class="art">${art}
+      <div class="side">
+        <div class="lvl" style="--fc:${fcol}" title="${c.faction==="ally"?"Alliance":c.faction==="horde"?"Horde":""}"><b>${c.level??"?"}</b><small>LVL</small></div>
+        ${profsHTML(c)}
+      </div>${status}
+    </div>
+    <div class="typeline"><span class="cls">${esc((String(c.race||"").replace(/^.*\bSkyborne$/,"Skyborne")+" "+(c.cls==="Unknown"?"":c.cls)).trim()||"Unknown")}${c.spec?`<span class="spec"> ${esc(c.spec)}</span>`:""}</span><span class="rs">${c.ilvl!=null?`ILVL <b>${c.ilvl}</b>`:""}</span></div>
+    ${statsHTML(c)}
+    <div class="details ${open.has(e.ch)?"open":""}">
+      <div class="flavor">${esc(c.note||e.flavor)}</div>
+      ${np}
+      ${live && s.thumb ? `<img class="thumbwide" alt="Live stream preview" src="${s.thumb}" onerror="this.remove()">` : ""}
+      ${e.how?`<p><span class="ok">✓</span> ${esc(e.how)}</p>`:""}
+      ${e.fixed?`<p><span class="bad">✗</span> ${e.fixed}</p>`:""}
+      <p><a href="https://www.twitch.tv/${e.ch}/videos?filter=archives" target="_blank" rel="noopener">VODs</a><a href="https://www.twitch.tv/${e.ch}/clips?filter=clips&range=7d" target="_blank" rel="noopener">Clips</a><a href="https://worldfirst60.com/twitch/${e.ch}" target="_blank" rel="noopener">Race archive</a></p>
+    </div>
+    <div class="foot">
+      <a class="tw" href="https://www.twitch.tv/${e.ch}" target="_blank" rel="noopener">Twitch</a>
+      <a href="${armory}" target="_blank" rel="noopener">Armory</a>
+      <button type="button" data-more="${e.ch}">${open.has(e.ch)?"Less":"Notes"}</button>
+    </div>
+   </div>${hasGear?gearBackHTML(e,c,stack):""}</div></article>`;
+}
+function itemFor(el){
+  const card = el.closest(".card"); const e = entries().find(x => x.ch === card.dataset.ch); if (!e) return null;
+  const g = gearOf(cur(e).slug) || []; return g.find(x => x.s === el.dataset.slot);
+}
+function render(){
+  hideTip();
+  const list = entries().slice().sort((a,b)=>{ const la=state[a.ch]?.live===true, lb=state[b.ch]?.live===true;
+    const ka=a.chars[0], kb=b.chars[0];
+    const score=c=>c.level==null?-1:(c.level>=60?1000+(c.ilvl||0):c.level*10+(c.ilvl||0)/100);
+    return (lb-la) || (score(kb)-score(ka)); });
+  document.getElementById("grid").innerHTML = list.map(card).join("");
+  const n = list.filter(e=>state[e.ch]?.live===true).length;
+  document.getElementById("liveCount").textContent = attempted && blocked<attempted ? `${n} of ${list.length} live ·` : "";
+}
+
+// ---------- Twitch live status ----------
+async function txt(u){const r=await fetch(u,{cache:"no-store"});if(!r.ok)throw new Error(r.status);return (await r.text()).trim();}
+async function check(ch){
+  attempted++;
+  try{ const [up,title,game]=await Promise.all([txt(`https://decapi.me/twitch/uptime/${ch}`),txt(`https://decapi.me/twitch/title/${ch}`).catch(()=>""),txt(`https://decapi.me/twitch/game/${ch}`).catch(()=>"")]);
+    const off=/offline/i.test(up), bad=/not found|error|invalid/i.test(up);
+    state[ch]= bad?{err:true}:{live:!off,uptime: off?"":up.replace(/,? ?\d+ seconds?/,"").replace(/ hours?/,"h").replace(/ minutes?/,"m").replace(/,/g,""),
+      title, game, thumb: off?"":`https://static-cdn.jtvnw.net/previews-ttv/live_user_${ch}-440x248.jpg?t=${Date.now()}`};
+  }catch(e){blocked++;state[ch]={err:true};}
+}
+async function refreshAll(){
+  blocked=0;attempted=0;document.getElementById("lastCheck").textContent="Checking Twitch…";
+  await Promise.all(entries().map(e=>check(e.ch)));
+  render();
+  const all = attempted && blocked===attempted;
+  document.getElementById("banner").style.display = all?"block":"none";
+  document.getElementById("lastCheck").textContent = all ? "Live status unavailable here" : "Updated "+new Date().toLocaleTimeString([],{hour:"numeric",minute:"2-digit"})+" · every 2 min";
+}
+function raidCountdown(){ const d=Math.ceil((new Date("2026-12-09T23:00:00Z")-Date.now())/86400000); document.getElementById("raidCountdown").textContent = d>0?`· ${d} days`:"· open"; }
+
+// ---------- interactions ----------
+const grid=document.getElementById("grid");
+grid.addEventListener("click",ev=>{
+  const t=ev.target;
+  const more=t.closest("[data-more]"); if(more){ const ch=more.dataset.more; open.has(ch)?open.delete(ch):open.add(ch); render(); return; }
+  const it=t.closest("[data-item]"); if(it){ ev.stopPropagation(); const x=itemFor(it); if(x) showTip(x,it); return; }
+  const sw=t.closest("[data-swap]");
+  if(sw){ const ch=sw.dataset.swap; const cardEl=sw.closest(".card"); cardEl.classList.add("flipping");
+    setTimeout(()=>{ idx[ch]=(idx[ch]||0)+1; render(); const n=document.querySelector(`.card[data-ch="${ch}"]`); if(n){n.classList.add("flipping");setTimeout(()=>n.classList.remove("flipping"),400);} },190); return; }
+  if(t.closest("a,button:not([data-flip])")) return;
+  const card=t.closest(".card"); if(!card || !card.querySelector(".gb")) return;
+  if(t.closest("[data-flip]") || t.closest(".gb")){ const ch=card.dataset.ch; hideTip(); flipped.has(ch)?flipped.delete(ch):flipped.add(ch); card.classList.toggle("back",flipped.has(ch)); }
+});
+grid.addEventListener("mouseover",ev=>{ if(isPhone()) return; const it=ev.target.closest("[data-item]"); if(it){ const x=itemFor(it); if(x) showTip(x,it); } });
+grid.addEventListener("mouseout",ev=>{ if(isPhone()) return; const it=ev.target.closest("[data-item]"); if(it && !it.contains(ev.relatedTarget)) hideTipSoon(); });
+document.addEventListener("scroll",()=>{ if(!isPhone()) hideTip(); },{passive:true});
+document.addEventListener("click",ev=>{ const t=ev.target; if(t.closest("[data-item]")) return; if(t.closest("#tt") && !t.closest(".ttclose")) return; hideTip(); });
+document.getElementById("refresh").addEventListener("click",refreshAll);
+
+// ---------- add a streamer: saved for the tracker's refresh task, which starts right away when it can ----------
+const addMsg = document.getElementById("addMsg");
+function say(t, cls){ addMsg.textContent = t; addMsg.className = "msg " + (cls||""); }
+async function capability(name){ try{ return (window.claude && claude.use) ? await claude.use(name) : null; }catch(e){ return null; } }
+async function loadQueue(){
+  const db = await capability("db"); if(!db) return;
+  try{ const res = await db.collection("requests").get();
+    const rows = (res && (res.docs||res)) || []; const list = [];
+    rows.forEach(d => { const v = typeof d.data === "function" ? d.data() : (d.data || d); if (v && v.status !== "done") list.push(v); });
+    document.getElementById("queue").innerHTML = list.map(v => `<span class="${v.status==="needs-details"?"needs":""}" title="${esc(v.note||"")}">${esc(v.channel)}${v.character?" · "+esc(v.character):""} · ${v.status==="needs-details"?"needs details":"queued"}</span>`).join("");
+  }catch(e){}
+}
+document.getElementById("addBtn").addEventListener("click", async () => {
+  const ch = document.getElementById("addCh").value.trim().toLowerCase().replace(/^.*twitch\.tv\//,"").replace(/[^a-z0-9_]/g,"");
+  const name = document.getElementById("addName").value.trim().replace(/[<>"]/g,"");
+  if (!ch) { say("Type the streamer’s Twitch channel first.","warn"); return; }
+  if (entries().some(e => e.ch === ch)) { say("That streamer already has a card.","warn"); return; }
+  const db = await capability("db");
+  if (!db) { say("Adding from the page works on the hosted tracker. From here, ask Claude in chat to add "+ch+".","warn"); return; }
+  const id = ch + "-" + Date.now().toString(36);
+  try { await db.collection("requests").doc(id).set({id, channel:ch, character:name||"", status:"pending", added:new Date().toISOString()}); }
+  catch(e) { say("Couldn’t save the request ("+(e.code||e.message||"error")+"). Ask Claude in chat to add "+ch+".","warn"); return; }
+  say("Saved. Starting the tracker update for "+ch+"…","ok"); loadQueue();
+  const mcp = await capability("mcp"); let started = false;
+  if (mcp) { try { await mcp.callTool("Claude Code Remote","fire_trigger",{trigger_id:TRIGGER_ID,text:`Run now: Luke just added a streamer with the Add box on his tracker page (request ${id} in the requests list). Do the full update as usual, starting with STEP 0.`}); started = true; } catch(e) {} }
+  say(started ? "Saved and the tracker update has started. "+ch+" will appear in a few minutes (refresh the page)." :
+               "Saved. "+ch+" will be added at the next 6-hourly update, or ask Claude in chat to run it now.", started?"ok":"warn");
+  document.getElementById("addCh").value=""; document.getElementById("addName").value="";
+});
+
+
+// ---------- character animation: spec move every ~8 s, staggered across cards ----------
+const SPECFX={Arms:"melee",Fury:"melee",Retribution:"melee",Feral:"melee",Enhancement:"shock",Combat:"melee",Assassination:"melee",Subtlety:"melee",
+  Protection:"shield",Balance:"cast",Arcane:"cast",Fire:"cast",Frost:"cast",Affliction:"cast",Demonology:"cast",Destruction:"cast",Shadow:"cast",
+  Elemental:"shock",Restoration:"heal",Holy:"heal",Discipline:"heal","Beast Mastery":"melee",Marksmanship:"melee",Survival:"melee"};
+const MOVE={melee:"lunge",shock:"lunge",shield:"brace",cast:"cast",heal:"cast"};
+function fxType(c){ return SPECFX[c.spec] || ({Warrior:"melee",Rogue:"melee",Hunter:"melee",Paladin:"shield",Druid:"cast",Mage:"cast",Warlock:"cast",Priest:"heal",Shaman:"shock"})[c.cls] || "cast"; }
+let animTick = 0;
+setInterval(() => {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || document.hidden) return;
+  const arts = [...document.querySelectorAll(".card:not(.back) .inner.gf .art")]; if (!arts.length) return;
+  animTick++;
+  arts.forEach((a, i) => { if ((i + animTick) % 4 !== 0) return;           // each card moves every ~8 s (4 ticks x 2 s), staggered
+    const fx = a.querySelector(".fx"); if (!fx) return;
+    a.style.setProperty("--move", MOVE[(fx.className.match(/fx-(\w+)/)||[])[1]] || "cast");
+    a.classList.remove("act"); void a.offsetWidth; a.classList.add("act");
+    setTimeout(() => a.classList.remove("act"), 1300); });
+}, 2000);
+try{ document.getElementById("gearChecked").textContent = GD.checked; document.getElementById("fcBuild").textContent = GD.fc; }catch(e){}
+raidCountdown(); render(); refreshAll(); loadQueue();
+setInterval(refreshAll,REFRESH_MS); setInterval(raidCountdown,3600000);
+</script>
+</body>
+</html>
