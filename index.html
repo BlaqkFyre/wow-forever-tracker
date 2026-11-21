@@ -208,6 +208,20 @@
   .cstats{grid-template-columns:1fr;gap:1px;padding:4px 7px}
   .cstats div{font-size:8px}
   @media (max-width:640px){ .tb-front{padding-left:66px;min-height:52px} .tb-front .lvl{width:50px;height:50px} .tb-front .lvl b{font-size:20px} .side{top:18px;width:116px} .cstats{gap:2px} }
+
+  .infobtn{display:none;width:30px;height:30px;padding:0;border-radius:50%;font:800 15px/1 Cinzel,serif;color:var(--gold);border-color:#4a3b12;background:#211a0b}
+  .infopop{max-width:1240px;margin:8px auto 0;font-size:12px;line-height:1.45;padding:9px 11px;border-radius:9px;background:#141821;border:1px solid var(--line);color:var(--muted)}
+  .infopop[hidden]{display:none} .infopop p{margin:0 0 6px} .infopop p:last-child{margin:0} .infopop .warn{color:#e8d29a}
+  @media (max-width:640px){
+    h1{font-size:clamp(13px,4.3vw,16px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+    .hrow{flex-wrap:nowrap} .hrow .spacer{display:none} #liveCount{white-space:nowrap;font-size:11px}
+    #refresh{padding:6px 9px;font-size:12px} .infobtn{display:grid;place-items:center;flex:none}
+    #banner,.legend>span:first-child{display:none!important}
+    main{display:flex;flex-direction:column;padding-top:10px}
+    main>*{order:5} .grid{order:1} .facts{order:2;margin-top:4px} .legend{order:3} .addbox{order:4}
+    .grid>.card{height:calc(100svh - var(--hh,56px) - 26px);min-height:430px}
+    .grid>.card .inner.gf{min-height:0} .grid>.card .art{height:auto;flex:1 1 auto;min-height:190px} .grid>.card .gf .stats{flex:none}
+  }
   /* talents popup */
   #talwrap{position:fixed;inset:0;z-index:9000;display:none;align-items:flex-start;justify-content:center;background:rgba(3,4,7,.78);backdrop-filter:blur(3px);overflow-y:auto;padding:24px 12px}
   #talwrap.on{display:flex}
@@ -219,8 +233,8 @@
   .tal .talx:hover{border-color:var(--cc)}
   .trees{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
   .trees::-webkit-scrollbar{display:none}
-  .trees>.tree{flex:0 0 100%;scroll-snap-align:center;margin:0;border:none;background:transparent;padding:0 12px 10px;box-sizing:border-box}
-  .ttabs{display:flex;gap:6px;padding:10px 12px 8px} .ttabs button{flex:1;display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 9px;border-radius:8px;background:#151922;border:1px solid var(--line);color:var(--muted);font:600 12px Inter,system-ui,sans-serif;cursor:pointer}
+  .trees>.tree{flex:0 0 100%;scroll-snap-align:center;margin:0;border:none;background:transparent;padding:0 12px 14px;box-sizing:border-box}
+  .ttabs{display:flex;gap:6px;padding:14px 12px 14px} .ttabs button{flex:1;display:flex;justify-content:space-between;align-items:center;gap:6px;padding:6px 9px;border-radius:8px;background:#151922;border:1px solid var(--line);color:var(--muted);font:600 12px Inter,system-ui,sans-serif;cursor:pointer}
   .ttabs button b{font:800 13px Cinzel,serif;color:var(--dim)} .ttabs button.on{color:var(--text);border-color:var(--cc);background:color-mix(in srgb,var(--cc) 16%,#151922)} .ttabs button.on b{color:var(--gold)}
   .tal .tree h4{display:none}
   .tree{background:#0b0d13;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:8px 8px 10px}
@@ -238,8 +252,9 @@
   .tl em{position:absolute;right:-6px;bottom:-6px;font:700 10.5px/1 system-ui,sans-serif;font-style:normal;background:#0b0d13;border:1px solid #3a404d;border-radius:4px;padding:2px 3px;color:#8b93a3}
   .tl.on em{color:#56d364;border-color:#56d364} .tl.max em{color:#e3b341;border-color:#e3b341}
   .tl.sel{outline:2px solid #fff;outline-offset:2px}
-  .tinfo{position:sticky;bottom:8px;z-index:2;box-shadow:0 -6px 18px rgba(0,0,0,.5);margin:0 12px;min-height:0;padding:7px 10px;border-radius:9px;background:#0b0d13;border:1px solid rgba(255,255,255,.07);font-size:12.5px;color:var(--muted)}
-  .tinfo b{color:var(--text);font-size:13.5px} .tinfo .rk{margin-left:6px;color:var(--gold);font-weight:700}
+  .tinfo{position:sticky;bottom:8px;z-index:2;margin:0 12px;min-height:0;padding:8px 10px;border-radius:5px;background:linear-gradient(180deg,rgba(18,22,40,.98),rgba(10,12,24,.98));border:1px solid #6d7aa8;box-shadow:0 0 0 1px #000,0 -6px 18px rgba(0,0,0,.55);font:12.5px/1.4 Arial,"Segoe UI",sans-serif;color:#fff}
+  .tinfo .tt-name{font-size:14.5px;font-weight:700;color:#fff} .tinfo .tt-rank{color:#ffd100} .tinfo .tt-desc{margin-top:2px;color:#fff} .tinfo .tt-max{margin-top:4px;color:#9d9d9d} .tinfo .tt-hint{color:#9aa3b2}
+  .tinfo .n{color:#1eff00} .tinfo .st{color:#ffd100}
   .tabout{padding:2px 12px 8px;font-size:11px;line-height:1.4;color:var(--muted)} .tabout p{margin:3px 0} .tabout .ok{color:#56d364} .tabout .bad{color:#ff7b72} .tabout a{margin-right:10px}
   .tabout .flavor{color:var(--text)} .tabout .src{font-size:9.5px;color:var(--dim);margin-top:6px}
   .lbtns{display:flex;gap:5px;margin-top:7px} .lbtns a{flex:1;margin:0!important;text-align:center;font-size:11px;font-weight:600;padding:5px 3px;border-radius:6px;background:#1b2130;border:1px solid var(--line);color:var(--text)} .lbtns a:hover{border-color:var(--cc);text-decoration:none} .lbtns a:first-child{background:#3a2a66;border-color:#5b44a0}
@@ -310,8 +325,10 @@
     <span class="spacer"></span>
     <span class="meta" id="liveCount"></span>
     <span class="meta" id="lastCheck">Checking Twitch…</span>
+    <button id="infoBtn" class="infobtn" type="button" aria-label="About this page" aria-expanded="false">!</button>
     <button id="refresh" type="button">Refresh</button>
   </div>
+  <div class="infopop" id="infoPop" hidden></div>
   <div class="banner" id="banner">Live Twitch status can’t load in this viewer (outside data is blocked here). Open the HTML file from your tracker folder in your browser to see who’s live.</div>
 </header>
 
@@ -321,7 +338,7 @@
     <span class="fact">Level cap <b>60</b></span>
     <span class="fact">World first 60 <b>Team JokerD · ~52h</b></span>
     <span class="fact">Raids unlock <b>9 Dec</b> <span id="raidCountdown"></span></span>
-    <span class="fact">Armory checked <b id="checked">20 Nov, 9:54 PM AEDT</b> · every 6h</span>
+    <span class="fact">Armory checked <b id="checked">20 Nov, 9:54 PM AEDT</b> · daily</span>
   </div>
   <div class="legend"><span>Tap a card to flip it to its gear. Tap or hover an item for its tooltip, where it comes from and the Forever vs Classic changes:</span>
     <span><span class="sw" style="background:var(--new)"></span>new in Forever</span>
@@ -353,7 +370,7 @@
   </section>
 
   <footer>
-    Character name, level, race, class, guild, professions and top reputation come from each character’s official Armory page, re-checked automatically every 6 hours (time shown at the top).
+    Character name, level, race, class, guild, professions and top reputation come from each character’s official Armory page, re-checked automatically once a day (time shown at the top).
     Gear on the back of each card is what the character had equipped at the last gear check (<span id="gearChecked"></span>). New and reworked flags, item sources and the Forever vs Classic stat lines come from <a href="https://foreverchanges.pro/items?pieces=1" target="_blank" rel="noopener">ForeverChanges</a> (build <span id="fcBuild"></span>), which doesn’t record who discovered an item.
     Character names were matched to streamers from their stream frames or the worldfirst60 tracker. Live status comes from Twitch through DecAPI (decapi.me) and refreshes every 2 minutes.
   </footer>
@@ -800,12 +817,17 @@ function treeHTML(tr, mine, icons, isMain){
     return `<button type="button" class="tl ${cls}" style="grid-row:${t[1]+1};grid-column:${t[2]+1}" data-t="${esc(tname)}|${i}" data-ab="${esc(ab)}" aria-label="${esc(t[0])}, rank ${rank} of ${t[3]}"><i style="${ix>=0?iconPos(ix):""}"></i><em>${rank}/${t[3]}</em></button>`; }).join("");
   return `<div class="tree ${isMain?"main":""} ${pts?"":"none"}"><h4>${esc(tname)}<b>${pts}</b></h4><div class="tgrid"><svg viewBox="0 0 203 351" preserveAspectRatio="none">${paths}</svg>${cells}</div></div>`;
 }
+function tintText(str){
+  return esc(str)
+    .replace(/(\+?\d+(?:\.\d+)?%?(?:\s?(?:sec|seconds|min|minutes|yards|yd|hours?))?)/g,'<span class="n">$1</span>')
+    .replace(/\b(Strength|Agility|Stamina|Intellect|Spirit|Armor|[Aa]ttack [Pp]ower|[Ss]pell [Pp]ower|[Cc]ritical [Ss]trike(?: chance)?|[Hh]it chance|[Hh]aste|[Cc]ooldown|[Mm]ana|[Rr]age|[Ee]nergy|[Hh]ealth)\b/g,'<span class="st">$1</span>');
+}
 function talInfo(el){
   if (!talCur || !el) return; const [tn, i] = el.dataset.t.split("|"); const tr = talCur.trees.find(x=>x[0]===tn); const t = tr && tr[1][+i]; if (!t) return;
   const g = talCur.mine(tn).find(x=>x[0]===t[0]); const rank = g?g[1]:0;
   const desc = g ? g[3] : t[5];
   TW.querySelectorAll(".tl.sel").forEach(x=>x.classList.remove("sel")); el.classList.add("sel");
-  TW.querySelector(".tinfo").innerHTML = `<b>${esc(t[0])}</b><span class="rk">${rank}/${t[3]}</span><br>${esc(desc)}${!g&&t[3]>1?`<br><span style="color:var(--dim)">Max rank: ${esc(t[6])}</span>`:""}`;
+  TW.querySelector(".tinfo").innerHTML = `<div class="tt-name">${esc(t[0])}</div><div class="tt-rank">Rank ${rank}/${t[3]}</div><div class="tt-desc">${tintText(desc)}</div>${!g&&t[3]>1?`<div class="tt-max">Max rank: ${tintText(t[6])}</div>`:""}`;
 }
 async function openTalents(ch){
   const e = ROSTER.find(x=>x.ch===ch); if (!e) return; const c = cur(e); const k = CLASS[c.cls]||CLASS.Unknown;
@@ -825,7 +847,7 @@ async function openTalents(ch){
   TW.querySelector(".pts").textContent = sums.join(" / ");
   const best = sums.indexOf(top);
   const tabs = `<div class="ttabs">${trees.map((tr,i)=>`<button type="button" data-tree="${i}" class="${i===best?"on":""}">${esc(norm(tr[0]))}<b>${sums[i]}</b></button>`).join("")}</div>`;
-  TW.querySelector(".trees").outerHTML = `${tabs}<div class="trees">${trees.map((tr,i)=>treeHTML(tr, mine(tr[0]), icons, i===best&&top>0)).join("")}</div><div class="tinfo">Tap or hover a talent to read it. Swipe for the other trees.</div>`;
+  TW.querySelector(".trees").outerHTML = `${tabs}<div class="trees">${trees.map((tr,i)=>treeHTML(tr, mine(tr[0]), icons, i===best&&top>0)).join("")}</div><div class="tinfo"><span class="tt-hint">Tap or hover a talent to read it. Swipe for the other trees.</span></div>`;
   const box = TW.querySelector(".trees"); let curI = best;
   const mark = i => { curI = i; TW.querySelectorAll(".ttabs button").forEach((b,j)=>b.classList.toggle("on",j===i)); };
   talCur.show = (i, smooth=true) => { mark(i); box.scrollTo({left: i*box.clientWidth, behavior: smooth?"smooth":"auto"}); };
@@ -836,6 +858,16 @@ function closeTalents(){ TW.classList.remove("on"); TW.innerHTML=""; talCur=null
 TW.addEventListener("click", ev=>{ if (ev.target===TW || ev.target.closest("[data-talx]")) { closeTalents(); return; } const tt=ev.target.closest("[data-tree]"); if (tt && talCur && talCur.show) { talCur.show(+tt.dataset.tree); return; } const tl=ev.target.closest(".tl"); if (tl) talInfo(tl); });
 TW.addEventListener("mouseover", ev=>{ const tl=ev.target.closest(".tl"); if (tl && !isPhone()) talInfo(tl); });
 document.addEventListener("keydown", ev=>{ if (ev.key==="Escape" && TW.classList.contains("on")) closeTalents(); });
+
+
+// ---------- mobile: header height for full-screen cards, and the ! info button ----------
+function setHH(){ try{ document.documentElement.style.setProperty("--hh", document.querySelector("header").offsetHeight+"px"); }catch(e){} }
+addEventListener("resize", setHH); setHH();
+(function(){ const b=document.getElementById("infoBtn"), p=document.getElementById("infoPop");
+  b.addEventListener("click", ()=>{ const on=p.hidden; if(on){ const ban=document.getElementById("banner"); const warn = ban && ban.style.display==="block" ? `<p class="warn">${ban.textContent}</p>` : "";
+      p.innerHTML = warn + `<p>Swipe left or right for the next streamer. Tap a card to flip it to its gear; tap an item for its tooltip, where it comes from and the Forever vs Classic changes (green: new in Forever, yellow: Classic item reworked, grey: unchanged).</p><p>Tap Talents for the talent trees and Twitch for VODs, clips and the race archive. More details are further down the page.</p>`; }
+    p.hidden=!on; b.setAttribute("aria-expanded", on); setHH(); });
+})();
 
 // ---------- add a streamer: saved for the tracker's refresh task, which starts right away when it can ----------
 const addMsg = document.getElementById("addMsg");
@@ -863,7 +895,7 @@ document.getElementById("addBtn").addEventListener("click", async () => {
   const mcp = await capability("mcp"); let started = false;
   if (mcp) { try { await mcp.callTool("Claude Code Remote","fire_trigger",{trigger_id:TRIGGER_ID,text:`Run now: Luke just added a streamer with the Add box on his tracker page (request ${id} in the requests list). Do the full update as usual, starting with STEP 0.`}); started = true; } catch(e) {} }
   say(started ? "Saved and the tracker update has started. "+ch+" will appear in a few minutes (refresh the page)." :
-               "Saved. "+ch+" will be added at the next 6-hourly update, or ask Claude in chat to run it now.", started?"ok":"warn");
+               "Saved. "+ch+" will be added at the next daily update, or ask Claude in chat to run it now.", started?"ok":"warn");
   document.getElementById("addCh").value=""; document.getElementById("addName").value="";
 });
 
