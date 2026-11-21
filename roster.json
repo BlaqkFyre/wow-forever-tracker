@@ -597,18 +597,43 @@
    {
     "name": "Darkedge Bloodshadow",
     "slug": "darkedge-bloodshadow",
-    "render": "",
+    "render": "201/4060873",
     "bg": "gnome",
     "level": 54,
-    "ilvl": null,
+    "ilvl": 49,
     "race": "Gnome",
     "cls": "Rogue",
     "spec": "Subtlety",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "D E A T H",
-    "profs": [],
-    "rep": null
+    "profs": [
+     [
+      "Skinning",
+      300,
+      300
+     ],
+     [
+      "First Aid",
+      275,
+      300
+     ],
+     [
+      "Leatherworking",
+      150,
+      150
+     ],
+     [
+      "Cooking",
+      60,
+      150
+     ]
+    ],
+    "rep": [
+     "Stormwind",
+     "Honored",
+     45
+    ]
    }
   ]
  },
