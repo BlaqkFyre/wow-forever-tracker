@@ -397,7 +397,7 @@
   <footer>
     Character name, level, race, class, guild, professions and top reputation come from each character’s official Armory page, re-checked automatically every 3 hours on GitHub (time shown at the top).
     Gear on the back of each card is what the character had equipped at the last gear check (<span id="gearChecked"></span>). New and reworked flags, item sources and the Forever vs Classic stat lines come from <a href="https://foreverchanges.pro/items?pieces=1" target="_blank" rel="noopener">ForeverChanges</a> (build <span id="fcBuild"></span>), which doesn’t record who discovered an item.
-    Character names were matched to streamers from their stream frames or the worldfirst60 tracker. Live status comes from Twitch through DecAPI (decapi.me) and refreshes every 2 minutes.
+    Character names were matched to streamers from their stream frames or the worldfirst60 tracker. Live status comes from Twitch through DecAPI (decapi.me) and refreshes every 15 minutes (or when you press Refresh).
   </footer>
 </main>
 
@@ -1248,7 +1248,7 @@ function gearBackHTML(e, c, stack){
   </div>`;
 }
 
-const REFRESH_MS = 120000;
+const REFRESH_MS = 900000;
 const state = {}; const idx = {}; const open = new Set(); const flipped = new Set(); const twOpen = new Set();
 let blocked=0, attempted=0;
 function store(k,v){try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)||"null"); localStorage.setItem(k,JSON.stringify(v)); }catch(e){ return null; }}
@@ -1323,7 +1323,7 @@ async function refreshAll(){
   render(); renderTicker();
   const all = attempted && blocked===attempted;
   document.getElementById("banner").style.display = all?"block":"none";
-  document.getElementById("lastCheck").textContent = all ? "Live status unavailable here" : "Updated "+new Date().toLocaleTimeString([],{hour:"numeric",minute:"2-digit"})+" · every 2 min";
+  document.getElementById("lastCheck").textContent = all ? "Live status unavailable here" : "Updated "+new Date().toLocaleTimeString([],{hour:"numeric",minute:"2-digit"})+" · every 15 min";
 }
 function raidCountdown(){ const d=Math.ceil((new Date("2026-12-09T23:00:00Z")-Date.now())/86400000); document.getElementById("raidCountdown").textContent = d>0?`· ${d} days`:"· open"; }
 
