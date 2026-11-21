@@ -47,18 +47,21 @@ def vod_playlist(vid):
     pl = fetch(best, binary=False)
     base = best.rsplit("/", 1)[0] + "/"
     segs = [l for l in pl.splitlines() if l and not l.startswith("#")]
-    return [s if s.startswith("http") else base + s for s in segs]
+    m = re.search(r'#EXT-X-MAP:URI="([^"]+)"', pl)  # fragmented-MP4 VODs need their init segment
+    init = (m.group(1) if m.group(1).startswith("http") else base + m.group(1)) if m else None
+    return [s if s.startswith("http") else base + s for s in segs], init
 
 
 def frames_from(vid, k, tmp):
-    segs = vod_playlist(vid)
+    segs, init = vod_playlist(vid)
     if not segs: return []
+    head = fetch(init) if init else b""
     out = []
     picks = sorted({int(len(segs) * f) for f in [0.15, 0.3, 0.45, 0.6, 0.75, 0.9][:k]})
     for i in picks:
         seg = os.path.join(tmp, f"{vid}-{i}.ts"); png = seg + ".png"
         try:
-            open(seg, "wb").write(fetch(segs[min(i, len(segs) - 1)]))
+            open(seg, "wb").write(head + fetch(segs[min(i, len(segs) - 1)]))
             subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", seg, "-frames:v", "1", "-vf", "scale=1920:-2", png], check=True, timeout=60)
             out.append(png)
         except Exception as e:
@@ -73,7 +76,7 @@ def ocr_words(png):
     big = png + ".x2.png"
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", png, "-vf", "scale=iw*2:ih*2,format=gray", big], check=True, timeout=60)
     lines = []
-    for psm in ("11", "3"):
+    for psm in ("11",):
         r = subprocess.run(["tesseract", big, "-", "--psm", psm], capture_output=True, text=True, timeout=120)
         lines += [l for l in r.stdout.splitlines() if l.strip()]
     os.remove(big)
@@ -98,9 +101,9 @@ def find_character(login, check, keys=(), max_checks=45):
     with tempfile.TemporaryDirectory() as tmp:
         frames = []
         for v in vids[:3]:
-            try: frames += frames_from(v["id"], 3 if len(frames) else 4, tmp)
+            try: frames += frames_from(v["id"], 3, tmp)
             except Exception as e: print("vod failed", v["id"], e, file=sys.stderr)
-            if len(frames) >= 8: break
+            if len(frames) >= 6: break
         for f in frames:
             for p in name_pairs(ocr_words(f)): counts[p] += 1
     if not counts: return None, [], disp
@@ -133,4 +136,4 @@ if __name__ == "__main__":
                 pass
         return None
     for login in sys.argv[1:]:
-        print(login, find_character(login, check, keys=[login]))
+        print(login, find_character(login, check, keys=[login]), flush=True)

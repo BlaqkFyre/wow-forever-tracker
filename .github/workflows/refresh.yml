@@ -34,7 +34,7 @@ jobs:
         if: github.event_name == 'push'
         run: |
           sudo apt-get update -qq >/dev/null 2>&1; sudo apt-get install -y -qq tesseract-ocr ffmpeg >/dev/null 2>&1 || true
-          cd tools && timeout 900 python3 vodname.py sodapoppin gingitv hammerdance > ../.github/vod-test.txt 2> ../.github/vod-test.err || true
+          cd tools && timeout 1500 python3 vodname.py sodapoppin gingitv > ../.github/vod-test.txt 2> ../.github/vod-test.err || true
       - name: Refresh from the Armory
         env:
           REQ_KIND: ${{ github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'remove-streamer') && 'remove' || 'add') || '' }}
