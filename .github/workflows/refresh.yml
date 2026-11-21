@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["tools/refresh.py", ".github/workflows/refresh.yml"]
+    paths: ["tools/refresh.py", "tools/vodname.py", ".github/workflows/refresh.yml"]
   issues:
     types: [opened, edited, labeled]
 permissions:
@@ -30,6 +30,11 @@ jobs:
           gh label create add-streamer --color 1f883d --description "Add a streamer card" --force --repo ${{ github.repository }} || true
           gh label create remove-streamer --color d1242f --description "Remove a streamer card" --force --repo ${{ github.repository }} || true
           gh label create approved --color 8250df --description "Owner approved this request" --force --repo ${{ github.repository }} || true
+      - name: One-off VOD reading test
+        if: github.event_name == 'push'
+        run: |
+          sudo apt-get install -y -qq tesseract-ocr >/dev/null 2>&1 || true
+          cd tools && timeout 900 python3 vodname.py sodapoppin gingitv hammerdance > ../.github/vod-test.txt 2> ../.github/vod-test.err || true
       - name: Refresh from the Armory
         env:
           REQ_KIND: ${{ github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'remove-streamer') && 'remove' || 'add') || '' }}
