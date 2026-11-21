@@ -1,3 +1,0 @@
-sodapoppin (None, [], 'sodapoppin')
-gingitv (None, [], 'GingiTV')
-hammerdance (None, [], 'hammerdance')
