@@ -310,8 +310,8 @@
     "slug": "hammer-xx",
     "render": "144/6930320",
     "bg": "night_elf",
-    "level": 53,
-    "ilvl": 47,
+    "level": 54,
+    "ilvl": 48,
     "race": "Night Elf",
     "cls": "Druid",
     "spec": "Feral",
@@ -326,7 +326,7 @@
      ],
      [
       "Skinning",
-      295,
+      299,
       300
      ],
      [
@@ -343,7 +343,7 @@
     "rep": [
      "Stormwind",
      "Honored",
-     47
+     49
     ]
    }
   ]
