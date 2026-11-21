@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["tools/refresh.py", "tools/vodname.py", ".github/workflows/refresh.yml"]
+    paths: ["roster.json", "tools/refresh.py", "tools/vodname.py", ".github/workflows/refresh.yml"]
   issues:
     types: [opened, edited, labeled]
 permissions:
@@ -30,11 +30,6 @@ jobs:
           gh label create add-streamer --color 1f883d --description "Add a streamer card" --force --repo ${{ github.repository }} || true
           gh label create remove-streamer --color d1242f --description "Remove a streamer card" --force --repo ${{ github.repository }} || true
           gh label create approved --color 8250df --description "Owner approved this request" --force --repo ${{ github.repository }} || true
-      - name: One-off VOD reading test
-        if: github.event_name == 'push'
-        run: |
-          sudo apt-get update -qq >/dev/null 2>&1; sudo apt-get install -y -qq tesseract-ocr ffmpeg >/dev/null 2>&1 || true
-          cd tools && timeout 1500 python3 vodname.py gingitv moonmoon > ../.github/vod-test.txt 2> ../.github/vod-test.err || true
       - name: Tools for reading VODs
         if: github.event_name == 'issues'
         run: sudo apt-get update -qq >/dev/null 2>&1; sudo apt-get install -y -qq tesseract-ocr ffmpeg >/dev/null 2>&1 || true

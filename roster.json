@@ -587,6 +587,32 @@
   ]
  },
  {
+  "ch": "moonmoon",
+  "streamer": "MOONMOON",
+  "added": true,
+  "flavor": "Sub rogue on the PvP ruleset, with a long-running bit about having “no exploits”.",
+  "how": "Read “Darkedge Bloodshad…” off his player frame in his 20 Nov VOD, then confirmed the full name on the Armory.",
+  "fixed": "An earlier name-only search wrongly matched <s>Staring Moonmoon</s> (a priest that isn’t his).",
+  "chars": [
+   {
+    "name": "Darkedge Bloodshadow",
+    "slug": "darkedge-bloodshadow",
+    "render": "",
+    "bg": "gnome",
+    "level": 54,
+    "ilvl": null,
+    "race": "Gnome",
+    "cls": "Rogue",
+    "spec": "Subtlety",
+    "faction": "ally",
+    "ruleset": "PvP",
+    "guild": "D E A T H",
+    "profs": [],
+    "rep": null
+   }
+  ]
+ },
+ {
   "ch": "quin69",
   "streamer": "Quin69",
   "flavor": "Busy in Wraeclast, not Azeroth: live in Path of Exile for the Umbra league launch (HC SSF).",

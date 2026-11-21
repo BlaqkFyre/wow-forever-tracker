@@ -1,2 +1,0 @@
-sodapoppin (('Damage Done', 'us', 54), [('Aya Ya', 'us', 60), ('Vek Vek', 'us', 60)], 'sodapoppin')
-gingitv (('Sunny Berry', 'eu', 56), [('Damage Done', 'us', 54), ('Gingi Totemhugger', 'eu', 56)], 'GingiTV')
