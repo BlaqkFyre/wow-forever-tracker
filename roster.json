@@ -67,7 +67,7 @@
     "render": "254/546046",
     "bg": "undead",
     "level": 60,
-    "ilvl": 54,
+    "ilvl": 60,
     "race": "Undead",
     "cls": "Paladin",
     "spec": "Protection",
@@ -82,7 +82,7 @@
      ],
      [
       "Blacksmithing",
-      249,
+      255,
       300
      ],
      [
@@ -99,7 +99,7 @@
     "rep": [
      "Undercity",
      "Revered",
-     60
+     61
     ]
    },
    {
@@ -149,8 +149,8 @@
     "slug": "esfand-television",
     "render": "76/7621452",
     "bg": "human",
-    "level": 52,
-    "ilvl": 49,
+    "level": 54,
+    "ilvl": 51,
     "race": "Human",
     "cls": "Paladin",
     "spec": "Retribution",
@@ -204,7 +204,7 @@
     "slug": "abg-slayer",
     "render": "43/6998315",
     "bg": "night_elf",
-    "level": 52,
+    "level": 57,
     "ilvl": 48,
     "race": "Night Elf",
     "cls": "Warrior",
@@ -260,8 +260,8 @@
     "slug": "nmp-hatethread",
     "render": "194/3835842",
     "bg": "gnome",
-    "level": 51,
-    "ilvl": 47,
+    "level": 60,
+    "ilvl": 54,
     "race": "Gnome",
     "cls": "Warrior",
     "spec": "Fury",
@@ -310,8 +310,8 @@
     "slug": "hammer-xx",
     "render": "144/6930320",
     "bg": "night_elf",
-    "level": 48,
-    "ilvl": 43,
+    "level": 53,
+    "ilvl": 47,
     "race": "Night Elf",
     "cls": "Druid",
     "spec": "Feral",
@@ -360,8 +360,8 @@
     "slug": "asmongold-thereal",
     "render": "165/4427685",
     "bg": "human",
-    "level": 45,
-    "ilvl": 42,
+    "level": 48,
+    "ilvl": 43,
     "race": "Human",
     "cls": "Warrior",
     "spec": "Protection",
@@ -441,8 +441,8 @@
     "render": "253/1049341",
     "bg": "windshaper_skyborne",
     "region": "EU",
-    "level": 52,
-    "ilvl": 46,
+    "level": 56,
+    "ilvl": 44,
     "race": "Windshaper Skyborne",
     "cls": "Shaman",
     "spec": "Enhancement",
@@ -469,7 +469,7 @@
     "rep": [
      "Orgrimmar",
      "Honored",
-     41
+     45
     ]
    }
   ]
@@ -487,8 +487,8 @@
     "slug": "xaryu-forever",
     "render": "7/1494791",
     "bg": "gnome",
-    "level": 52,
-    "ilvl": 41,
+    "level": 54,
+    "ilvl": 44,
     "race": "Gnome",
     "cls": "Mage",
     "spec": "Frost",
@@ -498,17 +498,17 @@
     "profs": [
      [
       "First Aid",
-      259,
+      270,
       300
      ],
      [
       "Tailoring",
-      204,
-      225
+      231,
+      300
      ],
      [
       "Enchanting",
-      170,
+      172,
       225
      ],
      [
@@ -543,8 +543,8 @@
     "slug": "bajheera-furyborn",
     "render": "200/5784776",
     "bg": "human",
-    "level": 57,
-    "ilvl": 52,
+    "level": 58,
+    "ilvl": 49,
     "race": "Human",
     "cls": "Warrior",
     "spec": "Protection",
@@ -564,8 +564,8 @@
      ],
      [
       "Blacksmithing",
-      225,
-      225
+      239,
+      300
      ],
      [
       "Cooking",
@@ -581,7 +581,7 @@
     "rep": [
      "Stormwind",
      "Revered",
-     52
+     54
     ]
    }
   ]
