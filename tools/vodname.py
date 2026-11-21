@@ -83,20 +83,31 @@ def ocr_words(png):
     return lines
 
 
+STOP = set("""damage done healing taken threat dps hps details skada recount meter overall current segment total party raid guild
+general trade local defense combat log quest quests level target focus player group chat whisper say yell world looking for lfg
+auction house main hand off ranged hit crit miss dodge parry block resist absorb gold silver copper bag bags bank map minimap
+mana health rage energy focus combo points buff buffs debuff debuffs spell book talents talent character reputation honor
+the and you your are with from into this that has have was will not now new old all any one two three four five six seven
+eight nine ten aya ya vek kek lol omegalul pog poggers lul kappa sub subs follow follows prime gifted bits cheer hype train
+chatters viewers stream live twitch discord youtube sponsor brought by today tomorrow press click enter accept decline
+alliance horde stormwind orgrimmar ironforge darnassus undercity thunder bluff time played day days hours minutes""".split())
+
+
 def name_pairs(lines):
     pairs = set()
     for l in lines:
         words = re.findall(r"[A-Z][a-zà-ÿ']{1,13}", l)
         for a, b in zip(words, words[1:]):
+            if a.lower() in STOP or b.lower() in STOP or a == b: continue
             pairs.add(f"{a} {b}")
     return pairs
 
 
 def find_character(login, check, keys=(), max_checks=45):
     """check(name) -> (name, region, level) if the name is a real Forever character, else None.
-    Returns (best, others, display_name) where best is (name, region, level) or None."""
+    Returns (hits, display_name): hits is a list of (name, region, level, frames_seen, matches_channel), best first."""
     disp, vids = recent_vods(login)
-    if not vids: return None, [], disp
+    if not vids: return [], disp
     counts = collections.Counter()
     with tempfile.TemporaryDirectory() as tmp:
         frames = []
@@ -106,22 +117,22 @@ def find_character(login, check, keys=(), max_checks=45):
             if len(frames) >= 6: break
         for f in frames:
             for p in name_pairs(ocr_words(f)): counts[p] += 1
-    if not counts: return None, [], disp
+    if not counts: return [], disp
     keys = [k.lower() for k in keys if k]
+    def keyed(p):
+        w = p.lower().split()
+        return any(k in p.lower().replace(" ", "") or any(len(x) >= 3 and x in k for x in w) for k in keys)
     def score(p):
-        s = counts[p] * 10
-        if any(k in p.lower().replace(" ", "") or p.lower().split()[0] in k for k in keys): s += 25
-        return s
+        return counts[p] * 10 + (60 if keyed(p) else 0)
     ranked = sorted(counts, key=score, reverse=True)
     found = []
     for p in ranked[:max_checks]:
         hit = check(p)
         if hit:
-            found.append((hit, score(p)))
-            if counts[p] >= 2 and len(found) >= 3: break
-    if not found: return None, [], disp
-    found.sort(key=lambda x: -x[1])
-    return found[0][0], [f[0] for f in found[1:4]], disp
+            found.append((hit[0], hit[1], hit[2], counts[p], keyed(p), score(p)))
+            if len(found) >= 6: break
+    found.sort(key=lambda x: -x[5])
+    return [f[:5] for f in found], disp
 
 
 if __name__ == "__main__":

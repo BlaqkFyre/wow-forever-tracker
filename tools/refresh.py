@@ -195,28 +195,67 @@ def handle_request(roster, kind, body, author, owner, labels):
     # add
     if not ch:
         return ("Please give the streamer's Twitch channel.", False, None, [])
-    guessed, others = False, []
+    region_given = bool(re.match(r"(?i)\s*(us|eu)\b", realm))
+    rules = ruleset_of(realm)
+    how = "Found on the Armory."
+
+    def lookup(nm):
+        """Exact name in each region -> list of (slug, state)."""
+        b = nm.lower().strip().replace(" ", "-")
+        hits = []
+        slugs = ([b] if region == "us" else ["eu/" + b]) if region_given else [b, "eu/" + b]
+        for sl in slugs:
+            try: hits.append((sl, state(armory_path(sl))))
+            except Exception: pass
+        return hits
+
+    def pick_list(title, opts):
+        lines = [f"{i+1}. **{n}** · {r.upper()}{(' · ' + str(lv)) if lv else ''} · [Armory]({armory_path(n.lower().replace(' ', '-') if r == 'us' else 'eu/' + n.lower().replace(' ', '-'))})"
+                 for i, (n, r, lv) in enumerate(opts)]
+        return (title + "\n\n" + "\n".join(lines) + "\n\nEdit this issue and put the one you want in **Character name** (and its region in **Realm**); the tracker will try again as soon as you save.", False, None, [])
+
     if not name:
-        found = guess_character(ch, region if re.match(r"(?i)\s*(us|eu)\b", realm) else None, ruleset_of(realm))
-        if not found:
-            return (f"I couldn't find a WoW Forever character for `{ch}` by searching the Armory. Edit this issue and add the exact character name.", False, None, [])
-        (name, region), others = found[0], found[1:6]
-        guessed = True
-    base = name.lower().replace(" ", "-")
-    slug = base if region == "us" else "eu/" + base
+        vod = []
+        try:
+            import vodname
+            def check(nm):
+                h = lookup(nm)
+                if not h: return None
+                c = h[0][1]["character"]
+                return (c["name"] + (" " + c["surname"] if c.get("surname") else ""), "eu" if "/" in h[0][0] else "us", c["level"])
+            vod, _ = vodname.find_character(ch, check, keys=[ch] + [k for k in (ch[:-2], ch[:-3]) if len(k) >= 3])
+        except Exception as e:
+            print("VOD reading failed:", e)
+        if vod and vod[0][4]:
+            name, region = vod[0][0], vod[0][1]; region_given = True
+            how = f"Read off {ch}'s recent WoW Forever VODs and confirmed on the Armory."
+        else:
+            opts = [(n, r, lv) for n, r, lv, seen, _ in vod]
+            for n, r in guess_character(ch, region if region_given else None, rules):
+                if all(n != o[0] for o in opts): opts.append((n, r, None))
+            if not opts:
+                return (f"I couldn't read a character name from `{ch}`'s recent VODs or find one by searching the Armory. Edit this issue and add the exact character name.", False, None, [])
+            return pick_list(f"I checked `{ch}`'s recent VODs and the Armory but couldn't be sure which character is theirs. Names seen on stream come first — which one is it?", opts[:8])
+    hits = lookup(name)
+    if not hits:
+        found = guess_character(name.split()[0].lower(), region if region_given else None, rules)
+        if len(found) == 1:
+            name, region = found[0]; region_given = True; hits = lookup(name)
+        elif found:
+            return pick_list(f"There's no character called **{name}** on the {region.upper() if region_given else 'US or EU'} Armory. Did you mean one of these?", [(n, r, None) for n, r in found[:8]])
+        if not hits:
+            return (f"Couldn't find **{name}** on the WoW Forever Armory. Check the spelling (the Armory uses the full two-part name) and edit this issue.", False, None, [])
+    if len(hits) > 1:
+        return pick_list(f"**{name}** exists in both regions. Which one?", [(h[1]["character"]["name"] + (" " + h[1]["character"].get("surname", "") if h[1]["character"].get("surname") else ""),
+                                                                                "eu" if "/" in h[0] else "us", h[1]["character"]["level"]) for h in hits])
+    slug, st = hits[0]
     for r in roster:
         for c in r["chars"]:
             if c.get("slug") == slug:
                 return (f"**{c['name']}** is already on the tracker.", True, None, [])
-    try:
-        st = state(armory_path(slug))
-    except Exception:
-        other = ("eu/" + base) if region == "us" else base
-        try:
-            st = state(armory_path(other)); slug = other
-        except Exception:
-            return (f"Couldn't find **{name}** on the {region.upper()} or {'EU' if region == 'us' else 'US'} WoW Forever Armory. "
-                    "Check the spelling (the Armory uses the full two-part name) and edit this issue.", False, None, [])
+    rs = ((st["character"].get("ruleset") or {}).get("name") or "").lower().replace(" ", "")
+    if rules and rules not in rs:
+        how += f" (Request said {realm}; the Armory lists this character on {(st['character'].get('ruleset') or {}).get('name', '?')}.)"
     c = st["character"]
     disp = (f.get("display name") or "").strip() or ch
     char = {"name": c["name"] + (" " + c["surname"] if c.get("surname") else ""), "slug": slug, "render": "", "bg":
@@ -231,15 +270,10 @@ def handle_request(roster, kind, body, author, owner, labels):
         entry["chars"].append(char)
     else:
         entry = {"ch": ch, "streamer": disp, "added": True, "flavor": f"Added on {datetime.now(SYD).strftime('%-d %b %Y')} by @{author}.",
-                 "how": f"Added through a GitHub request by @{author}; found on the Armory.", "fixed": "", "chars": [char]}
+                 "how": f"Added through a GitHub request by @{author}. {how}", "fixed": "", "chars": [char]}
         tail = next((i for i, r in enumerate(roster) if r["ch"] == "quin69"), len(roster))
         roster.insert(tail, entry)
-    note = ""
-    if guessed:
-        entry["how"] = f"Best match from an Armory search for “{ch}” (no character name was given)."
-        note = ("\n\nNo character name was given, so this is the best match from an Armory search"
-                + (": other possible matches were " + ", ".join(f"{n} ({r.upper()})" for n, r in others) if others else "")
-                + ". If it's the wrong character, remove the card from the page and add it again with the exact name.")
+    note = "\n\n" + how
     return (f"Added **{char['name']}** (level {char['level']} {char['race']} {char['cls']}) for {entry['streamer']}. "
             "The card will be on the page in a minute or two." + note, True, slug, [])
 

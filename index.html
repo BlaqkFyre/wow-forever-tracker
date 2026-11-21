@@ -1511,10 +1511,10 @@ function openForm(tpl, title, fields){
 document.getElementById("addBtn").addEventListener("click", () => {
   const ch = document.getElementById("addCh").value.trim().toLowerCase().replace(/^.*twitch\.tv\//,"").replace(/[^a-z0-9_]/g,"");
   const name = document.getElementById("addName").value.trim().replace(/[<>"]/g,"");
-  const realm = document.getElementById("addRealm").value.trim().replace(/[<>"]/g,"") || "US";
+  const realm = document.getElementById("addRealm").value.trim().replace(/[<>"]/g,"");
   if (!ch) { say("Type the streamer’s Twitch channel first.","warn"); return; }
-  openForm("add-streamer.yml", `Add: ${ch}${name ? " – " + name : ""}`, {channel: ch, character: name, realm});
-  say(`GitHub opened in a new tab. Press “Create” there, and ${name || ch} will appear here a minute or two later (reload the page).${name ? "" : " Without a character name the tracker searches the Armory for the best match."}`, "ok");
+  openForm("add-streamer.yml", `Add: ${ch}${name ? " – " + name : ""}`, {channel: ch, character: name, realm: realm || ""});
+  say(`GitHub opened in a new tab. Press “Create” there, and ${name || ch} will appear here a minute or two later (reload the page).${name ? "" : " Without a character name the tracker reads the streamer’s recent VODs to find it; if it can’t be sure, it replies on GitHub with a list to pick from."}`, "ok");
 });
 function confirmBox(title, text, yes, onYes){
   const w = document.createElement("div"); w.className = "cfm";
