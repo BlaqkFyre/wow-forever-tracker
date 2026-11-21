@@ -13,8 +13,8 @@ body:
     id: character
     attributes:
       label: Character name
-      description: The full name exactly as on the WoW Forever Armory, e.g. "Gay Kitten".
-    validations: { required: true }
+      description: 'Optional but best: the full name exactly as on the WoW Forever Armory, e.g. "Gay Kitten". Leave empty and the tracker searches the Armory for the channel name and picks the best match.'
+    validations: { required: false }
   - type: input
     id: realm
     attributes:

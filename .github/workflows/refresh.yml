@@ -30,6 +30,9 @@ jobs:
           gh label create add-streamer --color 1f883d --description "Add a streamer card" --force --repo ${{ github.repository }} || true
           gh label create remove-streamer --color d1242f --description "Remove a streamer card" --force --repo ${{ github.repository }} || true
           gh label create approved --color 8250df --description "Owner approved this request" --force --repo ${{ github.repository }} || true
+      - name: One-off check of the character search
+        if: github.event_name == 'push'
+        run: python3 -c "import sys;sys.path.insert(0,'tools');import refresh as r;print(r.guess_character('pikabooirl','us','pvp')[:5]);print(r.guess_character('xaryu')[:5])" > .github/guess-test.txt 2>&1 || true
       - name: Refresh from the Armory
         env:
           REQ_KIND: ${{ github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'remove-streamer') && 'remove' || 'add') || '' }}

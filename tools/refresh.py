@@ -7,7 +7,7 @@ opens an "Add a streamer" or "Remove a streamer" issue. Writes:
   sprite.webp, showcase.webp, talents.webp, renders/<slug>.webp
 and updates the ROSTER block, version strings and "checked" time in index.html.
 """
-import hashlib, io, json, math, os, re, sys, time, urllib.request
+import hashlib, io, json, math, os, re, sys, time, urllib.parse, urllib.request
 from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
 from PIL import Image, ImageFilter
@@ -135,6 +135,39 @@ def parse_form(body):
     return out
 
 
+def ruleset_of(realm):
+    m = re.search(r"(?i)(roleplay|rp|pvp|normal|hardcore)", realm or "")
+    if not m: return None
+    w = m.group(1).lower()
+    return {"rp": "roleplay"}.get(w, w)
+
+
+def guess_character(ch, region=None, ruleset=None):
+    """Search Out of Games' Forever armory for characters named after the channel.
+    Returns [(name, region), ...] best first, or []."""
+    keys = {ch}
+    for suf in ("tv", "ttv", "irl", "live", "wow", "gaming", "official", "_"):
+        if ch.endswith(suf) and len(ch) - len(suf) >= 3: keys.add(ch[: -len(suf)].rstrip("_"))
+    cands = {}
+    for k in keys:
+        try:
+            html = get("https://outof.games/realms/forever/search/?q=" + urllib.parse.quote(k)).decode("utf-8", "replace")
+        except Exception as e:
+            print("search failed", k, e); continue
+        for m in re.finditer(r'href="/realms/forever/character/(us|eu)/([a-z0-9-]+)/".*?wf-char-name">([^<]+)</span>\s*<span class="wf-char-meta">(\d+)[^<]*</span>.*?wf-muted">[^<]*?·\s*([^<]+)</span>', html, re.S):
+            reg, slug, nm, lvl, rs = m.group(1), m.group(2), m.group(3).strip(), int(m.group(4)), m.group(5).strip().lower()
+            parts = nm.lower().split()
+            score = 0
+            if any(p == k for p in parts for k in keys): score += 100
+            elif any(p.startswith(k) or k.startswith(p) for p in parts for k in keys if len(p) >= 3): score += 40
+            else: continue
+            if region and reg != region: score -= 60
+            if ruleset and ruleset not in rs.replace(" ", ""): score -= 30
+            score += lvl
+            cands[(nm, reg)] = max(cands.get((nm, reg), -999), score)
+    return [k for k, _ in sorted(cands.items(), key=lambda kv: -kv[1])]
+
+
 def handle_request(roster, kind, body, author, owner, labels):
     """Returns (message, close_issue, added_slug_or_None, removed_names)."""
     f = parse_form(body)
@@ -162,8 +195,13 @@ def handle_request(roster, kind, body, author, owner, labels):
     # add
     if not ch:
         return ("Please give the streamer's Twitch channel.", False, None, [])
+    guessed, others = False, []
     if not name:
-        return ("Please edit this issue and add the exact character name (as it appears on the WoW Forever Armory).", False, None, [])
+        found = guess_character(ch, region if re.match(r"(?i)\s*(us|eu)\b", realm) else None, ruleset_of(realm))
+        if not found:
+            return (f"I couldn't find a WoW Forever character for `{ch}` by searching the Armory. Edit this issue and add the exact character name.", False, None, [])
+        (name, region), others = found[0], found[1:6]
+        guessed = True
     base = name.lower().replace(" ", "-")
     slug = base if region == "us" else "eu/" + base
     for r in roster:
@@ -196,8 +234,14 @@ def handle_request(roster, kind, body, author, owner, labels):
                  "how": f"Added through a GitHub request by @{author}; found on the Armory.", "fixed": "", "chars": [char]}
         tail = next((i for i, r in enumerate(roster) if r["ch"] == "quin69"), len(roster))
         roster.insert(tail, entry)
+    note = ""
+    if guessed:
+        entry["how"] = f"Best match from an Armory search for “{ch}” (no character name was given)."
+        note = ("\n\nNo character name was given, so this is the best match from an Armory search"
+                + (": other possible matches were " + ", ".join(f"{n} ({r.upper()})" for n, r in others) if others else "")
+                + ". If it's the wrong character, remove the card from the page and add it again with the exact name.")
     return (f"Added **{char['name']}** (level {char['level']} {char['race']} {char['cls']}) for {entry['streamer']}. "
-            "The card will be on the page in a minute or two.", True, slug, [])
+            "The card will be on the page in a minute or two." + note, True, slug, [])
 
 
 # ---------------------------------------------------------------- main refresh
