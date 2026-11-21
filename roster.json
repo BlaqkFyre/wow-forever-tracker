@@ -150,10 +150,10 @@
     "render": "76/7621452",
     "bg": "human",
     "level": 54,
-    "ilvl": 51,
+    "ilvl": 50,
     "race": "Human",
     "cls": "Paladin",
-    "spec": "Retribution",
+    "spec": "Protection",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "Crusade",
@@ -543,8 +543,8 @@
     "slug": "bajheera-furyborn",
     "render": "200/5784776",
     "bg": "human",
-    "level": 58,
-    "ilvl": 49,
+    "level": 59,
+    "ilvl": 54,
     "race": "Human",
     "cls": "Warrior",
     "spec": "Protection",
@@ -559,12 +559,12 @@
      ],
      [
       "First Aid",
-      277,
+      290,
       300
      ],
      [
       "Blacksmithing",
-      239,
+      244,
       300
      ],
      [
@@ -581,7 +581,7 @@
     "rep": [
      "Stormwind",
      "Revered",
-     54
+     56
     ]
    }
   ]
@@ -599,7 +599,7 @@
     "slug": "darkedge-bloodshadow",
     "render": "201/4060873",
     "bg": "gnome",
-    "level": 54,
+    "level": 57,
     "ilvl": 49,
     "race": "Gnome",
     "cls": "Rogue",
@@ -609,13 +609,13 @@
     "guild": "D E A T H",
     "profs": [
      [
-      "Skinning",
+      "First Aid",
       300,
       300
      ],
      [
-      "First Aid",
-      275,
+      "Skinning",
+      300,
       300
      ],
      [
@@ -632,7 +632,7 @@
     "rep": [
      "Stormwind",
      "Honored",
-     45
+     48
     ]
    }
   ]
