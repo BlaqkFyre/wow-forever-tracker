@@ -239,6 +239,12 @@
   @keyframes tick{to{transform:translateX(-100%)}}
   @media (prefers-reduced-motion:reduce){.ttrack{animation:none;padding-left:8px}}
   .ibtn.rm{opacity:.55} .ibtn.rm:hover{opacity:1;border-color:#ff7b72;color:#ff7b72}
+
+  .cfm{position:fixed;inset:0;z-index:9500;display:grid;place-items:center;background:rgba(3,4,7,.72);backdrop-filter:blur(3px);padding:16px}
+  .cfmbox{width:min(380px,100%);background:#141821;border:1px solid var(--line);border-radius:12px;padding:16px 16px 14px;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+  .cfmbox h3{margin:0 0 6px;font:800 16px Cinzel,serif;color:var(--text)} .cfmbox p{margin:0 0 14px;font-size:12.5px;line-height:1.45;color:var(--muted)} .cfmbox b{color:var(--text)}
+  .cfmrow{display:flex;gap:8px;justify-content:flex-end} .cfmrow button{padding:7px 14px;font-weight:600}
+  .cfmrow .danger{background:#5a1d1d;border-color:#a33a3a;color:#fff} .cfmrow .danger:hover{background:#7a2626}
   /* talents popup */
   #talwrap{position:fixed;inset:0;z-index:9000;display:none;align-items:flex-start;justify-content:center;background:rgba(3,4,7,.78);backdrop-filter:blur(3px);overflow-y:auto;padding:24px 12px}
   #talwrap.on{display:flex}
@@ -370,7 +376,8 @@
     <div class="row">
       <input id="addCh" placeholder="Twitch channel (e.g. pikabooirl)" aria-label="Twitch channel">
       <input id="addName" placeholder="Character name (as on the Armory)" aria-label="Character name">
-      <select id="addRegion" aria-label="Realm region"><option value="US">US realms</option><option value="EU">EU realms</option></select>
+      <input id="addRealm" list="realmList" placeholder="Realm (pick or type, e.g. US · PvP)" aria-label="Realm">
+      <datalist id="realmList"><option value="US · Normal"></option><option value="US · PvP"></option><option value="US · Roleplay"></option><option value="US · Hardcore"></option><option value="EU · Normal"></option><option value="EU · PvP"></option><option value="EU · Roleplay"></option><option value="EU · Hardcore"></option></datalist>
       <button id="addBtn" type="button">Add</button>
     </div>
     <div class="msg" id="addMsg">Opens a short GitHub form (a free GitHub account is needed). Submit it and the card appears on the page a minute or two later. Anyone can add themselves.</div>
@@ -1448,16 +1455,26 @@ function openForm(tpl, title, fields){
 document.getElementById("addBtn").addEventListener("click", () => {
   const ch = document.getElementById("addCh").value.trim().toLowerCase().replace(/^.*twitch\.tv\//,"").replace(/[^a-z0-9_]/g,"");
   const name = document.getElementById("addName").value.trim().replace(/[<>"]/g,"");
-  const region = document.getElementById("addRegion").value;
+  const realm = document.getElementById("addRealm").value.trim().replace(/[<>"]/g,"") || "US";
   if (!ch) { say("Type the streamer’s Twitch channel first.","warn"); return; }
   if (!name) { say("Add the character’s full name as it shows on the WoW Forever Armory.","warn"); return; }
-  openForm("add-streamer.yml", `Add: ${ch} – ${name}`, {channel: ch, character: name, region});
+  openForm("add-streamer.yml", `Add: ${ch} – ${name}`, {channel: ch, character: name, realm});
   say(`GitHub opened in a new tab. Press “Create” there, and ${name} will appear here a minute or two later (reload the page).`, "ok");
 });
+function confirmBox(title, text, yes, onYes){
+  const w = document.createElement("div"); w.className = "cfm";
+  w.innerHTML = `<div class="cfmbox" role="dialog" aria-modal="true"><h3>${title}</h3><p>${text}</p><div class="cfmrow"><button type="button" data-no>Cancel</button><button type="button" class="danger" data-yes>${yes}</button></div></div>`;
+  document.body.appendChild(w); w.querySelector("[data-no]").focus();
+  const close = () => w.remove();
+  w.addEventListener("click", ev => { if (ev.target === w || ev.target.closest("[data-no]")) close(); else if (ev.target.closest("[data-yes]")) { close(); onYes(); } });
+  w.addEventListener("keydown", ev => { if (ev.key === "Escape") close(); });
+}
 function askRemove(ch){
   const e = ROSTER.find(x => x.ch === ch); if (!e) return; const c = cur(e);
   const one = e.chars.length > 1;
-  openForm("remove-streamer.yml", `Remove: ${ch}${one ? " – " + c.name : ""}`, {channel: ch, character: one ? c.name : ""});
+  confirmBox(`Remove ${esc(one ? c.name : e.streamer)}?`,
+    `${one ? `This removes <b>${esc(c.name)}</b> from ${esc(e.streamer)}’s card (their other characters stay).` : `This removes <b>${esc(e.streamer)}</b>’s card from the tracker.`} It opens a GitHub request; once it’s submitted (and approved, if it isn’t yours) the card disappears a minute or two later.`,
+    "Yes, remove", () => openForm("remove-streamer.yml", `Remove: ${ch}${one ? " – " + c.name : ""}`, {channel: ch, character: one ? c.name : ""}));
 }
 
 

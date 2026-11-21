@@ -140,7 +140,8 @@ def handle_request(roster, kind, body, author, owner, labels):
     f = parse_form(body)
     ch = re.sub(r"[^a-z0-9_]", "", re.sub(r"^.*twitch\.tv/", "", (f.get("twitch channel") or "").lower()))
     name = re.sub(r"[^A-Za-zÀ-ÿ' -]", "", f.get("character name") or "").strip()
-    region = "eu" if (f.get("region") or "").strip().upper().startswith("EU") else "us"
+    realm = (f.get("realm") or f.get("region") or "").strip()
+    region = "eu" if re.match(r"(?i)\s*eu\b", realm) else "us"
     if kind == "remove":
         if author.lower() != owner.lower() and "approved" not in labels:
             return (f"Thanks! Removing a card needs the page owner's OK. @{owner}, add the **approved** label to remove it.", False, None, [])

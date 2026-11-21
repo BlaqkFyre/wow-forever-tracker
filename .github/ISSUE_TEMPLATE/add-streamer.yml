@@ -15,13 +15,12 @@ body:
       label: Character name
       description: The full name exactly as on the WoW Forever Armory, e.g. "Gay Kitten".
     validations: { required: true }
-  - type: dropdown
-    id: region
+  - type: input
+    id: realm
     attributes:
-      label: Region
-      description: Which Armory the character is on.
-      options: ["US", "EU"]
-      default: 0
+      label: Realm
+      description: "WoW Forever has one realm per ruleset in each region: US · Normal, US · PvP, US · Roleplay, US · Hardcore, EU · Normal, EU · PvP, EU · Roleplay, EU · Hardcore."
+      placeholder: e.g. US · PvP
     validations: { required: true }
   - type: input
     id: display
