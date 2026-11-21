@@ -33,7 +33,7 @@ jobs:
       - name: One-off VOD reading test
         if: github.event_name == 'push'
         run: |
-          sudo apt-get install -y -qq tesseract-ocr >/dev/null 2>&1 || true
+          sudo apt-get update -qq >/dev/null 2>&1; sudo apt-get install -y -qq tesseract-ocr ffmpeg >/dev/null 2>&1 || true
           cd tools && timeout 900 python3 vodname.py sodapoppin gingitv hammerdance > ../.github/vod-test.txt 2> ../.github/vod-test.err || true
       - name: Refresh from the Armory
         env:
