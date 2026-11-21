@@ -1,3 +1,0 @@
-[('Pikaboo Themove', 'us'), ('Budget Pikaboo', 'us'), ('Pikaboo Iseeu', 'us'), ('Pikaboo Disciple', 'us'), ('Darwizzy Pikaboo', 'us')]
-[('Xaryu Forever', 'us'), ('Mrs Xaryu', 'eu'), ('Xaryu Viewer', 'us'), ('Xaryu Kiddingme', 'us'), ('Gnomercy Xaryufan', 'us')]
-[('Gingi Lightspark', 'us'), ('Ginji Gingi', 'us'), ('Gingi Lock', 'eu'), ('Gingin Juice', 'us'), ('Gingivitous Vongugenhein', 'us')]
