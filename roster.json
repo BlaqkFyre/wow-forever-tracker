@@ -205,7 +205,7 @@
     "render": "43/6998315",
     "bg": "night_elf",
     "level": 57,
-    "ilvl": 48,
+    "ilvl": 50,
     "race": "Night Elf",
     "cls": "Warrior",
     "spec": "Protection",
@@ -242,7 +242,7 @@
     "rep": [
      "Darnassus",
      "Honored",
-     44
+     45
     ]
    }
   ]
