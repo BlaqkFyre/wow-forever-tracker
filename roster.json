@@ -82,7 +82,7 @@
      ],
      [
       "Blacksmithing",
-      260,
+      263,
       300
      ],
      [
@@ -149,7 +149,7 @@
     "slug": "esfand-television",
     "render": "76/7621452",
     "bg": "human",
-    "level": 54,
+    "level": 55,
     "ilvl": 50,
     "race": "Human",
     "cls": "Paladin",
@@ -310,7 +310,7 @@
     "slug": "hammer-xx",
     "render": "144/6930320",
     "bg": "night_elf",
-    "level": 54,
+    "level": 55,
     "ilvl": 48,
     "race": "Night Elf",
     "cls": "Druid",
@@ -441,8 +441,8 @@
     "render": "253/1049341",
     "bg": "windshaper_skyborne",
     "region": "EU",
-    "level": 56,
-    "ilvl": 44,
+    "level": 57,
+    "ilvl": 48,
     "race": "Windshaper Skyborne",
     "cls": "Shaman",
     "spec": "Enhancement",
@@ -469,7 +469,7 @@
     "rep": [
      "Orgrimmar",
      "Honored",
-     45
+     47
     ]
    }
   ]
