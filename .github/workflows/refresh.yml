@@ -1,0 +1,67 @@
+name: Refresh tracker
+on:
+  schedule:
+    - cron: "17 */3 * * *"        # every 3 hours
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["tools/refresh.py", ".github/workflows/refresh.yml"]
+  issues:
+    types: [opened, edited, labeled]
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    # issue runs only for add/remove requests
+    if: github.event_name != 'issues' || contains(github.event.issue.labels.*.name, 'add-streamer') || contains(github.event.issue.labels.*.name, 'remove-streamer')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install --quiet pillow
+      - name: Make sure the request labels exist
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          gh label create add-streamer --color 1f883d --description "Add a streamer card" --force --repo ${{ github.repository }} || true
+          gh label create remove-streamer --color d1242f --description "Remove a streamer card" --force --repo ${{ github.repository }} || true
+          gh label create approved --color 8250df --description "Owner approved this request" --force --repo ${{ github.repository }} || true
+      - name: Refresh from the Armory
+        env:
+          REQ_KIND: ${{ github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'remove-streamer') && 'remove' || 'add') || '' }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+          ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ',') }}
+          REPO_OWNER: ${{ github.repository_owner }}
+        run: |
+          set -o pipefail
+          python3 tools/refresh.py 2>&1 | tee /tmp/refresh.log
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f .github/last-error.log
+          git add -A
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -F /tmp/commit-msg.txt
+          for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; sleep 5; done
+      - name: Reply on the request
+        if: github.event_name == 'issues' && always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [ -f /tmp/issue-comment.md ] || echo "Something went wrong processing this request; the owner has been notified in the workflow log." > /tmp/issue-comment.md
+          gh issue comment ${{ github.event.issue.number }} --repo ${{ github.repository }} --body-file /tmp/issue-comment.md
+          if [ "$(cat /tmp/issue-close 2>/dev/null)" = "yes" ]; then gh issue close ${{ github.event.issue.number }} --repo ${{ github.repository }}; fi
+      - name: Save the error for the owner
+        if: failure()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git reset -q --hard
+          cp /tmp/refresh.log .github/last-error.log 2>/dev/null || echo "failed before the refresh ran" > .github/last-error.log
+          git add .github/last-error.log && git commit -m "Refresh failed: see .github/last-error.log" && git pull --rebase origin main && git push
