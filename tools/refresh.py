@@ -154,7 +154,7 @@ def guess_character(ch, region=None, ruleset=None):
             html = get("https://outof.games/realms/forever/search/?q=" + urllib.parse.quote(k)).decode("utf-8", "replace")
         except Exception as e:
             print("search failed", k, e); continue
-        for m in re.finditer(r'href="/realms/forever/character/(us|eu)/([a-z0-9-]+)/".*?wf-char-name">([^<]+)</span>\s*<span class="wf-char-meta">(\d+)[^<]*</span>.*?wf-muted">[^<]*?·\s*([^<]+)</span>', html, re.S):
+        for m in re.finditer(r'href="/realms/forever/character/(us|eu)/([a-z0-9-]+)/".*?wf-char-name">([^<]+)</span>\s*<span class="wf-char-meta">(\d+)[^<]*</span>.*?wf-muted">[^<]*?(?:·|&middot;)\s*([^<]+)</span>', html, re.S):
             reg, slug, nm, lvl, rs = m.group(1), m.group(2), m.group(3).strip(), int(m.group(4)), m.group(5).strip().lower()
             parts = nm.lower().split()
             score = 0
