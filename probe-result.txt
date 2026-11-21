@@ -1,0 +1,5 @@
+200 290215 https://worldofwarcraft.blizzard.com/en-us/forever/us/armory/character/gay-kitten  name=Gay level=60
+200 40416 https://worldofwarcraft.blizzard.com/en-us/forever/us/armory/character/gay-kitten/reputation  name=Gay level=60
+200 220470 https://worldofwarcraft.blizzard.com/en-us/forever/eu/armory/character/gingi-totemhugger  name=Gingi level=56
+200 2292 https://render.worldofwarcraft.com/forever-us/icons/56/spell_nature_starfall.jpg 
+200 657879 https://foreverchanges.pro/items/sources.json 
