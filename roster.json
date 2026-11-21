@@ -587,62 +587,6 @@
   ]
  },
  {
-  "ch": "moonmoon",
-  "streamer": "moonmoon",
-  "added": true,
-  "flavor": "Added on 21 Nov 2026 by @BlaqkFyre.",
-  "how": "Best match from an Armory search for “moonmoon” (no character name was given).",
-  "fixed": "",
-  "chars": [
-   {
-    "name": "Staring Moonmoon",
-    "slug": "staring-moonmoon",
-    "render": "134/2445446",
-    "bg": "night_elf",
-    "level": 37,
-    "ilvl": 33,
-    "race": "Night Elf",
-    "cls": "Priest",
-    "spec": "Shadow Magic",
-    "faction": "ally",
-    "ruleset": "PvP",
-    "guild": "Fairprice Finest",
-    "profs": [
-     [
-      "Enchanting",
-      155,
-      225
-     ],
-     [
-      "Tailoring",
-      153,
-      225
-     ],
-     [
-      "Fishing",
-      88,
-      150
-     ],
-     [
-      "First Aid",
-      81,
-      150
-     ],
-     [
-      "Cooking",
-      50,
-      75
-     ]
-    ],
-    "rep": [
-     "Darnassus",
-     "Honored",
-     42
-    ]
-   }
-  ]
- },
- {
   "ch": "quin69",
   "streamer": "Quin69",
   "flavor": "Busy in Wraeclast, not Azeroth: live in Path of Exile for the Umbra league launch (HC SSF).",
