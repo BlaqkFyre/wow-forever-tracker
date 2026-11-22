@@ -67,7 +67,7 @@
     "render": "254/546046",
     "bg": "undead",
     "level": 60,
-    "ilvl": 60,
+    "ilvl": 59,
     "race": "Undead",
     "cls": "Paladin",
     "spec": "Protection",
@@ -150,17 +150,17 @@
     "render": "76/7621452",
     "bg": "human",
     "level": 55,
-    "ilvl": 50,
+    "ilvl": 51,
     "race": "Human",
     "cls": "Paladin",
-    "spec": "Protection",
+    "spec": "Retribution",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "Crusade",
     "profs": [
      [
       "First Aid",
-      235,
+      244,
       300
      ],
      [
@@ -310,7 +310,7 @@
     "slug": "hammer-xx",
     "render": "144/6930320",
     "bg": "night_elf",
-    "level": 55,
+    "level": 56,
     "ilvl": 48,
     "race": "Night Elf",
     "cls": "Druid",
@@ -343,7 +343,7 @@
     "rep": [
      "Stormwind",
      "Honored",
-     49
+     50
     ]
    }
   ]
@@ -487,7 +487,7 @@
     "slug": "xaryu-forever",
     "render": "7/1494791",
     "bg": "gnome",
-    "level": 54,
+    "level": 56,
     "ilvl": 44,
     "race": "Gnome",
     "cls": "Mage",
