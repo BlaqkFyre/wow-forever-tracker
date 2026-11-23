@@ -1,0 +1,29 @@
+name: Add a streamer
+description: Add a WoW Forever character to the streamer cards. The card appears a minute or two after you submit.
+title: "Add: "
+labels: ["add-streamer"]
+body:
+  - type: input
+    id: channel
+    attributes:
+      label: Twitch channel
+      placeholder: e.g. pikabooirl
+    validations: { required: true }
+  - type: input
+    id: character
+    attributes:
+      label: Character name
+      description: 'Optional but best: the full name exactly as on the WoW Forever Armory, e.g. "Gay Kitten". Leave empty and the tracker searches the Armory for the channel name and picks the best match.'
+    validations: { required: false }
+  - type: input
+    id: realm
+    attributes:
+      label: Realm
+      description: "WoW Forever has one realm per ruleset in each region: US · Normal, US · PvP, US · Roleplay, US · Hardcore, EU · Normal, EU · PvP, EU · Roleplay, EU · Hardcore."
+      placeholder: e.g. US · PvP
+    validations: { required: true }
+  - type: input
+    id: display
+    attributes:
+      label: Display name
+      description: Optional. How the streamer's name should show on the card (defaults to the channel name).

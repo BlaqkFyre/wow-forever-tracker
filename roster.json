@@ -1,0 +1,668 @@
+[
+ {
+  "ch": "sodapoppin",
+  "streamer": "Sodapoppin",
+  "flavor": "Ran the $1M launch LAN with Mitch & Nick, then went from 29 to 60 in under two weeks.",
+  "how": "Read off the damage meter in his stream frame (worldfirst60 capture), matched on the Armory.",
+  "fixed": "Your list said <s>“Pee Collector”</s>: no such character on the Armory.",
+  "chars": [
+   {
+    "name": "Gay Kitten",
+    "slug": "gay-kitten",
+    "render": "67/4356931",
+    "bg": "night_elf",
+    "level": 60,
+    "ilvl": 61,
+    "race": "Night Elf",
+    "cls": "Druid",
+    "spec": "Balance",
+    "faction": "ally",
+    "ruleset": "PvP",
+    "guild": "gay",
+    "profs": [
+     [
+      "Skinning",
+      300,
+      300
+     ],
+     [
+      "Leatherworking",
+      251,
+      300
+     ],
+     [
+      "First Aid",
+      214,
+      225
+     ],
+     [
+      "Cooking",
+      58,
+      75
+     ],
+     [
+      "Fishing",
+      1,
+      75
+     ]
+    ],
+    "rep": [
+     "Darnassus",
+     "Revered",
+     52
+    ]
+   }
+  ]
+ },
+ {
+  "ch": "towelliee",
+  "streamer": "Towelliee",
+  "flavor": "240+ hour marathon took his Undead Paladin to 60. Also levelling a Horde Warlock alt.",
+  "how": "Main confirmed by you and the Armory. Ghalon Carter read from his live stream and 12 Nov VOD, then confirmed on the Armory in the same guild (Hammer Squad). Other VOD samples were all his main. “Towelliee Fanboy” on the Armory looks like a fan.",
+  "fixed": "Your list said <s>Human Prot Paladin “Big Tank”, 13</s>: he’s an <b>Undead</b> (Horde) Paladin.",
+  "chars": [
+   {
+    "name": "Towelliee Forever",
+    "slug": "towelliee-forever",
+    "render": "254/546046",
+    "bg": "undead",
+    "level": 60,
+    "ilvl": 59,
+    "race": "Undead",
+    "cls": "Paladin",
+    "spec": "Protection",
+    "faction": "horde",
+    "ruleset": "Normal",
+    "guild": "Hammer Squad",
+    "profs": [
+     [
+      "Mining",
+      300,
+      300
+     ],
+     [
+      "Blacksmithing",
+      271,
+      300
+     ],
+     [
+      "First Aid",
+      50,
+      75
+     ],
+     [
+      "Cooking",
+      19,
+      75
+     ]
+    ],
+    "rep": [
+     "Undercity",
+     "Revered",
+     62
+    ]
+   },
+   {
+    "name": "Ghalon Carter",
+    "slug": "ghalon-carter",
+    "render": "129/43094401",
+    "bg": "troll",
+    "level": 12,
+    "ilvl": 3,
+    "race": "Troll",
+    "cls": "Warlock",
+    "spec": "Affliction",
+    "faction": "horde",
+    "ruleset": "Normal",
+    "guild": "Hammer Squad",
+    "profs": [
+     [
+      "Herbalism",
+      3,
+      75
+     ],
+     [
+      "Cooking",
+      1,
+      75
+     ]
+    ],
+    "rep": [
+     "Darkspear Trolls",
+     "Friendly",
+     17
+    ],
+    "note": "Horde alt, first seen live in Ragefire Chasm on 14 Nov. In his main’s guild, Hammer Squad."
+   }
+  ]
+ },
+ {
+  "ch": "esfandtv",
+  "streamer": "Esfand",
+  "added": true,
+  "flavor": "Leads the Alliance PvP guild Crusade. A fan tracker claimed he hit 60 on day 3; he’s actually 53.",
+  "how": "worldfirst60 tracker entry, confirmed on the Armory.",
+  "fixed": "",
+  "chars": [
+   {
+    "name": "Esfand Television",
+    "slug": "esfand-television",
+    "render": "76/7621452",
+    "bg": "human",
+    "level": 55,
+    "ilvl": 51,
+    "race": "Human",
+    "cls": "Paladin",
+    "spec": "Retribution",
+    "faction": "ally",
+    "ruleset": "PvP",
+    "guild": "Crusade",
+    "profs": [
+     [
+      "First Aid",
+      248,
+      300
+     ],
+     [
+      "Blacksmithing",
+      215,
+      225
+     ],
+     [
+      "Engineering",
+      200,
+      225
+     ],
+     [
+      "Cooking",
+      1,
+      75
+     ],
+     [
+      "Fishing",
+      1,
+      75
+     ]
+    ],
+    "rep": [
+     "Stormwind",
+     "Revered",
+     55
+    ]
+   }
+  ]
+ },
+ {
+  "ch": "imaqtpie",
+  "streamer": "imaqtpie",
+  "flavor": "65 honorable kills on the PvP ruleset. Up from 24 at the end of the launch race to 55.",
+  "how": "Name from you. Confirmed on the Armory and the worldfirst60 tracker.",
+  "fixed": "",
+  "chars": [
+   {
+    "name": "Abg Slayer",
+    "slug": "abg-slayer",
+    "render": "43/6998315",
+    "bg": "night_elf",
+    "level": 58,
+    "ilvl": 53,
+    "race": "Night Elf",
+    "cls": "Warrior",
+    "spec": "Protection",
+    "faction": "ally",
+    "ruleset": "PvP",
+    "guild": "Jorkers",
+    "profs": [
+     [
+      "Mining",
+      291,
+      300
+     ],
+     [
+      "Blacksmithing",
+      129,
+      150
+     ],
+     [
+      "First Aid",
+      50,
+      150
+     ],
+     [
+      "Fishing",
+      28,
+      75
+     ],
+     [
+      "Cooking",
+      1,
+      75
+     ]
+    ],
+    "rep": [
+     "Darnassus",
+     "Honored",
+     46
+    ]
+   }
+  ]
+ },
+ {
+  "ch": "nmplol",
+  "streamer": "Nmplol",
+  "added": true,
+  "flavor": "Third member of the launch LAN, in the same guild as Soda and Mitch.",
+  "how": "worldfirst60 tracker entry, confirmed on the Armory.",
+  "fixed": "",
+  "chars": [
+   {
+    "name": "Nmp Hatethread",
+    "slug": "nmp-hatethread",
+    "render": "194/3835842",
+    "bg": "gnome",
+    "level": 60,
+    "ilvl": 57,
+    "race": "Gnome",
+    "cls": "Warrior",
+    "spec": "Fury",
+    "faction": "ally",
+    "ruleset": "PvP",
+    "guild": "gay",
+    "profs": [
+     [
+      "Mining",
+      300,
+      300
+     ],
+     [
+      "First Aid",
+      240,
+      300
+     ],
+     [
+      "Blacksmithing",
+      231,
+      300
+     ],
+     [
+      "Cooking",
+      4,
+      75
+     ]
+    ],
+    "rep": [
+     "Stormwind",
+     "Honored",
+     48
+    ]
+   }
+  ]
+ },
+ {
+  "ch": "hammerdance",
+  "streamer": "Hammerdance",
+  "flavor": "“Best Feral NA.” Last seen in a party wipe in Krol’dok Stronghold, Riverglades.",
+  "how": "Read off the party frame in his 14 Nov VOD (1:30:00 mark), confirmed on the Armory.",
+  "fixed": "Your list said <s>Orc Hunter “Fast Path”, 33+</s>: he’s an Alliance Feral Druid.",
+  "chars": [
+   {
+    "name": "Hammer Xx",
+    "slug": "hammer-xx",
+    "render": "144/6930320",
+    "bg": "night_elf",
+    "level": 58,
+    "ilvl": 49,
+    "race": "Night Elf",
+    "cls": "Druid",
+    "spec": "Feral",
+    "faction": "ally",
+    "ruleset": "PvP",
+    "guild": "The Tavern",
+    "profs": [
+     [
+      "Alchemy",
+      300,
+      300
+     ],
+     [
+      "Skinning",
+      300,
+      300
+     ],
+     [
+      "Cooking",
+      289,
+      300
+     ],
+     [
+      "Fishing",
+      77,
+      150
+     ]
+    ],
+    "rep": [
+     "Stormwind",
+     "Revered",
+     52
+    ]
+   }
+  ]
+ },
+ {
+  "ch": "zackrawrr",
+  "streamer": "Asmongold",
+  "flavor": "Warlord of Olympus, a guild network of ~18,800 by day 2. Never trained a profession.",
+  "how": "worldfirst60 tracked this character from his stream, confirmed on the Armory. There are dozens of impostor “Asmongold…” characters.",
+  "fixed": "Your list said <s>“Needsashower”</s>: unverified.",
+  "chars": [
+   {
+    "name": "Asmongold Thereal",
+    "slug": "asmongold-thereal",
+    "render": "165/4427685",
+    "bg": "human",
+    "level": 48,
+    "ilvl": 43,
+    "race": "Human",
+    "cls": "Warrior",
+    "spec": "Protection",
+    "faction": "ally",
+    "ruleset": "Normal",
+    "guild": "OLYMPUS GODS",
+    "profs": [
+     [
+      "Blacksmithing",
+      1,
+      75
+     ],
+     [
+      "Cooking",
+      1,
+      75
+     ],
+     [
+      "Engineering",
+      1,
+      75
+     ],
+     [
+      "First Aid",
+      1,
+      75
+     ]
+    ],
+    "rep": [
+     "Stormwind",
+     "Revered",
+     55
+    ]
+   }
+  ]
+ },
+ {
+  "ch": "mitchjones",
+  "streamer": "Mitch Jones",
+  "flavor": "Gave away $1M at the launch LAN, then parked at 24. Mostly gambling streams since.",
+  "how": "worldfirst60 had the name cut off. Full name found by Armory search, matched on level, class and guild.",
+  "fixed": "Your list said <s>Human Mage “Mitch Jonez”</s>: he’s a <b>Gnome</b> Mage.",
+  "chars": [
+   {
+    "name": "Watchmeblink Theberger",
+    "slug": "watchmeblink-theberger",
+    "render": "117/5283957",
+    "bg": "gnome",
+    "level": 24,
+    "ilvl": 16,
+    "race": "Gnome",
+    "cls": "Mage",
+    "spec": "Arcane",
+    "faction": "ally",
+    "ruleset": "PvP",
+    "guild": "gay",
+    "profs": [],
+    "rep": [
+     "Gnomeregan Exiles",
+     "Friendly",
+     19
+    ]
+   }
+  ]
+ },
+ {
+  "ch": "gingitv",
+  "streamer": "Gingi",
+  "added": true,
+  "flavor": "Echo’s 11x MDI champion, levelling a Skyborne Shaman on the EU side.",
+  "how": "Added from the tracker page. Read “Gingi Totemhugger” off his player frame in his 18 Nov VOD, then confirmed on the EU Armory (guild Echo).",
+  "fixed": "You typed <s>gingi</s>: his Twitch channel is <b>gingitv</b>.",
+  "chars": [
+   {
+    "name": "Gingi Totemhugger",
+    "slug": "eu/gingi-totemhugger",
+    "render": "253/1049341",
+    "bg": "windshaper_skyborne",
+    "region": "EU",
+    "level": 60,
+    "ilvl": 55,
+    "race": "Windshaper Skyborne",
+    "cls": "Shaman",
+    "spec": "Enhancement",
+    "faction": "horde",
+    "ruleset": "PvP",
+    "guild": "Echo",
+    "profs": [
+     [
+      "Enchanting",
+      41,
+      75
+     ],
+     [
+      "Alchemy",
+      28,
+      75
+     ],
+     [
+      "Cooking",
+      16,
+      75
+     ],
+     [
+      "First Aid",
+      10,
+      75
+     ]
+    ],
+    "rep": [
+     "Orgrimmar",
+     "Honored",
+     50
+    ]
+   }
+  ]
+ },
+ {
+  "ch": "xaryu",
+  "streamer": "Xaryu",
+  "added": true,
+  "flavor": "Added from the tracker page on 20 Nov 2026.",
+  "how": "Found on the Armory: “Xaryu Forever”, a level 52 Gnome Mage in Phase IX, the same guild as his “Xaryu Viewer” character (Out of Games Armory search).",
+  "fixed": "",
+  "chars": [
+   {
+    "name": "Xaryu Forever",
+    "slug": "xaryu-forever",
+    "render": "7/1494791",
+    "bg": "gnome",
+    "level": 56,
+    "ilvl": 44,
+    "race": "Gnome",
+    "cls": "Mage",
+    "spec": "Frost",
+    "faction": "ally",
+    "ruleset": "PvP",
+    "guild": "Phase IX",
+    "profs": [
+     [
+      "First Aid",
+      270,
+      300
+     ],
+     [
+      "Tailoring",
+      231,
+      300
+     ],
+     [
+      "Enchanting",
+      172,
+      225
+     ],
+     [
+      "Cooking",
+      67,
+      150
+     ],
+     [
+      "Fishing",
+      1,
+      75
+     ]
+    ],
+    "rep": [
+     "Stormwind",
+     "Revered",
+     52
+    ]
+   }
+  ]
+ },
+ {
+  "ch": "bajheera",
+  "streamer": "Bajheera",
+  "added": true,
+  "flavor": "Added from the tracker page on 20 Nov 2026.",
+  "how": "Found on the Armory: “Bajheera Furyborn”, a level 57 Human Warrior in The Furyborn Alliance.",
+  "fixed": "",
+  "chars": [
+   {
+    "name": "Bajheera Furyborn",
+    "slug": "bajheera-furyborn",
+    "render": "200/5784776",
+    "bg": "human",
+    "level": 59,
+    "ilvl": 58,
+    "race": "Human",
+    "cls": "Warrior",
+    "spec": "Protection",
+    "faction": "ally",
+    "ruleset": "Roleplay",
+    "guild": "The Furyborn Alliance",
+    "profs": [
+     [
+      "Mining",
+      300,
+      300
+     ],
+     [
+      "First Aid",
+      290,
+      300
+     ],
+     [
+      "Blacksmithing",
+      248,
+      300
+     ],
+     [
+      "Cooking",
+      225,
+      300
+     ],
+     [
+      "Fishing",
+      89,
+      150
+     ]
+    ],
+    "rep": [
+     "Stormwind",
+     "Revered",
+     56
+    ]
+   }
+  ]
+ },
+ {
+  "ch": "moonmoon",
+  "streamer": "MOONMOON",
+  "added": true,
+  "flavor": "Sub rogue on the PvP ruleset, with a long-running bit about having “no exploits”.",
+  "how": "Read “Darkedge Bloodshad…” off his player frame in his 20 Nov VOD, then confirmed the full name on the Armory.",
+  "fixed": "An earlier name-only search wrongly matched <s>Staring Moonmoon</s> (a priest that isn’t his).",
+  "chars": [
+   {
+    "name": "Darkedge Bloodshadow",
+    "slug": "darkedge-bloodshadow",
+    "render": "201/4060873",
+    "bg": "gnome",
+    "level": 59,
+    "ilvl": 49,
+    "race": "Gnome",
+    "cls": "Rogue",
+    "spec": "Subtlety",
+    "faction": "ally",
+    "ruleset": "PvP",
+    "guild": "D E A T H",
+    "profs": [
+     [
+      "First Aid",
+      300,
+      300
+     ],
+     [
+      "Skinning",
+      300,
+      300
+     ],
+     [
+      "Leatherworking",
+      150,
+      150
+     ],
+     [
+      "Cooking",
+      60,
+      150
+     ]
+    ],
+    "rep": [
+     "Stormwind",
+     "Honored",
+     48
+    ]
+   }
+  ]
+ },
+ {
+  "ch": "quin69",
+  "streamer": "Quin69",
+  "flavor": "Busy in Wraeclast, not Azeroth: live in Path of Exile for the Umbra league launch (HC SSF).",
+  "how": "Checked his live stream on 14 Nov and the Armory. “Bald Fraud” returns 0 results.",
+  "fixed": "Your list said <s>Human Paladin “Bald Fraud”, 15</s>: doesn’t exist.",
+  "chars": [
+   {
+    "name": "Not in Azeroth",
+    "slug": null,
+    "render": null,
+    "bg": null,
+    "level": null,
+    "ilvl": null,
+    "race": "",
+    "cls": "Unknown",
+    "faction": "none",
+    "ruleset": "—",
+    "guild": "—",
+    "profs": null
+   }
+  ]
+ }
+]

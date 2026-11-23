@@ -1,0 +1,15 @@
+name: Remove a streamer
+description: Take a card (or one character) off the streamer cards. Needs the page owner's OK unless you are the owner.
+title: "Remove: "
+labels: ["remove-streamer"]
+body:
+  - type: input
+    id: channel
+    attributes:
+      label: Twitch channel
+    validations: { required: true }
+  - type: input
+    id: character
+    attributes:
+      label: Character name
+      description: Optional. Only this character is removed; leave empty to remove the whole card.
