@@ -12,7 +12,7 @@
     "render": "67/4356931",
     "bg": "night_elf",
     "level": 60,
-    "ilvl": 60,
+    "ilvl": 61,
     "race": "Night Elf",
     "cls": "Druid",
     "spec": "Balance",
@@ -160,7 +160,7 @@
     "profs": [
      [
       "First Aid",
-      244,
+      248,
       300
      ],
      [
@@ -204,7 +204,7 @@
     "slug": "abg-slayer",
     "render": "43/6998315",
     "bg": "night_elf",
-    "level": 57,
+    "level": 58,
     "ilvl": 53,
     "race": "Night Elf",
     "cls": "Warrior",
@@ -215,7 +215,7 @@
     "profs": [
      [
       "Mining",
-      287,
+      291,
       300
      ],
      [
@@ -242,7 +242,7 @@
     "rep": [
      "Darnassus",
      "Honored",
-     45
+     46
     ]
    }
   ]
@@ -442,7 +442,7 @@
     "bg": "windshaper_skyborne",
     "region": "EU",
     "level": 60,
-    "ilvl": 52,
+    "ilvl": 55,
     "race": "Windshaper Skyborne",
     "cls": "Shaman",
     "spec": "Enhancement",
@@ -451,8 +451,13 @@
     "guild": "Echo",
     "profs": [
      [
-      "Skinning",
-      25,
+      "Enchanting",
+      41,
+      75
+     ],
+     [
+      "Alchemy",
+      28,
       75
      ],
      [
@@ -544,7 +549,7 @@
     "render": "200/5784776",
     "bg": "human",
     "level": 59,
-    "ilvl": 55,
+    "ilvl": 58,
     "race": "Human",
     "cls": "Warrior",
     "spec": "Protection",

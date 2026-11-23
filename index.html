@@ -362,7 +362,7 @@
     <span class="fact">Level cap <b>60</b></span>
     <span class="fact">World first 60 <b>Team JokerD · ~52h</b></span>
     <span class="fact">Raids unlock <b>9 Dec</b> <span id="raidCountdown"></span></span>
-    <span class="fact">Armory checked <b id="checked">23 Nov, 12:48 PM AEDT</b> · every 3h</span>
+    <span class="fact">Armory checked <b id="checked">23 Nov, 11:57 PM AEDT</b> · every 3h</span>
   </div>
   <div class="legend"><span>Tap a card to flip it to its gear. Tap or hover an item for its tooltip, where it comes from and the Forever vs Classic changes:</span>
     <span><span class="sw" style="background:var(--new)"></span>new in Forever</span>
@@ -401,9 +401,9 @@
   </footer>
 </main>
 
-<script src="gear-data.js?v=9baef296ef8df72d"></script>
-<script src="events.js?v=6b64e508f6"></script>
-<script src="chars.js?v=9ef43eb162d1"></script>
+<script src="gear-data.js?v=f4ff7f06b083d2d3"></script>
+<script src="events.js?v=5c46b7248c"></script>
+<script src="chars.js?v=78a306edcd50"></script>
 <script>
 const CLASS = {
   Druid:{c:"#ff7c0a", g:'<path d="M50 8c-6 14-22 18-22 36 0 12 9 22 22 22s22-10 22-22C72 26 56 22 50 8z" fill="#ff7c0a"/>'},
@@ -439,7 +439,7 @@ const ROSTER = [
     "render": "67/4356931",
     "bg": "night_elf",
     "level": 60,
-    "ilvl": 60,
+    "ilvl": 61,
     "race": "Night Elf",
     "cls": "Druid",
     "spec": "Balance",
@@ -587,7 +587,7 @@ const ROSTER = [
     "profs": [
      [
       "First Aid",
-      244,
+      248,
       300
      ],
      [
@@ -631,7 +631,7 @@ const ROSTER = [
     "slug": "abg-slayer",
     "render": "43/6998315",
     "bg": "night_elf",
-    "level": 57,
+    "level": 58,
     "ilvl": 53,
     "race": "Night Elf",
     "cls": "Warrior",
@@ -642,7 +642,7 @@ const ROSTER = [
     "profs": [
      [
       "Mining",
-      287,
+      291,
       300
      ],
      [
@@ -669,7 +669,7 @@ const ROSTER = [
     "rep": [
      "Darnassus",
      "Honored",
-     45
+     46
     ]
    }
   ]
@@ -869,7 +869,7 @@ const ROSTER = [
     "bg": "windshaper_skyborne",
     "region": "EU",
     "level": 60,
-    "ilvl": 52,
+    "ilvl": 55,
     "race": "Windshaper Skyborne",
     "cls": "Shaman",
     "spec": "Enhancement",
@@ -878,8 +878,13 @@ const ROSTER = [
     "guild": "Echo",
     "profs": [
      [
-      "Skinning",
-      25,
+      "Enchanting",
+      41,
+      75
+     ],
+     [
+      "Alchemy",
+      28,
       75
      ],
      [
@@ -971,7 +976,7 @@ const ROSTER = [
     "render": "200/5784776",
     "bg": "human",
     "level": 59,
-    "ilvl": 55,
+    "ilvl": 58,
     "race": "Human",
     "cls": "Warrior",
     "spec": "Protection",
@@ -1407,7 +1412,7 @@ document.getElementById("refresh").addEventListener("click",refreshAll);
 let treesReady = null;
 function loadTrees(){ if (window.TREES) return Promise.resolve(); if (!treesReady) treesReady = new Promise((ok,bad)=>{ const sc=document.createElement("script"); sc.src="talent-trees.js?v=500df386d832"; sc.onload=ok; sc.onerror=bad; document.head.appendChild(sc); }); return treesReady; }
 const TW = document.createElement("div"); TW.id="talwrap"; document.body.appendChild(TW);
-try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=9ef43eb162d1)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
+try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=78a306edcd50)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
 let talCur = null;
 function iconPos(ix){ const rows=Math.ceil(((window.TICN)||365)/12); return `background-position:${(ix%12)/11*100}% ${rows>1?Math.floor(ix/12)/(rows-1)*100:0}%`; }
 function knownIcons(cls){ const m={}; ROSTER.forEach(r=>r.chars.forEach(c=>{ if(c.cls!==cls||!c.slug||!CH[c.slug]) return; Object.values(CH[c.slug].t).forEach(a=>a.forEach(t=>{ if(t[2]>=0) m[t[0]]=t[2]; })); })); return m; }
