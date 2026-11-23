@@ -362,7 +362,7 @@
     <span class="fact">Level cap <b>60</b></span>
     <span class="fact">World first 60 <b>Team JokerD · ~52h</b></span>
     <span class="fact">Raids unlock <b>9 Dec</b> <span id="raidCountdown"></span></span>
-    <span class="fact">Armory checked <b id="checked">23 Nov, 6:47 AM AEDT</b> · every 3h</span>
+    <span class="fact">Armory checked <b id="checked">23 Nov, 12:48 PM AEDT</b> · every 3h</span>
   </div>
   <div class="legend"><span>Tap a card to flip it to its gear. Tap or hover an item for its tooltip, where it comes from and the Forever vs Classic changes:</span>
     <span><span class="sw" style="background:var(--new)"></span>new in Forever</span>
@@ -401,9 +401,9 @@
   </footer>
 </main>
 
-<script src="gear-data.js?v=cadd2f24a8762bfc"></script>
-<script src="events.js?v=cdce29f013"></script>
-<script src="chars.js?v=663744725550"></script>
+<script src="gear-data.js?v=9baef296ef8df72d"></script>
+<script src="events.js?v=6b64e508f6"></script>
+<script src="chars.js?v=9ef43eb162d1"></script>
 <script>
 const CLASS = {
   Druid:{c:"#ff7c0a", g:'<path d="M50 8c-6 14-22 18-22 36 0 12 9 22 22 22s22-10 22-22C72 26 56 22 50 8z" fill="#ff7c0a"/>'},
@@ -509,7 +509,7 @@ const ROSTER = [
      ],
      [
       "Blacksmithing",
-      268,
+      271,
       300
      ],
      [
@@ -691,7 +691,7 @@ const ROSTER = [
     "ilvl": 57,
     "race": "Gnome",
     "cls": "Warrior",
-    "spec": "Protection",
+    "spec": "Fury",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "gay",
@@ -896,7 +896,7 @@ const ROSTER = [
     "rep": [
      "Orgrimmar",
      "Honored",
-     48
+     50
     ]
    }
   ]
@@ -1407,7 +1407,7 @@ document.getElementById("refresh").addEventListener("click",refreshAll);
 let treesReady = null;
 function loadTrees(){ if (window.TREES) return Promise.resolve(); if (!treesReady) treesReady = new Promise((ok,bad)=>{ const sc=document.createElement("script"); sc.src="talent-trees.js?v=500df386d832"; sc.onload=ok; sc.onerror=bad; document.head.appendChild(sc); }); return treesReady; }
 const TW = document.createElement("div"); TW.id="talwrap"; document.body.appendChild(TW);
-try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=663744725550)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
+try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=9ef43eb162d1)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
 let talCur = null;
 function iconPos(ix){ const rows=Math.ceil(((window.TICN)||365)/12); return `background-position:${(ix%12)/11*100}% ${rows>1?Math.floor(ix/12)/(rows-1)*100:0}%`; }
 function knownIcons(cls){ const m={}; ROSTER.forEach(r=>r.chars.forEach(c=>{ if(c.cls!==cls||!c.slug||!CH[c.slug]) return; Object.values(CH[c.slug].t).forEach(a=>a.forEach(t=>{ if(t[2]>=0) m[t[0]]=t[2]; })); })); return m; }

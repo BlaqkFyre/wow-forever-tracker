@@ -82,7 +82,7 @@
      ],
      [
       "Blacksmithing",
-      268,
+      271,
       300
      ],
      [
@@ -264,7 +264,7 @@
     "ilvl": 57,
     "race": "Gnome",
     "cls": "Warrior",
-    "spec": "Protection",
+    "spec": "Fury",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "gay",
@@ -469,7 +469,7 @@
     "rep": [
      "Orgrimmar",
      "Honored",
-     48
+     50
     ]
    }
   ]
