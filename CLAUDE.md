@@ -13,7 +13,8 @@ A single-page site (also installable as a PWA) that shows WoW Forever streamers'
 ## Workflow rules
 - **A bot commits to `main` every 3 hours ("Tracker refresh: …").** Always pull or fetch before editing, and never work from a stale local copy.
 - For every change, give Luke a **commit title and a short summary**, then **ask whether he wants Claude to commit and push it.**
-- Claude can push from a cloud session after attaching the repo. Luke then clicks "Fetch origin" and "Pull" in GitHub Desktop to sync his local copy.
+- Once Luke says yes, **Claude does the git work itself**: it attaches the repo in a cloud session, pulls the latest `main`, commits, pushes, and checks the push landed. Never force-push.
+- **Remind Luke to Fetch origin and Pull in GitHub Desktop** whenever his PC will be behind: right after Claude pushes, at the start of a session before he edits anything locally, and whenever he mentions local changes or GitHub Desktop shows a conflict.
 
 ## Files
 | File | Role |
@@ -60,6 +61,7 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 
 ## Change log
 <!-- Newest first. One line per push: date — commit title — what changed. Skip bot "Tracker refresh" commits. -->
+- 2026-11-24 — Note that Claude handles commits and pushes — workflow rules, plus Fetch/Pull reminders
 - 2026-11-24 — Add CLAUDE.md project notes — guide for new chats
 - 2026-11-21 — Add requests read VODs and offer a pick list; VOD reader for fragmented MP4s; added MOONMOON
 - 2026-11-21 — Refresh on GitHub, Add/Remove through GitHub forms, news ticker; confirm before remove, realm picker; Twitch check every 15 min
