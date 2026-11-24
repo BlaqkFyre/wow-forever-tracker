@@ -32,6 +32,7 @@
 
   /* ---------- cards ---------- */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+  .grid>.card{min-width:0} /* long names or gear text can't stretch a card wider than the rest */
   .card{--cc:#888;--ccd:color-mix(in srgb,var(--cc) 45%,#000);--ccl:color-mix(in srgb,var(--cc) 55%,#fff);
     position:relative;border-radius:14px;padding:4px;
     background:linear-gradient(115deg,var(--ccd) 0%,var(--cc) 18%,var(--ccl) 28%,#fff 33%,var(--cc) 40%,var(--ccd) 55%,var(--cc) 72%,var(--ccl) 84%,var(--cc) 100%);
@@ -296,7 +297,7 @@
     .grid{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -12px;padding:30px 10px 34px;overscroll-behavior-x:contain}
     .grid::-webkit-scrollbar{display:none}
     .grid{align-items:center;min-height:calc(100svh - var(--hh,56px) - 12px);box-sizing:border-box} .addbox{margin-top:0}
-    .grid>.card{flex:0 0 288px;zoom:var(--cz,1);scroll-snap-align:center;scroll-snap-stop:always}
+    .grid>.card{flex:0 0 288px;width:288px;min-width:0;max-width:288px;zoom:var(--cz,1);scroll-snap-align:center;scroll-snap-stop:always}
     .ibtn{width:34px;height:34px;border-radius:9px} .ibtn svg{width:18px;height:18px}
     .titlebar{min-height:48px;box-sizing:border-box} /* same height on cards with no gear button */
     .foot a,.foot button{padding:9px 4px;font-size:12px}

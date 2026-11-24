@@ -59,7 +59,7 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 ## Next session
 - nl_kripp (Kripparrian) isn't on the tracker. As of 24 Nov he hadn't streamed WoW Forever on Twitch (his last 30 days of games had no WoW at all). Add him if he starts playing.
 - Check that the 3-hourly refresh after the 24 Nov pushes ran cleanly. Look for no `.github/last-error.log`, and Abg Slayer's stats still showing.
-- Check the mobile layout on a real phone: equal card sizes, the alt stack peeking above, the ! note, and the Add box just below the fold.
+- Check the mobile layout on a real phone (my test browser can't load the Google fonts or run Safari, so real-phone checks matter): equal card sizes, the alt stack peeking above, the ! note, and the Add box just below the fold.
 
 ## Conventions
 - Keep it a single page, with no frameworks and no build step.
@@ -69,6 +69,7 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 
 ## Change log
 <!-- Newest first. One line per push: date — commit title — what changed. Skip bot "Tracker refresh" commits. -->
+- 2026-11-24 — Lock mobile card width — cards with long names or wide gear text (Towelliee, MOONMOON, Mitch Jones) could stretch wider than the rest with the real web fonts; card width is now fixed
 - 2026-11-24 — Keep last known stats when the Armory skips them — refresh.py reuses a character's previous stats if the Armory sends none (this had blanked Abg Slayer's stats); restored his stats
 - 2026-11-24 — All cards the same size, alt stack peeks above — every card is the same height (fixed info-row and title-bar heights) and the alt card stack peeks out above the top edge instead of to the side
 - 2026-11-24 — Bigger cards on mobile — the card scales up to 10px from each screen edge (same layout, just larger); header, ticker and Add box unchanged
