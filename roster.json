@@ -311,13 +311,13 @@
     "render": "144/6930320",
     "bg": "night_elf",
     "level": 58,
-    "ilvl": 51,
+    "ilvl": 52,
     "race": "Night Elf",
     "cls": "Druid",
     "spec": "Feral",
     "faction": "ally",
     "ruleset": "PvP",
-    "guild": "The Tavern",
+    "guild": "",
     "profs": [
      [
       "Alchemy",
@@ -530,7 +530,7 @@
     "rep": [
      "Stormwind",
      "Revered",
-     55
+     56
     ]
    }
   ]
