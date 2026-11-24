@@ -67,7 +67,7 @@
     "render": "254/546046",
     "bg": "undead",
     "level": 60,
-    "ilvl": 59,
+    "ilvl": null,
     "race": "Undead",
     "cls": "Paladin",
     "spec": "Protection",
@@ -82,7 +82,7 @@
      ],
      [
       "Blacksmithing",
-      276,
+      280,
       300
      ],
      [
@@ -205,7 +205,7 @@
     "render": "43/6998315",
     "bg": "night_elf",
     "level": 58,
-    "ilvl": 55,
+    "ilvl": null,
     "race": "Night Elf",
     "cls": "Warrior",
     "spec": "Protection",
@@ -261,7 +261,7 @@
     "render": "194/3835842",
     "bg": "gnome",
     "level": 60,
-    "ilvl": 57,
+    "ilvl": null,
     "race": "Gnome",
     "cls": "Warrior",
     "spec": "Fury",
@@ -293,7 +293,7 @@
     "rep": [
      "Stormpike Guard",
      "Revered",
-     56
+     58
     ]
    }
   ]
@@ -311,7 +311,7 @@
     "render": "144/6930320",
     "bg": "night_elf",
     "level": 60,
-    "ilvl": 52,
+    "ilvl": null,
     "race": "Night Elf",
     "cls": "Druid",
     "spec": "Feral",
@@ -605,7 +605,7 @@
     "render": "201/4060873",
     "bg": "gnome",
     "level": 60,
-    "ilvl": 55,
+    "ilvl": 54,
     "race": "Gnome",
     "cls": "Rogue",
     "spec": "Subtlety",

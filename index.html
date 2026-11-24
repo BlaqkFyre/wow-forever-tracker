@@ -354,7 +354,7 @@
     <span class="fact">Level cap <b>60</b></span>
     <span class="fact">World first 60 <b>Team JokerD · ~52h</b></span>
     <span class="fact">Raids unlock <b>9 Dec</b> <span id="raidCountdown"></span></span>
-    <span class="fact">Armory checked <b id="checked">25 Nov, 12:50 AM AEDT</b> · every 3h</span>
+    <span class="fact">Armory checked <b id="checked">25 Nov, 10:56 AM AEDT</b> · every 3h</span>
   </div>
   <div class="legend"><span>Tap a card to flip it to its gear. Tap or hover an item for its tooltip, where it comes from and the Forever vs Classic changes:</span>
     <span><span class="sw" style="background:var(--new)"></span>new in Forever</span>
@@ -393,9 +393,9 @@
   </footer>
 </main>
 
-<script src="gear-data.js?v=6dfcb4bdf1b8960d"></script>
-<script src="events.js?v=584b9d5529"></script>
-<script src="chars.js?v=edcb5ff3cd5f"></script>
+<script src="gear-data.js?v=cdd42cd32030347f"></script>
+<script src="events.js?v=913adf8fef"></script>
+<script src="chars.js?v=4ede025904b6"></script>
 <script>
 const CLASS = {
   Druid:{c:"#ff7c0a", g:'<path d="M50 8c-6 14-22 18-22 36 0 12 9 22 22 22s22-10 22-22C72 26 56 22 50 8z" fill="#ff7c0a"/>'},
@@ -486,7 +486,7 @@ const ROSTER = [
     "render": "254/546046",
     "bg": "undead",
     "level": 60,
-    "ilvl": 59,
+    "ilvl": null,
     "race": "Undead",
     "cls": "Paladin",
     "spec": "Protection",
@@ -501,7 +501,7 @@ const ROSTER = [
      ],
      [
       "Blacksmithing",
-      276,
+      280,
       300
      ],
      [
@@ -624,7 +624,7 @@ const ROSTER = [
     "render": "43/6998315",
     "bg": "night_elf",
     "level": 58,
-    "ilvl": 55,
+    "ilvl": null,
     "race": "Night Elf",
     "cls": "Warrior",
     "spec": "Protection",
@@ -680,7 +680,7 @@ const ROSTER = [
     "render": "194/3835842",
     "bg": "gnome",
     "level": 60,
-    "ilvl": 57,
+    "ilvl": null,
     "race": "Gnome",
     "cls": "Warrior",
     "spec": "Fury",
@@ -712,7 +712,7 @@ const ROSTER = [
     "rep": [
      "Stormpike Guard",
      "Revered",
-     56
+     58
     ]
    }
   ]
@@ -730,7 +730,7 @@ const ROSTER = [
     "render": "144/6930320",
     "bg": "night_elf",
     "level": 60,
-    "ilvl": 52,
+    "ilvl": null,
     "race": "Night Elf",
     "cls": "Druid",
     "spec": "Feral",
@@ -1024,7 +1024,7 @@ const ROSTER = [
     "render": "201/4060873",
     "bg": "gnome",
     "level": 60,
-    "ilvl": 55,
+    "ilvl": 54,
     "race": "Gnome",
     "cls": "Rogue",
     "spec": "Subtlety",
@@ -1433,7 +1433,7 @@ document.getElementById("refresh").addEventListener("click",refreshAll);
 let treesReady = null;
 function loadTrees(){ if (window.TREES) return Promise.resolve(); if (!treesReady) treesReady = new Promise((ok,bad)=>{ const sc=document.createElement("script"); sc.src="talent-trees.js?v=500df386d832"; sc.onload=ok; sc.onerror=bad; document.head.appendChild(sc); }); return treesReady; }
 const TW = document.createElement("div"); TW.id="talwrap"; document.body.appendChild(TW);
-try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=edcb5ff3cd5f)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
+try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=4ede025904b6)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
 let talCur = null;
 function iconPos(ix){ const rows=Math.ceil(((window.TICN)||365)/12); return `background-position:${(ix%12)/11*100}% ${rows>1?Math.floor(ix/12)/(rows-1)*100:0}%`; }
 function knownIcons(cls){ const m={}; ROSTER.forEach(r=>r.chars.forEach(c=>{ if(c.cls!==cls||!c.slug||!CH[c.slug]) return; Object.values(CH[c.slug].t).forEach(a=>a.forEach(t=>{ if(t[2]>=0) m[t[0]]=t[2]; })); })); return m; }
