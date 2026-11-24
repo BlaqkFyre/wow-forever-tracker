@@ -50,12 +50,14 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 - Raids unlock 9 Dec 2026, and the page shows a countdown.
 
 ## Ideas / backlog
+- **Rethink how streamers and characters get added.** The GitHub issue form needs a GitHub account and the exact realm, and the VOD/Armory guessing isn't reliable. Luke wants a better method; design is still open.
 - A raid tab once raids open on 9 Dec
 - A stream or desktop overlay version of a card
 - Collectible rare or customisable cards
 - Filters and leaderboards (history.json already tracks daily level and ilvl)
 
 ## Next session
+- nl_kripp (Kripparrian) isn't on the tracker. As of 24 Nov he hadn't streamed WoW Forever on Twitch (his last 30 days of games had no WoW at all). Add him if he starts playing.
 - Check that the 3-hourly refresh after the 24 Nov pushes ran cleanly. Look for no `.github/last-error.log`, and Abg Slayer's stats still showing.
 - Check the mobile layout on a real phone: equal card sizes, the alt stack peeking above, the ! note, and the Add box just below the fold.
 
