@@ -319,6 +319,13 @@ def main():
     SRC = json.loads(get("https://foreverchanges.pro/items/sources.json"))["items"]
 
     ITEMS, C, CH, show_ids, renders, bad = {}, {}, {}, [], {}, []
+    # last known stats, kept when the Armory sometimes sends a character without them
+    old_stats = {}
+    try:
+        oc = open(P("chars.js"), encoding="utf-8").read()
+        old_stats = {k: v.get("s") or {} for k, v in json.loads(oc[oc.index("=") + 1:].rstrip().rstrip(";"))["C"].items()}
+    except Exception:
+        pass
     by_slug = {c["slug"]: c for r in roster for c in r["chars"] if c.get("slug")}
     for slug, ch in by_slug.items():
         try:
@@ -371,6 +378,9 @@ def main():
                 v = x.get("value") or {}
                 if x["slug"] in STAT_KEYS and isinstance(v.get("value"), (int, float)):
                     S[STAT_KEYS[x["slug"]]] = round(v["value"], 2)
+        if not S and old_stats.get(slug):
+            S = old_stats[slug]
+            print(f"No stats on the Armory for {slug} this time; kept the last known ones")
         CH[slug] = {"s": S, "t": T}
         # art
         u = ((c.get("render") or {}).get("foreground") or {}).get("url")

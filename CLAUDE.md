@@ -35,6 +35,8 @@ A single-page site (also installable as a PWA) that shows WoW Forever streamers'
 | `manifest.webmanifest`, `icon-*.png` | PWA install |
 | `previews/gear-style-previews.html` | Old mockups of the gear styles. The live page doesn't use it. |
 
+The Armory sometimes returns a character without stats. `refresh.py` then keeps that character's last known stats from `chars.js`, and says so in the workflow log.
+
 Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and let the workflow rebuild them. Scripts load with `?v=<hash>` version strings, and `refresh.py` updates those.
 
 ## How Add / Remove work
@@ -53,6 +55,10 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 - Collectible rare or customisable cards
 - Filters and leaderboards (history.json already tracks daily level and ilvl)
 
+## Next session
+- Check that the 3-hourly refresh after the 24 Nov pushes ran cleanly. Look for no `.github/last-error.log`, and Abg Slayer's stats still showing.
+- Check the mobile layout on a real phone: equal card sizes, the alt stack peeking above, the ! note, and the Add box just below the fold.
+
 ## Conventions
 - Keep it a single page, with no frameworks and no build step.
 - Escape any user or remote text with `esc()` before it goes into HTML.
@@ -61,6 +67,7 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 
 ## Change log
 <!-- Newest first. One line per push: date — commit title — what changed. Skip bot "Tracker refresh" commits. -->
+- 2026-11-24 — Keep last known stats when the Armory skips them — refresh.py reuses a character's previous stats if the Armory sends none (this had blanked Abg Slayer's stats); restored his stats
 - 2026-11-24 — All cards the same size, alt stack peeks above — every card is the same height (fixed info-row and title-bar heights) and the alt card stack peeks out above the top edge instead of to the side
 - 2026-11-24 — Bigger cards on mobile — the card scales up to 10px from each screen edge (same layout, just larger); header, ticker and Add box unchanged
 - 2026-11-24 — Desktop-size cards on mobile, page text in the ! note — mobile cards match desktop height, centred on screen with the Add box a short scroll below; facts, legend, links and footer move into the ! note on phones
