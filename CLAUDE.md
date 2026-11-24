@@ -46,7 +46,7 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 
 ## Current state (as of 24 Nov 2026)
 - 13 streamers: Sodapoppin, Towelliee (main plus a Ghalon Carter alt), Esfand, imaqtpie, Nmplol, Hammerdance, Asmongold, Mitch Jones, Gingi (EU), Xaryu, Bajheera, MOONMOON, and Quin69 (no character found yet).
-- Built: card flip with gear, Stats/Profs tabs, Talents popup, Twitch panel, swipeable cards on mobile (the desktop card scaled up with CSS `zoom` to 10px from each screen edge, centred, Add box just below the fold, other page text in the ! note; every card is the same size, and alt stacks peek out above the card), news ticker, Add/Remove through GitHub issues with a realm picker and a confirm-before-remove step, and the 3-hourly refresh on GitHub (this replaced the Claude scheduled refresh task).
+- Built: card flip with gear, Stats/Profs tabs, Talents popup, Twitch panel, swipeable cards on mobile (the desktop card scaled up with CSS `zoom` to 10px from each screen edge, centred, Add box just below the fold, other page text in the ! note; every card is the same size, alt stacks peek out above the card, and swiping loops from the last card to the first and back), news ticker, Add/Remove through GitHub issues with a realm picker and a confirm-before-remove step, and the 3-hourly refresh on GitHub (this replaced the Claude scheduled refresh task).
 - Raids unlock 9 Dec 2026, and the page shows a countdown.
 
 ## Ideas / backlog
@@ -69,6 +69,7 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 
 ## Change log
 <!-- Newest first. One line per push: date — commit title — what changed. Skip bot "Tracker refresh" commits. -->
+- 2026-11-24 — Mobile swipe loops around — swiping past the last card goes to the first and back; copies of the end cards sit at each end (`.clone`, inert) and the strip jumps to the real card when a swipe lands on one
 - 2026-11-24 — Lock mobile card width — cards with long names or wide gear text (Towelliee, MOONMOON, Mitch Jones) could stretch wider than the rest with the real web fonts; card width is now fixed
 - 2026-11-24 — Keep last known stats when the Armory skips them — refresh.py reuses a character's previous stats if the Armory sends none (this had blanked Abg Slayer's stats); restored his stats
 - 2026-11-24 — All cards the same size, alt stack peeks above — every card is the same height (fixed info-row and title-bar heights) and the alt card stack peeks out above the top edge instead of to the side

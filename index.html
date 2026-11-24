@@ -1350,10 +1350,39 @@ function render(){
     const score=c=>c.level==null?-1:(c.level>=60?1000+(c.ilvl||0):c.level*10+(c.ilvl||0)/100);
     const side=c=>c.faction==="ally"?0:1;
     return (score(kb)-score(ka)) || (side(ka)-side(kb)); });
-  document.getElementById("grid").innerHTML = list.map(card).join("");
+  const G = document.getElementById("grid"), sl = G.scrollLeft;
+  G.innerHTML = list.map(card).join("");
+  loopEnds(G, sl);
   const n = list.filter(e=>state[e.ch]?.live===true).length;
   document.getElementById("liveCount").textContent = attempted && blocked<attempted ? `${n} of ${list.length} live ·` : "";
 }
+
+// ---------- phones: swiping past the last card wraps to the first, and back ----------
+// A copy of the last card sits before the first, and a copy of the first after the last.
+// When a swipe lands on a copy, the strip jumps (invisibly) to the real card.
+function loopEnds(G, sl){
+  if (!isPhone()) { delete G.dataset.loop; return; }
+  const kids = [...G.children]; if (kids.length < 2) return;
+  const copy = el => { const c = el.cloneNode(true); c.classList.add("clone"); c.removeAttribute("data-ch"); c.setAttribute("aria-hidden","true"); c.inert = true; return c; };
+  G.prepend(copy(kids[kids.length-1])); G.append(copy(kids[0]));
+  if (!G.dataset.loop) { G.dataset.loop = 1; G.scrollLeft = kids[0].offsetLeft - G.children[0].offsetLeft; }
+  else G.scrollLeft = sl;
+}
+(function(){
+  const G = document.getElementById("grid"); let t;
+  function wrap(){
+    if (!G.dataset.loop) return;
+    const kids = [...G.children], mid = G.scrollLeft + G.clientWidth/2;
+    const at = kids.reduce((b, k, i) => Math.abs(k.offsetLeft + k.offsetWidth/2 - mid) < Math.abs(kids[b].offsetLeft + kids[b].offsetWidth/2 - mid) ? i : b, 0);
+    const to = at === 0 ? kids.length-2 : at === kids.length-1 ? 1 : -1;
+    if (to < 0) return;
+    G.style.scrollSnapType = "none"; G.scrollLeft += kids[to].offsetLeft - kids[at].offsetLeft;
+    requestAnimationFrame(() => { G.style.scrollSnapType = ""; });
+  }
+  G.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(wrap, 140); }, {passive:true});
+  if ("onscrollend" in window) G.addEventListener("scrollend", () => { clearTimeout(t); wrap(); });
+  matchMedia("(max-width:640px)").addEventListener("change", () => render());
+})();
 
 // ---------- Twitch live status ----------
 async function txt(u){const r=await fetch(u,{cache:"no-store"});if(!r.ok)throw new Error(r.status);return (await r.text()).trim();}
