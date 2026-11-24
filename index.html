@@ -292,10 +292,10 @@
     .facts{flex-wrap:nowrap;overflow-x:auto;gap:6px;margin:0 -12px 10px;padding:0 12px 2px;scrollbar-width:none} .facts::-webkit-scrollbar{display:none}
     .fact{white-space:nowrap;font-size:11px;padding:4px 10px}
     .legend{gap:8px;font-size:11px} .legend>span:first-child{flex-basis:100%}
-    .grid{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -12px;padding:30px calc(50vw - min(41vw,144px)) 34px;overscroll-behavior-x:contain}
+    .grid{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -12px;padding:30px 10px 34px;overscroll-behavior-x:contain}
     .grid::-webkit-scrollbar{display:none}
     .grid{align-items:center;min-height:calc(100svh - var(--hh,56px) - 12px);box-sizing:border-box} .addbox{margin-top:0}
-    .grid>.card{flex:0 0 min(82vw,288px);scroll-snap-align:center;scroll-snap-stop:always}
+    .grid>.card{flex:0 0 288px;zoom:var(--cz,1);scroll-snap-align:center;scroll-snap-stop:always}
     .ibtn{width:34px;height:34px;border-radius:9px} .ibtn svg{width:18px;height:18px}
     .foot a,.foot button{padding:9px 4px;font-size:12px}
     #tt{left:8px!important;right:8px;top:auto!important;bottom:8px;width:auto;max-height:62vh;background:#0f1322;border-radius:12px;padding:12px 14px 14px;font-size:13.5px;box-shadow:0 -8px 30px rgba(0,0,0,.8)}
@@ -1462,7 +1462,9 @@ document.addEventListener("keydown", ev=>{ if (ev.key==="Escape" && TW.classList
 
 
 // ---------- mobile: header height for full-screen cards, and the ! info button ----------
-function setHH(){ try{ document.documentElement.style.setProperty("--hh", document.querySelector("header").offsetHeight+"px"); }catch(e){} }
+function setHH(){ try{ const R=document.documentElement.style; R.setProperty("--hh", document.querySelector("header").offsetHeight+"px");
+  // phones: scale the desktop-size card up so it sits 10px from each screen edge
+  R.setProperty("--cz", isPhone() ? Math.max(1, (document.documentElement.clientWidth - 20) / 288).toFixed(4) : 1); }catch(e){} }
 addEventListener("resize", setHH); setHH();
 (function(){ const b=document.getElementById("infoBtn"), p=document.getElementById("infoPop");
   p.innerHTML = '<div class="intro"></div><div class="more"></div>';

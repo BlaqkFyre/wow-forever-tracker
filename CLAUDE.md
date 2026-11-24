@@ -44,7 +44,7 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 
 ## Current state (as of 24 Nov 2026)
 - 13 streamers: Sodapoppin, Towelliee (main plus a Ghalon Carter alt), Esfand, imaqtpie, Nmplol, Hammerdance, Asmongold, Mitch Jones, Gingi (EU), Xaryu, Bajheera, MOONMOON, and Quin69 (no character found yet).
-- Built: card flip with gear, Stats/Profs tabs, Talents popup, Twitch panel, swipeable cards on mobile (desktop-sized and centred on screen, Add box just below the fold, other page text in the ! note), news ticker, Add/Remove through GitHub issues with a realm picker and a confirm-before-remove step, and the 3-hourly refresh on GitHub (this replaced the Claude scheduled refresh task).
+- Built: card flip with gear, Stats/Profs tabs, Talents popup, Twitch panel, swipeable cards on mobile (the desktop card scaled up with CSS `zoom` to 10px from each screen edge, centred, Add box just below the fold, other page text in the ! note), news ticker, Add/Remove through GitHub issues with a realm picker and a confirm-before-remove step, and the 3-hourly refresh on GitHub (this replaced the Claude scheduled refresh task).
 - Raids unlock 9 Dec 2026, and the page shows a countdown.
 
 ## Ideas / backlog
@@ -61,6 +61,7 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 
 ## Change log
 <!-- Newest first. One line per push: date — commit title — what changed. Skip bot "Tracker refresh" commits. -->
+- 2026-11-24 — Bigger cards on mobile — the card scales up to 10px from each screen edge (same layout, just larger); header, ticker and Add box unchanged
 - 2026-11-24 — Desktop-size cards on mobile, page text in the ! note — mobile cards match desktop height, centred on screen with the Add box a short scroll below; facts, legend, links and footer move into the ! note on phones
 - 2026-11-24 — Note that Claude handles commits and pushes — workflow rules, plus Fetch/Pull reminders
 - 2026-11-24 — Add CLAUDE.md project notes — guide for new chats
