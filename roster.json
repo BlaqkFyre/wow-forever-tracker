@@ -12,7 +12,7 @@
     "render": "67/4356931",
     "bg": "night_elf",
     "level": 60,
-    "ilvl": 61,
+    "ilvl": 57,
     "race": "Night Elf",
     "cls": "Druid",
     "spec": "Balance",
@@ -82,7 +82,7 @@
      ],
      [
       "Blacksmithing",
-      271,
+      276,
       300
      ],
      [
@@ -149,7 +149,7 @@
     "slug": "esfand-television",
     "render": "76/7621452",
     "bg": "human",
-    "level": 55,
+    "level": 56,
     "ilvl": 51,
     "race": "Human",
     "cls": "Paladin",
@@ -160,7 +160,7 @@
     "profs": [
      [
       "First Aid",
-      248,
+      257,
       300
      ],
      [
@@ -187,7 +187,7 @@
     "rep": [
      "Stormwind",
      "Revered",
-     55
+     56
     ]
    }
   ]
@@ -311,7 +311,7 @@
     "render": "144/6930320",
     "bg": "night_elf",
     "level": 58,
-    "ilvl": 49,
+    "ilvl": 51,
     "race": "Night Elf",
     "cls": "Druid",
     "spec": "Feral",
@@ -331,7 +331,7 @@
      ],
      [
       "Cooking",
-      289,
+      299,
       300
      ],
      [
@@ -442,7 +442,7 @@
     "bg": "windshaper_skyborne",
     "region": "EU",
     "level": 60,
-    "ilvl": 55,
+    "ilvl": 57,
     "race": "Windshaper Skyborne",
     "cls": "Shaman",
     "spec": "Enhancement",
@@ -452,7 +452,7 @@
     "profs": [
      [
       "Enchanting",
-      41,
+      45,
       75
      ],
      [
@@ -492,7 +492,7 @@
     "slug": "xaryu-forever",
     "render": "7/1494791",
     "bg": "gnome",
-    "level": 56,
+    "level": 58,
     "ilvl": 44,
     "race": "Gnome",
     "cls": "Mage",
@@ -503,7 +503,7 @@
     "profs": [
      [
       "First Aid",
-      270,
+      300,
       300
      ],
      [
@@ -530,7 +530,7 @@
     "rep": [
      "Stormwind",
      "Revered",
-     52
+     55
     ]
    }
   ]
@@ -549,7 +549,7 @@
     "render": "200/5784776",
     "bg": "human",
     "level": 59,
-    "ilvl": 58,
+    "ilvl": 55,
     "race": "Human",
     "cls": "Warrior",
     "spec": "Protection",
@@ -605,7 +605,7 @@
     "render": "201/4060873",
     "bg": "gnome",
     "level": 59,
-    "ilvl": 49,
+    "ilvl": 55,
     "race": "Gnome",
     "cls": "Rogue",
     "spec": "Subtlety",
@@ -637,7 +637,7 @@
     "rep": [
      "Stormwind",
      "Honored",
-     48
+     49
     ]
    }
   ]
