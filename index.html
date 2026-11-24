@@ -212,20 +212,20 @@
   .profs{margin-top:0}
   .cstats{grid-template-columns:1fr;gap:1px;padding:4px 7px}
   .cstats div{font-size:8px}
-  @media (max-width:640px){ .tb-front{padding-left:66px;min-height:52px} .tb-front .lvl{width:50px;height:50px} .tb-front .lvl b{font-size:20px} .side{top:18px;width:116px} .cstats{gap:2px} }
-
+  
   .infobtn{display:none;width:30px;height:30px;padding:0;border-radius:50%;font:800 15px/1 Cinzel,serif;color:var(--gold);border-color:#4a3b12;background:#211a0b}
   .infopop{max-width:1240px;margin:8px auto 0;font-size:12px;line-height:1.45;padding:9px 11px;border-radius:9px;background:#141821;border:1px solid var(--line);color:var(--muted)}
   .infopop[hidden]{display:none} .infopop p{margin:0 0 6px} .infopop p:last-child{margin:0} .infopop .warn{color:#e8d29a}
+  .infopop .more>*{margin:12px 0 0!important;max-width:none} .infopop .facts{flex-wrap:wrap;overflow:visible;padding:0}
+  .infopop .more h2{font-size:13px} .infopop .srcs{grid-template-columns:1fr} .infopop footer{font-size:11px}
   @media (max-width:640px){
     h1{font-size:clamp(13px,4.3vw,16px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
     .hrow{flex-wrap:nowrap} .hrow .spacer{display:none} #liveCount{white-space:nowrap;font-size:11px}
     #refresh{padding:6px 9px;font-size:12px} .infobtn{display:grid;place-items:center;flex:none}
+    .infopop{position:absolute;left:8px;right:8px;top:calc(100% - 4px);z-index:60;margin:0;max-height:72svh;overflow-y:auto;overscroll-behavior:contain;box-shadow:0 14px 34px rgba(0,0,0,.75)}
     #banner,.legend>span:first-child{display:none!important}
     main{display:flex;flex-direction:column;padding-top:10px}
     main>*{order:5} .grid{order:1} .facts{order:2;margin-top:4px} .legend{order:3} .addbox{order:4}
-    .grid>.card{height:calc(100svh - var(--hh,56px) - 26px);min-height:430px}
-    .grid>.card .inner.gf{min-height:0} .grid>.card .art{height:auto;flex:1 1 auto;min-height:190px} .grid>.card .gf .stats{flex:none}
   }
 
   /* news ticker */
@@ -292,23 +292,12 @@
     .facts{flex-wrap:nowrap;overflow-x:auto;gap:6px;margin:0 -12px 10px;padding:0 12px 2px;scrollbar-width:none} .facts::-webkit-scrollbar{display:none}
     .fact{white-space:nowrap;font-size:11px;padding:4px 10px}
     .legend{gap:8px;font-size:11px} .legend>span:first-child{flex-basis:100%}
-    .grid{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -12px;padding:4px calc(50vw - min(41vw,165px)) 14px;overscroll-behavior-x:contain}
+    .grid{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -12px;padding:30px calc(50vw - min(41vw,144px)) 34px;overscroll-behavior-x:contain}
     .grid::-webkit-scrollbar{display:none}
-    .grid>.card{flex:0 0 min(82vw,330px);scroll-snap-align:center;scroll-snap-stop:always}
-    .cname{font-size:18px} .streamer{font-size:11.5px}
+    .grid{align-items:center;min-height:calc(100svh - var(--hh,56px) - 12px);box-sizing:border-box} .addbox{margin-top:0}
+    .grid>.card{flex:0 0 min(82vw,288px);scroll-snap-align:center;scroll-snap-stop:always}
     .ibtn{width:34px;height:34px;border-radius:9px} .ibtn svg{width:18px;height:18px}
-    .inner.gf{min-height:456px}
-    .art{height:236px} .lvl{width:52px;height:52px} .lvl b{font-size:21px} .side{width:46%}
-    .prof{font-size:10px} .prof .top b{font-size:12px}
-    .typeline{font-size:12.5px;padding:7px 10px}
-    .stat .v{font-size:20px} .stat .v.sm{font-size:14px} .stat .lb{font-size:9.5px} .stat .sub{font-size:10.5px}
     .foot a,.foot button{padding:9px 4px;font-size:12px}
-    .sheet{--t:30px;padding:12px 12px 4px} .col{gap:7px}
-    .bottom{--t:40px;gap:16px;padding:8px 0 10px}
-    .bigicon{--sz:104px;width:104px;height:104px}
-    .scase .nm{font-size:14px} .scase .il2{font-size:11.5px} .pill{font-size:10px}
-    .tile .il{font-size:9.5px} .bottom .tile .il{font-size:10.5px}
-    .counts{font-size:12px;padding:8px 6px 10px} .counts .av b{font-size:14px}
     #tt{left:8px!important;right:8px;top:auto!important;bottom:8px;width:auto;max-height:62vh;background:#0f1322;border-radius:12px;padding:12px 14px 14px;font-size:13.5px;box-shadow:0 -8px 30px rgba(0,0,0,.8)}
     #tt .ttclose{display:block}
     .cmp-l{font-size:12.5px;padding:3px 6px}
@@ -1476,9 +1465,18 @@ document.addEventListener("keydown", ev=>{ if (ev.key==="Escape" && TW.classList
 function setHH(){ try{ document.documentElement.style.setProperty("--hh", document.querySelector("header").offsetHeight+"px"); }catch(e){} }
 addEventListener("resize", setHH); setHH();
 (function(){ const b=document.getElementById("infoBtn"), p=document.getElementById("infoPop");
-  b.addEventListener("click", ()=>{ const on=p.hidden; if(on){ const ban=document.getElementById("banner"); const warn = ban && ban.style.display==="block" ? `<p class="warn">${ban.textContent}</p>` : "";
-      p.innerHTML = warn + `<p>Swipe left or right for the next streamer. Tap a card to flip it to its gear; tap an item for its tooltip, where it comes from and the Forever vs Classic changes (green: new in Forever, yellow: Classic item reworked, grey: unchanged).</p><p>Tap Talents for the talent trees and Twitch for VODs, clips and the race archive. More details are further down the page.</p>`; }
-    p.hidden=!on; b.setAttribute("aria-expanded", on); setHH(); });
+  p.innerHTML = '<div class="intro"></div><div class="more"></div>';
+  const intro = p.querySelector(".intro"), more = p.querySelector(".more");
+  // on phones the text that sits around the cards lives in this note, so the screen under the cards stays clean
+  const parts = [".facts", ".legend", "main>section", "main>footer"].map(q => document.querySelector(q)).filter(Boolean);
+  const marks = parts.map(el => { const m = document.createComment("note"); el.before(m); return m; });
+  function place(){ const ph = isPhone(); parts.forEach((el, i) => { if (ph && el.parentNode !== more) more.appendChild(el); else if (!ph && el.parentNode === more) marks[i].after(el); }); if (!ph) close(); }
+  function close(){ p.hidden = true; b.setAttribute("aria-expanded", false); }
+  b.addEventListener("click", ev => { ev.stopPropagation(); const on = p.hidden; if (on){ const ban=document.getElementById("banner"); const warn = ban && ban.style.display==="block" ? `<p class="warn">${ban.textContent}</p>` : "";
+      intro.innerHTML = warn + `<p>Swipe left or right for the next streamer. Tap a card to flip it to its gear; tap an item for its tooltip, where it comes from and the Forever vs Classic changes (green: new in Forever, yellow: Classic item reworked, grey: unchanged).</p><p>Tap Talents for the talent trees and Twitch for VODs, clips and the race archive.</p>`; }
+    p.hidden = !on; b.setAttribute("aria-expanded", on); });
+  document.addEventListener("click", ev => { if (!p.hidden && !p.contains(ev.target) && ev.target !== b) close(); });
+  addEventListener("resize", place); place();
 })();
 
 
