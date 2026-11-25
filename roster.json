@@ -67,7 +67,7 @@
     "render": "254/546046",
     "bg": "undead",
     "level": 60,
-    "ilvl": null,
+    "ilvl": 59,
     "race": "Undead",
     "cls": "Paladin",
     "spec": "Protection",
@@ -204,8 +204,8 @@
     "slug": "abg-slayer",
     "render": "43/6998315",
     "bg": "night_elf",
-    "level": 58,
-    "ilvl": null,
+    "level": 59,
+    "ilvl": 55,
     "race": "Night Elf",
     "cls": "Warrior",
     "spec": "Protection",
@@ -243,7 +243,8 @@
      "Darnassus",
      "Honored",
      46
-    ]
+    ],
+    "level_seen": 59
    }
   ]
  },
@@ -261,7 +262,7 @@
     "render": "194/3835842",
     "bg": "gnome",
     "level": 60,
-    "ilvl": null,
+    "ilvl": 57,
     "race": "Gnome",
     "cls": "Warrior",
     "spec": "Fury",
@@ -311,7 +312,7 @@
     "render": "144/6930320",
     "bg": "night_elf",
     "level": 60,
-    "ilvl": null,
+    "ilvl": 52,
     "race": "Night Elf",
     "cls": "Druid",
     "spec": "Feral",

@@ -326,14 +326,26 @@ def main():
         old_stats = {k: v.get("s") or {} for k, v in json.loads(oc[oc.index("=") + 1:].rstrip().rstrip(";"))["C"].items()}
     except Exception:
         pass
+    # last known item levels, kept when the Armory sends gear without them
+    old_il = {k: v[2] for k, v in (old_gear.get("I") or {}).items() if v[2]}
     by_slug = {c["slug"]: c for r in roster for c in r["chars"] if c.get("slug")}
     for slug, ch in by_slug.items():
         try:
             st = state(armory_path(slug)); c = st["character"]
         except Exception as e:
             bad.append(f"{slug}: {e}"); continue
-        C[slug] = [c["level"], c.get("averageItemLevel"), {}]
-        ch["level"], ch["ilvl"] = c["level"], c.get("averageItemLevel")
+        # The Armory can lag behind the game (level) or send a character without item levels.
+        # roster.json "level_seen" is a level Luke saw in game; it's used until the Armory catches up.
+        lv, il = c["level"], c.get("averageItemLevel")
+        seen = ch.get("level_seen")
+        if seen and lv is not None and seen > lv:
+            print(f"Armory shows {slug} at {lv}; using level {seen} seen in game until it catches up"); lv = seen
+        elif seen:
+            ch.pop("level_seen", None)
+        if il is None and ch.get("ilvl") is not None:
+            il = ch["ilvl"]; print(f"No item level on the Armory for {slug} this time; kept the last known one ({il})")
+        C[slug] = [lv, il, {}]
+        ch["level"], ch["ilvl"] = lv, il
         ch["guild"] = (c.get("guild") or {}).get("name") or ""
         pr = c.get("professions") or {}
         profs = [[p["name"], p["tiers"][0]["skillPoints"], p["tiers"][0]["maxSkillPoints"]]
@@ -358,10 +370,13 @@ def main():
         mine = []
         for k, g in (c.get("gear") or {}).items():
             iid = (g.get("item") or {}).get("id", g.get("id")); C[slug][2][k] = iid; mine.append((k, iid))
-            if iid in ITEMS: continue
+            gl = (g.get("level") or {}).get("value")
+            if iid in ITEMS:
+                if ITEMS[iid]["il"] is None and gl: ITEMS[iid]["il"] = gl
+                continue
             ic = next((a for a in ((g.get("media") or {}).get("content") or {}).get("assets") or [] if a.get("key") == "icon"), None)
             f = FC.get(iid)
-            ITEMS[iid] = {"n": g.get("name"), "q": Q.get((g.get("quality") or {}).get("type"), 1), "il": (g.get("level") or {}).get("value"),
+            ITEMS[iid] = {"n": g.get("name"), "q": Q.get((g.get("quality") or {}).get("type"), 1), "il": gl or old_il.get(str(iid)),
                           "ic": icon_id(ic["value"]) if ic else None, "t": f["t"] if f else "same",
                           "x": clean(f.get("x")) if f else item_lines(g), "y": clean(f.get("y")) if f and f["t"] == "changed" else 0,
                           "src": SRC[str(iid)][:3] if str(iid) in SRC else 0}

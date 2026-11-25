@@ -35,7 +35,9 @@ A single-page site (also installable as a PWA) that shows WoW Forever streamers'
 | `manifest.webmanifest`, `icon-*.png` | PWA install |
 | `previews/gear-style-previews.html` | Old mockups of the gear styles. The live page doesn't use it. |
 
-The Armory sometimes returns a character without stats. `refresh.py` then keeps that character's last known stats from `chars.js`, and says so in the workflow log.
+The Armory sometimes returns a character without stats or item levels. `refresh.py` then keeps that character's last known stats (from `chars.js`), ilvl (from `roster.json`) and per-item levels (from `gear-data.js`), and says so in the workflow log.
+
+The Armory can also lag behind the game on level. Add `"level_seen": N` to a character in `roster.json` and the refresh shows that level until the Armory reaches it, then removes the field.
 
 Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and let the workflow rebuild them. Scripts load with `?v=<hash>` version strings, and `refresh.py` updates those.
 
@@ -44,9 +46,11 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 - If someone other than Luke asks to remove a card, it waits until Luke adds the `approved` label.
 - Live Twitch status comes from DecAPI and is checked every 15 minutes in the browser.
 
-## Current state (as of 24 Nov 2026)
+## Current state (as of 25 Nov 2026)
 - 13 streamers: Sodapoppin, Towelliee (main plus a Ghalon Carter alt), Esfand, imaqtpie, Nmplol, Hammerdance, Asmongold, Mitch Jones, Gingi (EU), Xaryu, Bajheera, MOONMOON, and Quin69 (no character found yet).
 - Built: card flip with gear, Stats/Profs tabs, Talents popup, Twitch panel, swipeable cards on mobile (the desktop card scaled up with CSS `zoom` to 10px from each screen edge, centred, Add box just below the fold, other page text in the ! note; every card is the same size, alt stacks peek out above the card, and swiping loops from the last card to the first and back), news ticker, Add/Remove through GitHub issues with a realm picker and a confirm-before-remove step, and the 3-hourly refresh on GitHub (this replaced the Claude scheduled refresh task).
+- Level 60 badges have gold elite wings wrapped around the ring (inline SVG `ELITE_WINGS`, shine respects reduced motion).
+- Abg Slayer (imaqtpie) is set to 59 with `level_seen` while the Armory still shows 58.
 - Raids unlock 9 Dec 2026, and the page shows a countdown.
 
 ## Ideas / backlog
@@ -69,6 +73,7 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 
 ## Change log
 <!-- Newest first. One line per push: date — commit title — what changed. Skip bot "Tracker refresh" commits. -->
+- 2026-11-25 — Elite wings for level 60, keep ilvl when the Armory skips it — gold wings wrap the level 60 badge (layout unchanged); refresh.py keeps last known character and item ilvl when the Armory sends none (restored Towelliee, Nmp, Hammer, Abg Slayer); `level_seen` override puts Abg Slayer at 59
 - 2026-11-24 — Mobile swipe loops around — swiping past the last card goes to the first and back; copies of the end cards sit at each end (`.clone`, inert) and the strip jumps to the real card when a swipe lands on one
 - 2026-11-24 — Lock mobile card width — cards with long names or wide gear text (Towelliee, MOONMOON, Mitch Jones) could stretch wider than the rest with the real web fonts; card width is now fixed
 - 2026-11-24 — Keep last known stats when the Armory skips them — refresh.py reuses a character's previous stats if the Armory sends none (this had blanked Abg Slayer's stats); restored his stats

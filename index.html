@@ -201,6 +201,14 @@
   @media (max-width:640px){ .ptab{height:18px;line-height:18px;font-size:9px} .pbox{padding-top:17px} }
 
 
+  /* level 60: gold WoW-style elite wings around the badge */
+  .lvl.elite{border-color:#f2c14e;box-shadow:0 0 10px rgba(242,193,78,.55),inset 0 0 8px rgba(0,0,0,.5)}
+  .lvl.elite b{color:#fff3c4;text-shadow:0 1px 2px #000,0 0 6px rgba(255,209,0,.6)}
+  .lvl.elite small{border-color:#f2c14e;color:#ffd866;background:#1a1408}
+  .lvl .wings{position:absolute;left:-8.5px;top:-8.5px;width:calc(100% + 17px);height:calc(100% + 17px);z-index:-1;pointer-events:none;overflow:visible;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.8))}
+  .lvl .wings .sh{animation:wingshine 4.5s ease-in-out infinite}
+  @keyframes wingshine{0%,70%,100%{opacity:0}82%{opacity:.85}}
+  @media (prefers-reduced-motion:reduce){.lvl .wings .sh{animation:none;opacity:0}}
   /* level badge lives in the title bar; side panel is one slim column from the top of the art */
   .tb-front{position:relative;z-index:4;padding-left:58px;min-height:44px}
   .tb-front .lvl{position:absolute;left:8px;top:5px;width:42px;height:42px}
@@ -393,8 +401,8 @@
   </footer>
 </main>
 
-<script src="gear-data.js?v=cdd42cd32030347f"></script>
-<script src="events.js?v=913adf8fef"></script>
+<script src="gear-data.js?v=9bbebbd9c9309949"></script>
+<script src="events.js?v=99bde07dfe"></script>
 <script src="chars.js?v=4ede025904b6"></script>
 <script>
 const CLASS = {
@@ -412,6 +420,8 @@ const CLASS = {
 const BG = "https://render.worldofwarcraft.com/profile-backgrounds/v2/armory_bg_race_";
 const RENDER = "https://render.worldofwarcraft.com/forever-us/character/";
 const ICO_TAP = '<svg viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0v4.5c0 3.3-2.2 6-5.5 6H11c-2 0-3.2-.9-4.3-2.4L4.4 15a1.5 1.5 0 0 1 2.3-1.9L9 15"/><path d="M6 6.5a4.5 4.5 0 0 1 9 0" opacity=".55"/></svg>';
+const ELITE_WINGS = `<svg class="wings" viewBox="0 0 54 54" aria-hidden="true"><defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1a8"/><stop offset=".45" stop-color="#f2c14e"/><stop offset="1" stop-color="#9a6512"/></linearGradient><linearGradient id="ws" x1="0" y1="0" x2="1" y2="1"><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".9"/><stop offset=".65" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>`
+  + ["", ` transform="matrix(-1 0 0 1 54 0)"`].map(t => `<g${t}><path d="M9.7,37.0 L7.9,37.1 Q5.6,37.4 3.7,31.9 L5.6,30.0 Q2.1,29.6 2.2,23.5 L5.9,22.5 Q1.6,20.7 3.9,14.7 L8.7,15.6 Q4.5,11.8 8.8,6.8 L14.3,9.5 Q11.0,3.3 17.2,0.1 Q22.0,3.5 24.2,7.2 A20,20 0 0 0 9.7,37.0 Z" fill="url(#wg)" stroke="#4a2c05" stroke-width=".7" stroke-linejoin="round"/><path d="M8.2,35.4 L5.5,32.8 M6.5,28.4 L3.6,25.0 M7.2,21.3 L4.6,16.6 M10.3,14.9 L8.8,8.8 M16.1,9.5 L16.4,2.1" stroke="#7a4b0c" stroke-width=".5" fill="none" opacity=".8"/><path class="sh" d="M9.7,37.0 L7.9,37.1 Q5.6,37.4 3.7,31.9 L5.6,30.0 Q2.1,29.6 2.2,23.5 L5.9,22.5 Q1.6,20.7 3.9,14.7 L8.7,15.6 Q4.5,11.8 8.8,6.8 L14.3,9.5 Q11.0,3.3 17.2,0.1 Q22.0,3.5 24.2,7.2 A20,20 0 0 0 9.7,37.0 Z" fill="url(#ws)"/></g>`).join("") + `</svg>`;
 const ICO_SWAP = '<svg viewBox="0 0 24 24"><path d="M7 7h12l-3-3M17 17H5l3 3"/></svg>';
 const ICO_RM = '<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>';
 const ICO_BACK = '<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></svg>';
@@ -486,7 +496,7 @@ const ROSTER = [
     "render": "254/546046",
     "bg": "undead",
     "level": 60,
-    "ilvl": null,
+    "ilvl": 59,
     "race": "Undead",
     "cls": "Paladin",
     "spec": "Protection",
@@ -623,8 +633,8 @@ const ROSTER = [
     "slug": "abg-slayer",
     "render": "43/6998315",
     "bg": "night_elf",
-    "level": 58,
-    "ilvl": null,
+    "level": 59,
+    "ilvl": 55,
     "race": "Night Elf",
     "cls": "Warrior",
     "spec": "Protection",
@@ -662,7 +672,8 @@ const ROSTER = [
      "Darnassus",
      "Honored",
      46
-    ]
+    ],
+    "level_seen": 59
    }
   ]
  },
@@ -680,7 +691,7 @@ const ROSTER = [
     "render": "194/3835842",
     "bg": "gnome",
     "level": 60,
-    "ilvl": null,
+    "ilvl": 57,
     "race": "Gnome",
     "cls": "Warrior",
     "spec": "Fury",
@@ -730,7 +741,7 @@ const ROSTER = [
     "render": "144/6930320",
     "bg": "night_elf",
     "level": 60,
-    "ilvl": null,
+    "ilvl": 52,
     "race": "Night Elf",
     "cls": "Druid",
     "spec": "Feral",
@@ -1320,7 +1331,7 @@ function card(e){
   return `<article class="card ${live?"is-live":""} ${stack?"stack":""} ${flipped.has(e.ch)&&hasGear?"back":""}" style="--cc:${k.c};${next?`--cc2:${(CLASS[next.cls]||CLASS.Unknown).c}`:""}" data-ch="${e.ch}">
    <div class="flip"><div class="inner gf" ${hasGear?`data-flip="${e.ch}"`:""}>
     <div class="titlebar tb-front">
-      <div class="lvl" style="--fc:${fcol}" title="${c.faction==="ally"?"Alliance":c.faction==="horde"?"Horde":""}"><b>${c.level??"?"}</b><small>LVL</small></div>
+      <div class="lvl${c.level>=60?" elite":""}" style="--fc:${fcol}" title="${c.faction==="ally"?"Alliance":c.faction==="horde"?"Horde":""}${c.level>=60?" · Max level":""}">${c.level>=60?ELITE_WINGS:""}<b>${c.level??"?"}</b><small>LVL</small></div>
       <div class="tname"><div class="cname" title="${esc(c.name)}">${esc(c.name)}</div>
       <div class="streamer">${esc(e.streamer)}${e.added?" · added":""}${stack?` · ${n===0?"main":"alt"} ${n+1}/${e.chars.length}`:""}</div></div>
       ${stack?`<button class="ibtn" type="button" data-swap="${e.ch}" title="Swap to ${esc(next.name)}" aria-label="Swap character">${ICO_SWAP}</button>`:""}
