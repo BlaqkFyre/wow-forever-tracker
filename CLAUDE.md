@@ -50,11 +50,13 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 - 13 streamers: Sodapoppin, Towelliee (main plus a Ghalon Carter alt), Esfand, imaqtpie, Nmplol, Hammerdance, Asmongold, Mitch Jones, Gingi (EU), Xaryu, Bajheera, MOONMOON, and Quin69 (no character found yet).
 - Built: card flip with gear, Stats/Profs tabs, Talents popup, Twitch panel, swipeable cards on mobile (the desktop card scaled up with CSS `zoom` to 10px from each screen edge, centred, Add box just below the fold, other page text in the ! note; every card is the same size, alt stacks peek out above the card, and swiping loops from the last card to the first and back), news ticker, Add/Remove through GitHub issues with a realm picker and a confirm-before-remove step, and the 3-hourly refresh on GitHub (this replaced the Claude scheduled refresh task).
 - Level 60 badges have gold elite wings wrapped around the ring (inline SVG `ELITE_WINGS`, shine respects reduced motion).
+- Solo share page for Abg Slayer: `c/abg-slayer-gtCETHRJ.html` (https://blaqkfyre.github.io/wow-forever-tracker/c/abg-slayer-gtCETHRJ.html). It fetches index.html and sets `window.SOLO_FORCE`, so only that card shows (no page controls, no links back, noindex, no PWA install). To make another, copy the file with a new random suffix and change `card`. There is deliberately no `?solo=` URL option.
+- **Add and Remove are switched off for now** (Add box disabled with "Coming soon", 🗑 hidden via CSS). Luke doesn't want visitors sent to GitHub; re-enable once the new add flow exists (see backlog).
 - Abg Slayer (imaqtpie) is set to 59 with `level_seen` while the Armory still shows 58.
 - Raids unlock 9 Dec 2026, and the page shows a countdown.
 
 ## Ideas / backlog
-- **Rethink how streamers and characters get added.** The GitHub issue form needs a GitHub account and the exact realm, and the VOD/Armory guessing isn't reliable. Luke wants a better method; design is still open.
+- **Rethink how streamers and characters get added.** The GitHub issue form needs a GitHub account and the exact realm, and the VOD/Armory guessing isn't reliable. Luke doesn't want users to have to go through GitHub at all. Add/Remove are disabled on the page until this is built; design is still open.
 - A raid tab once raids open on 9 Dec
 - A stream or desktop overlay version of a card
 - Collectible rare or customisable cards
@@ -72,6 +74,7 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 - Test by opening `index.html` in a browser. Live status only works outside sandboxed viewers.
 
 ## Change log
+- 2026-11-25 — Abg Slayer share card, Add switched off for now — `c/abg-slayer-gtCETHRJ.html` shows only his live card; solo mode in index.html only via `window.SOLO_FORCE`; Add box disabled ("Coming soon") and 🗑 hidden so nobody is sent to GitHub
 <!-- Newest first. One line per push: date — commit title — what changed. Skip bot "Tracker refresh" commits. -->
 - 2026-11-25 — Elite wings for level 60, keep ilvl when the Armory skips it — gold wings wrap the level 60 badge (layout unchanged); refresh.py keeps last known character and item ilvl when the Armory sends none (restored Towelliee, Nmp, Hammer, Abg Slayer); `level_seen` override puts Abg Slayer at 59
 - 2026-11-24 — Mobile swipe loops around — swiping past the last card goes to the first and back; copies of the end cards sit at each end (`.clone`, inert) and the strip jumps to the real card when a swipe lands on one

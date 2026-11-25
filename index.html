@@ -173,6 +173,9 @@
   /* ---------- add a streamer ---------- */
   .addbox{margin-top:22px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;max-width:620px}
   .addbox h2{margin:0 0 4px}
+  .addbox .soon{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#ffd866;border:1px solid #6b5520;background:#1a1408;border-radius:5px;padding:1px 6px;margin-left:6px;vertical-align:2px}
+  .addbox input:disabled,.addbox button:disabled{opacity:.45;cursor:not-allowed}
+  .ibtn.rm{display:none!important} /* removing cards goes through GitHub for now; hidden until the new add/remove flow */
   .addbox .row{display:flex;gap:6px;flex-wrap:wrap}
   .addbox input,.addbox select{flex:1 1 140px;background:#1b2130;border:1px solid var(--line);border-radius:7px;color:var(--text);padding:7px 9px;font:inherit;font-size:12.5px}
   .addbox .msg{font-size:12px;color:var(--muted);margin-top:6px;min-height:1em}
@@ -340,6 +343,14 @@
   .fx-shock{background:linear-gradient(100deg,transparent 60%,rgba(170,210,255,.9) 61%,transparent 62.5%),linear-gradient(80deg,transparent 70%,rgba(200,230,255,.8) 71%,transparent 72%),radial-gradient(circle at 71% 45%,rgba(120,170,255,.45),transparent 40%)}
   @media (prefers-reduced-motion:reduce){.art .render,.art.act .render,.art.act .fx,.art.act .fx::before{animation:none!important}}
 </style>
+<style>
+  /* solo card pages (c/*.html set window.SOLO_FORCE): just that one card, centred, nothing else on the page */
+  html.solo body>header,html.solo .banner,html.solo #ticker,html.solo main>:not(.grid),html.solo .ibtn.rm,html.solo .infopop{display:none!important}
+  html.solo main{padding:0!important;max-width:none!important;margin:0!important}
+  html.solo .grid{display:flex!important;align-items:center;justify-content:center;min-height:100svh;margin:0!important;padding:10px!important;overflow:visible!important;box-sizing:border-box}
+  html.solo .grid>.card{flex:0 0 288px;width:288px;max-width:288px;zoom:var(--cz,1)}
+</style>
+<script>if(window.SOLO_FORCE)document.documentElement.classList.add("solo")</script>
 </head>
 <body>
 <header>
@@ -372,15 +383,15 @@
   <div class="grid" id="grid"></div>
 
   <div class="addbox">
-    <h2>Add a streamer</h2>
+    <h2>Add a streamer <span class="soon">Coming soon</span></h2>
     <div class="row">
-      <input id="addCh" placeholder="Twitch channel (e.g. pikabooirl)" aria-label="Twitch channel">
-      <input id="addName" placeholder="Character name (optional, best if known)" aria-label="Character name">
-      <input id="addRealm" list="realmList" placeholder="Realm (pick or type, e.g. US · PvP)" aria-label="Realm">
+      <input id="addCh" disabled placeholder="Twitch channel (e.g. pikabooirl)" aria-label="Twitch channel">
+      <input id="addName" disabled placeholder="Character name (optional, best if known)" aria-label="Character name">
+      <input id="addRealm" disabled list="realmList" placeholder="Realm (pick or type, e.g. US · PvP)" aria-label="Realm">
       <datalist id="realmList"><option value="US · Normal"></option><option value="US · PvP"></option><option value="US · Roleplay"></option><option value="US · Hardcore"></option><option value="EU · Normal"></option><option value="EU · PvP"></option><option value="EU · Roleplay"></option><option value="EU · Hardcore"></option></datalist>
-      <button id="addBtn" type="button">Add</button>
+      <button id="addBtn" type="button" disabled>Coming soon</button>
     </div>
-    <div class="msg" id="addMsg">Opens a short GitHub form (a free GitHub account is needed). Submit it and the card appears on the page a minute or two later. Anyone can add themselves.</div>
+    <div class="msg" id="addMsg">Adding streamers is coming soon. A quicker way to add yourself is on the way.</div>
   </div>
 
   <section>
@@ -1311,7 +1322,18 @@ const REFRESH_MS = 900000;
 const state = {}; const idx = {}; const open = new Set(); const flipped = new Set(); const twOpen = new Set();
 let blocked=0, attempted=0;
 function store(k,v){try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)||"null"); localStorage.setItem(k,JSON.stringify(v)); }catch(e){ return null; }}
-function entries(){ return ROSTER; }
+// Solo card pages (c/<name>.html) set window.SOLO_FORCE to a character slug or channel: only that card shows
+const SOLO = String(window.SOLO_FORCE || "").trim().toLowerCase();
+let soloList = null;
+function entries(){
+  if (!SOLO) return ROSTER;
+  if (!soloList){
+    const byChar = ROSTER.find(e => e.chars.some(c => (c.slug||"").toLowerCase() === SOLO));
+    const e = byChar || ROSTER.find(e => e.ch.toLowerCase() === SOLO);
+    soloList = !e ? [] : [Object.assign({}, e, { chars: byChar ? [e.chars.find(c => (c.slug||"").toLowerCase() === SOLO)] : e.chars })];
+  }
+  return soloList;
+}
 function cur(e){ return e.chars[(idx[e.ch]||0) % e.chars.length]; }
 
 function card(e){
@@ -1507,7 +1529,11 @@ document.addEventListener("keydown", ev=>{ if (ev.key==="Escape" && TW.classList
 // ---------- mobile: header height for full-screen cards, and the ! info button ----------
 function setHH(){ try{ const R=document.documentElement.style; R.setProperty("--hh", document.querySelector("header").offsetHeight+"px");
   // phones: scale the desktop-size card up so it sits 10px from each screen edge
-  R.setProperty("--cz", isPhone() ? Math.max(1, (document.documentElement.clientWidth - 20) / 288).toFixed(4) : 1); }catch(e){} }
+  R.setProperty("--cz", isPhone() ? Math.max(1, (document.documentElement.clientWidth - 20) / 288).toFixed(4) : 1);
+  // solo card: as large as fits the window, 10px from the edges
+  if (SOLO){ const c=document.querySelector(".grid>.card"); const h=c ? c.offsetHeight / (parseFloat(getComputedStyle(c).zoom)||1) : 0;
+    const W=document.documentElement.clientWidth, H=innerHeight;
+    R.setProperty("--cz", Math.max(.6, Math.min((W-20)/288, h ? (H-20)/h : 9, 2.4)).toFixed(4)); } }catch(e){} }
 addEventListener("resize", setHH); setHH();
 (function(){ const b=document.getElementById("infoBtn"), p=document.getElementById("infoPop");
   p.innerHTML = '<div class="intro"></div><div class="more"></div>';
@@ -1551,7 +1577,7 @@ function openForm(tpl, title, fields){
   const q = new URLSearchParams({template: tpl, title}); Object.entries(fields).forEach(([k,v]) => { if (v) q.set(k, v); });
   window.open(`${REPO}/issues/new?${q}`, "_blank", "noopener");
 }
-document.getElementById("addBtn").addEventListener("click", () => {
+document.getElementById("addBtn").addEventListener("click", () => { if (document.getElementById("addBtn").disabled) return;
   const ch = document.getElementById("addCh").value.trim().toLowerCase().replace(/^.*twitch\.tv\//,"").replace(/[^a-z0-9_]/g,"");
   const name = document.getElementById("addName").value.trim().replace(/[<>"]/g,"");
   const realm = document.getElementById("addRealm").value.trim().replace(/[<>"]/g,"");
@@ -1591,7 +1617,7 @@ function playMove(a){
   setTimeout(() => a.classList.remove("act"), 1300);
 }
 try{ document.getElementById("gearChecked").textContent = GD.checked; document.getElementById("fcBuild").textContent = GD.fc; }catch(e){}
-raidCountdown(); render(); refreshAll(); renderTicker();
+raidCountdown(); render(); refreshAll(); renderTicker(); if (SOLO) setHH();
 setInterval(refreshAll,REFRESH_MS); setInterval(raidCountdown,3600000);
 </script>
 </body>
