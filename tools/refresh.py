@@ -278,6 +278,70 @@ def handle_request(roster, kind, body, author, owner, labels):
             "The card will be on the page in a minute or two." + note, True, slug, [])
 
 
+# ---------------------------------------------------------------- solo share pages
+SHARE_TPL = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>{title}</title>
+<style>html,body{{margin:0;background:#0b0d12;color:#8b93a3;font:14px system-ui,sans-serif}}</style>
+</head>
+<body>
+<p id="msg" style="text-align:center;margin-top:40vh">Loading card…</p>
+<script>
+// Share page for one card, made by tools/refresh.py (don't edit by hand). It loads the tracker page with only
+// this character's card showing, so the live data still updates every 3 hours.
+(() => {{
+const card = {slug};
+fetch("../index.html", {{ cache: "no-cache" }})
+  .then(r => {{ if (!r.ok) throw new Error(r.status); return r.text(); }})
+  .then(html => {{
+    html = html.replace(/<head>/i, `<head><base href="${{new URL("../", location.href)}}"><script>window.SOLO_FORCE=${{JSON.stringify(card)}}<\\/script><meta name="robots" content="noindex,nofollow">`);
+    html = html.replace(/<link rel="manifest"[^>]*>/i, ""); // no "install the tracker" prompt from here
+    html = html.replace(/<title>[^<]*<\\/title>/i, {title_js});
+    document.open(); document.write(html); document.close();
+  }})
+  .catch(() => {{ document.getElementById("msg").textContent = "Couldn't load the card. Try refreshing."; }});
+}})();
+</script>
+</body>
+</html>
+"""
+SITE = "https://blaqkfyre.github.io/wow-forever-tracker/"
+
+
+def share_pages(roster):
+    """One c/<character>-<code>.html page per character. The random code is made once and kept in
+    roster.json ("share"), so a card's link never changes. Pages for removed characters are deleted.
+    Also writes share-links.md, the list of every link (only linked from the repo, not the site)."""
+    import secrets
+    os.makedirs(P("c"), exist_ok=True)
+    keep, rows = set(), []
+    for r in roster:
+        for c in r["chars"]:
+            if not c.get("slug"): continue
+            if not c.get("share"):
+                c["share"] = "".join(ch for ch in secrets.token_urlsafe(9) if ch.isalnum())[:8]
+            fname = re.sub(r"[^a-z0-9-]+", "-", c["slug"].lower()) + "-" + c["share"] + ".html"
+            keep.add(fname)
+            title = f'{c["name"]} · WoW Forever'
+            page = SHARE_TPL.format(title=title.replace("<", ""), slug=json.dumps(c["slug"]), title_js=json.dumps(f"<title>{title}</title>"))
+            path = P("c", fname)
+            if not os.path.exists(path) or open(path, encoding="utf-8").read() != page:
+                open(path, "w", encoding="utf-8").write(page)
+            rows.append(f'| {r["streamer"]} | {c["name"]} | {SITE}c/{fname} |')
+    for f in os.listdir(P("c")):
+        if f.endswith(".html") and f not in keep: os.remove(P("c", f))
+    md = ("# Solo card share links\n\nOne page per character, showing only that card (live, updates with each refresh).\n"
+          "Made by `tools/refresh.py`; links stay the same for as long as the character is on the tracker.\n\n"
+          "| Streamer | Character | Link |\n|---|---|---|\n" + "\n".join(rows) + "\n")
+    if not os.path.exists(P("share-links.md")) or open(P("share-links.md"), encoding="utf-8").read() != md:
+        open(P("share-links.md"), "w", encoding="utf-8").write(md)
+
+
 # ---------------------------------------------------------------- main refresh
 def main():
     roster = json.load(open(P("roster.json"), encoding="utf-8"))
@@ -481,11 +545,15 @@ def main():
     hist[datetime.now(SYD).strftime("%Y-%m-%d")] = {s: v[:2] for s, v in C.items()}
     json.dump(hist, open(P("history.json"), "w"), separators=(",", ":"))
 
+    # ---- solo share pages (adds a "share" code to new characters, so run before saving roster.json)
+    share_pages(roster)
+
     # ---- roster + page
     json.dump(roster, open(P("roster.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     html = open(P("index.html"), encoding="utf-8").read()
     i = html.index("const ROSTER = ["); j = html.index("\n];", i) + 3
-    html = html[:i] + "const ROSTER = " + json.dumps(roster, indent=1, ensure_ascii=False) + ";" + html[j:]
+    page_roster = [dict(r, chars=[{k: v for k, v in c.items() if k != "share"} for c in r["chars"]]) for r in roster]  # share codes stay off the site
+    html = html[:i] + "const ROSTER = " + json.dumps(page_roster, indent=1, ensure_ascii=False) + ";" + html[j:]
     html = re.sub(r'(<b id="checked">)[^<]*(</b>)', lambda m: m.group(1) + now_text() + m.group(2), html)
     html = re.sub(r'gear-data\.js\?v=[0-9a-f]+', "gear-data.js?v=" + gv, html)
     html = re.sub(r'chars\.js\?v=[0-9a-f]+', "chars.js?v=" + cv, html)

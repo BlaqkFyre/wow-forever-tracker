@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Darkedge Bloodshadow · WoW Forever</title>
+<style>html,body{margin:0;background:#0b0d12;color:#8b93a3;font:14px system-ui,sans-serif}</style>
+</head>
+<body>
+<p id="msg" style="text-align:center;margin-top:40vh">Loading card…</p>
+<script>
+// Share page for one card, made by tools/refresh.py (don't edit by hand). It loads the tracker page with only
+// this character's card showing, so the live data still updates every 3 hours.
+(() => {
+const card = "darkedge-bloodshadow";
+fetch("../index.html", { cache: "no-cache" })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+  .then(html => {
+    html = html.replace(/<head>/i, `<head><base href="${new URL("../", location.href)}"><script>window.SOLO_FORCE=${JSON.stringify(card)}<\/script><meta name="robots" content="noindex,nofollow">`);
+    html = html.replace(/<link rel="manifest"[^>]*>/i, ""); // no "install the tracker" prompt from here
+    html = html.replace(/<title>[^<]*<\/title>/i, "<title>Darkedge Bloodshadow \u00b7 WoW Forever</title>");
+    document.open(); document.write(html); document.close();
+  })
+  .catch(() => { document.getElementById("msg").textContent = "Couldn't load the card. Try refreshing."; });
+})();
+</script>
+</body>
+</html>

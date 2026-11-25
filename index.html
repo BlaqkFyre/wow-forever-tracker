@@ -348,7 +348,7 @@
   html.solo body>header,html.solo .banner,html.solo #ticker,html.solo main>:not(.grid),html.solo .ibtn.rm,html.solo .infopop{display:none!important}
   html.solo main{padding:0!important;max-width:none!important;margin:0!important}
   html.solo .grid{display:flex!important;align-items:center;justify-content:center;min-height:100svh;margin:0!important;padding:10px!important;overflow:visible!important;box-sizing:border-box}
-  html.solo .grid>.card{flex:0 0 288px;width:288px;max-width:288px;zoom:var(--cz,1)}
+  html.solo .grid>.card{flex:0 0 288px;width:288px;max-width:288px;zoom:1!important;transform:scale(var(--cz,1))} /* scale, not zoom: zoom below 1 rounds text and clips the stats panel */
 </style>
 <script>if(window.SOLO_FORCE)document.documentElement.classList.add("solo")</script>
 </head>
@@ -1530,10 +1530,10 @@ document.addEventListener("keydown", ev=>{ if (ev.key==="Escape" && TW.classList
 function setHH(){ try{ const R=document.documentElement.style; R.setProperty("--hh", document.querySelector("header").offsetHeight+"px");
   // phones: scale the desktop-size card up so it sits 10px from each screen edge
   R.setProperty("--cz", isPhone() ? Math.max(1, (document.documentElement.clientWidth - 20) / 288).toFixed(4) : 1);
-  // solo card: as large as fits the window, 10px from the edges
-  if (SOLO){ const c=document.querySelector(".grid>.card"); const h=c ? c.offsetHeight / (parseFloat(getComputedStyle(c).zoom)||1) : 0;
+  // solo card on PC: half the size that would fill the window, centred. Phones keep the tracker's size (10px from each edge).
+  if (SOLO && !isPhone()){ const c=document.querySelector(".grid>.card"); const h=c ? c.offsetHeight : 0;
     const W=document.documentElement.clientWidth, H=innerHeight;
-    R.setProperty("--cz", Math.max(.6, Math.min((W-20)/288, h ? (H-20)/h : 9, 2.4)).toFixed(4)); } }catch(e){} }
+    R.setProperty("--cz", Math.max(.5, Math.min((W-20)/288, h ? (H-20)/h : 9, 2.4) / 2).toFixed(4)); } }catch(e){} }
 addEventListener("resize", setHH); setHH();
 (function(){ const b=document.getElementById("infoBtn"), p=document.getElementById("infoPop");
   p.innerHTML = '<div class="intro"></div><div class="more"></div>';

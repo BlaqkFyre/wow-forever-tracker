@@ -11,8 +11,8 @@
 <body>
 <p id="msg" style="text-align:center;margin-top:40vh">Loading card…</p>
 <script>
-// Share page for one card. It loads the tracker page with only this character's card showing,
-// so the live data still updates every 3 hours. Change `card` to make a page for another card.
+// Share page for one card, made by tools/refresh.py (don't edit by hand). It loads the tracker page with only
+// this character's card showing, so the live data still updates every 3 hours.
 (() => {
 const card = "abg-slayer";
 fetch("../index.html", { cache: "no-cache" })
@@ -20,7 +20,7 @@ fetch("../index.html", { cache: "no-cache" })
   .then(html => {
     html = html.replace(/<head>/i, `<head><base href="${new URL("../", location.href)}"><script>window.SOLO_FORCE=${JSON.stringify(card)}<\/script><meta name="robots" content="noindex,nofollow">`);
     html = html.replace(/<link rel="manifest"[^>]*>/i, ""); // no "install the tracker" prompt from here
-    html = html.replace(/<title>[^<]*<\/title>/i, "<title>Abg Slayer · WoW Forever</title>");
+    html = html.replace(/<title>[^<]*<\/title>/i, "<title>Abg Slayer \u00b7 WoW Forever</title>");
     document.open(); document.write(html); document.close();
   })
   .catch(() => { document.getElementById("msg").textContent = "Couldn't load the card. Try refreshing."; });
