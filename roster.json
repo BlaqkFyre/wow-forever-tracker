@@ -154,7 +154,7 @@
     "slug": "esfand-television",
     "render": "76/7621452",
     "bg": "human",
-    "level": 57,
+    "level": 59,
     "ilvl": 53,
     "race": "Human",
     "cls": "Paladin",
@@ -165,7 +165,7 @@
     "profs": [
      [
       "First Aid",
-      257,
+      266,
       300
      ],
      [
@@ -175,7 +175,7 @@
      ],
      [
       "Engineering",
-      200,
+      215,
       225
      ],
      [
