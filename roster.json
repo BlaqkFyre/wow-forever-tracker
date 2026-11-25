@@ -49,7 +49,7 @@
     "rep": [
      "Stormpike Guard",
      "Revered",
-     59
+     76
     ],
     "share": "jjwHkCQb"
    }
@@ -84,7 +84,7 @@
      ],
      [
       "Blacksmithing",
-      282,
+      284,
       300
      ],
      [
@@ -222,7 +222,7 @@
     "profs": [
      [
       "Mining",
-      298,
+      299,
       300
      ],
      [
@@ -354,7 +354,7 @@
     "rep": [
      "Stormwind",
      "Revered",
-     52
+     53
     ],
     "share": "0DqVYjSJ"
    }
@@ -373,14 +373,14 @@
     "slug": "asmongold-thereal",
     "render": "165/4427685",
     "bg": "human",
-    "level": 48,
+    "level": 51,
     "ilvl": 43,
     "race": "Human",
     "cls": "Warrior",
     "spec": "Protection",
     "faction": "ally",
     "ruleset": "Normal",
-    "guild": "OLYMPUS GODS",
+    "guild": "OLYMPUS II",
     "profs": [
      [
       "Blacksmithing",
@@ -406,7 +406,7 @@
     "rep": [
      "Stormwind",
      "Revered",
-     55
+     57
     ],
     "share": "FvzjhwOX"
    }
