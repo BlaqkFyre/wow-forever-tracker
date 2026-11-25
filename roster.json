@@ -208,7 +208,7 @@
     "slug": "abg-slayer",
     "render": "43/6998315",
     "bg": "night_elf",
-    "level": 59,
+    "level": 60,
     "ilvl": 55,
     "race": "Night Elf",
     "cls": "Warrior",
@@ -219,7 +219,7 @@
     "profs": [
      [
       "Mining",
-      292,
+      298,
       300
      ],
      [
@@ -248,7 +248,6 @@
      "Honored",
      46
     ],
-    "level_seen": 59,
     "share": "gtCETHRJ"
    }
   ]
