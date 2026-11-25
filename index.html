@@ -65,6 +65,9 @@
   .ibtn{flex:none;width:26px;height:26px;padding:0;border-radius:7px;display:grid;place-items:center;background:rgba(0,0,0,.35);border:1px solid color-mix(in srgb,var(--cc) 60%,transparent);color:var(--ccl)}
   .ibtn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .ibtn:hover{border-color:var(--ccl);background:color-mix(in srgb,var(--cc) 25%,#000)}
+  .sololink{color:var(--ccl);text-decoration:none;white-space:nowrap} .sololink:hover{color:#fff;text-decoration:underline}
+  .sololink svg{width:9px;height:9px;margin-right:2px;vertical-align:-.5px;fill:none;stroke:currentColor;stroke-width:1.3;stroke-linejoin:round}
+  .art .swap-art{position:absolute;top:7px;right:8px;z-index:4} /* alt toggle sits in the art, top right, spaced like the flip button above it */
 
   .inner.gf{min-height:352px}
   .art{position:relative;height:182px;overflow:hidden;background:radial-gradient(circle at 50% 60%,color-mix(in srgb,var(--cc) 50%,transparent),transparent 62%),repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0 6px,transparent 6px 12px),#0c0f15}
@@ -433,6 +436,13 @@ const RENDER = "https://render.worldofwarcraft.com/forever-us/character/";
 const ICO_TAP = '<svg viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0v4.5c0 3.3-2.2 6-5.5 6H11c-2 0-3.2-.9-4.3-2.4L4.4 15a1.5 1.5 0 0 1 2.3-1.9L9 15"/><path d="M6 6.5a4.5 4.5 0 0 1 9 0" opacity=".55"/></svg>';
 const ELITE_WINGS = `<svg class="wings" viewBox="0 0 54 54" aria-hidden="true"><defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1a8"/><stop offset=".45" stop-color="#f2c14e"/><stop offset="1" stop-color="#9a6512"/></linearGradient><linearGradient id="ws" x1="0" y1="0" x2="1" y2="1"><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".9"/><stop offset=".65" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>`
   + ["", ` transform="matrix(-1 0 0 1 54 0)"`].map(t => `<g${t}><path d="M9.7,37.0 L7.9,37.1 Q5.6,37.4 3.7,31.9 L5.6,30.0 Q2.1,29.6 2.2,23.5 L5.9,22.5 Q1.6,20.7 3.9,14.7 L8.7,15.6 Q4.5,11.8 8.8,6.8 L14.3,9.5 Q11.0,3.3 17.2,0.1 Q22.0,3.5 24.2,7.2 A20,20 0 0 0 9.7,37.0 Z" fill="url(#wg)" stroke="#4a2c05" stroke-width=".7" stroke-linejoin="round"/><path d="M8.2,35.4 L5.5,32.8 M6.5,28.4 L3.6,25.0 M7.2,21.3 L4.6,16.6 M10.3,14.9 L8.8,8.8 M16.1,9.5 L16.4,2.1" stroke="#7a4b0c" stroke-width=".5" fill="none" opacity=".8"/><path class="sh" d="M9.7,37.0 L7.9,37.1 Q5.6,37.4 3.7,31.9 L5.6,30.0 Q2.1,29.6 2.2,23.5 L5.9,22.5 Q1.6,20.7 3.9,14.7 L8.7,15.6 Q4.5,11.8 8.8,6.8 L14.3,9.5 Q11.0,3.3 17.2,0.1 Q22.0,3.5 24.2,7.2 A20,20 0 0 0 9.7,37.0 Z" fill="url(#ws)"/></g>`).join("") + `</svg>`;
+// "· added" only for a day after a streamer joins; older cards just show the name
+const recentlyAdded = e => !!e.added_at && Date.now() - Date.parse(e.added_at) < 864e5;
+// link to the streamer's solo card page, or (on a solo page) back to all the cards
+const ICO_SOLO = '<svg viewBox="0 0 12 12" aria-hidden="true"><rect x="3.2" y="1" width="5.6" height="8" rx="1"/><path d="M1.5 4v6.2c0 .5.3.8.8.8h5"/></svg>';
+const ICO_GRID = '<svg viewBox="0 0 12 12" aria-hidden="true"><rect x="1" y="1" width="4" height="4" rx=".8"/><rect x="7" y="1" width="4" height="4" rx=".8"/><rect x="1" y="7" width="4" height="4" rx=".8"/><rect x="7" y="7" width="4" height="4" rx=".8"/></svg>';
+const soloLink = e => SOLO ? ` · <a class="sololink" href="./" title="See all the streamer cards">${ICO_GRID}all cards</a>`
+  : e.solo ? ` · <a class="sololink" href="c/${encodeURI(e.solo)}" title="Open ${esc(e.streamer)}’s card on its own">${ICO_SOLO}solo</a>` : "";
 const ICO_SWAP = '<svg viewBox="0 0 24 24"><path d="M7 7h12l-3-3M17 17H5l3 3"/></svg>';
 const ICO_RM = '<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>';
 const ICO_BACK = '<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></svg>';
@@ -492,7 +502,8 @@ const ROSTER = [
      59
     ]
    }
-  ]
+  ],
+  "solo": "sodapoppin-t1TQKm1w.html"
  },
  {
   "ch": "towelliee",
@@ -574,7 +585,8 @@ const ROSTER = [
     ],
     "note": "Horde alt, first seen live in Ragefire Chasm on 14 Nov. In his main’s guild, Hammer Squad."
    }
-  ]
+  ],
+  "solo": "towelliee-5vzcy1Sp.html"
  },
  {
   "ch": "esfandtv",
@@ -630,7 +642,8 @@ const ROSTER = [
      56
     ]
    }
-  ]
+  ],
+  "solo": "esfandtv-6snzzsoj.html"
  },
  {
   "ch": "imaqtpie",
@@ -685,7 +698,8 @@ const ROSTER = [
      46
     ]
    }
-  ]
+  ],
+  "solo": "imaqtpie-iVN2Gd4L.html"
  },
  {
   "ch": "nmplol",
@@ -736,7 +750,8 @@ const ROSTER = [
      58
     ]
    }
-  ]
+  ],
+  "solo": "nmplol-h4hRWwgc.html"
  },
  {
   "ch": "hammerdance",
@@ -786,7 +801,8 @@ const ROSTER = [
      52
     ]
    }
-  ]
+  ],
+  "solo": "hammerdance-ka1jDFeT.html"
  },
  {
   "ch": "zackrawrr",
@@ -836,7 +852,8 @@ const ROSTER = [
      55
     ]
    }
-  ]
+  ],
+  "solo": "zackrawrr-5g9X0asT.html"
  },
  {
   "ch": "mitchjones",
@@ -865,7 +882,8 @@ const ROSTER = [
      19
     ]
    }
-  ]
+  ],
+  "solo": "mitchjones-uCmO7tb3.html"
  },
  {
   "ch": "gingitv",
@@ -917,7 +935,8 @@ const ROSTER = [
      50
     ]
    }
-  ]
+  ],
+  "solo": "gingitv-G2fEJ2HU.html"
  },
  {
   "ch": "xaryu",
@@ -973,7 +992,8 @@ const ROSTER = [
      56
     ]
    }
-  ]
+  ],
+  "solo": "xaryu-MTOJSZ4f.html"
  },
  {
   "ch": "bajheera",
@@ -1029,7 +1049,8 @@ const ROSTER = [
      56
     ]
    }
-  ]
+  ],
+  "solo": "bajheera-GzYzPeFH.html"
  },
  {
   "ch": "moonmoon",
@@ -1080,7 +1101,8 @@ const ROSTER = [
      49
     ]
    }
-  ]
+  ],
+  "solo": "moonmoon-I4xgLfNz.html"
  },
  {
   "ch": "quin69",
@@ -1103,7 +1125,8 @@ const ROSTER = [
     "guild": "—",
     "profs": null
    }
-  ]
+  ],
+  "solo": "quin69-NWZ0UmRM.html"
  }
 ];
 ROSTER.forEach(r=>r.chars.sort((a,b)=>(b.level??-1)-(a.level??-1)));
@@ -1354,11 +1377,11 @@ function card(e){
     <div class="titlebar tb-front">
       <div class="lvl${c.level>=60?" elite":""}" style="--fc:${fcol}" title="${c.faction==="ally"?"Alliance":c.faction==="horde"?"Horde":""}${c.level>=60?" · Max level":""}">${c.level>=60?ELITE_WINGS:""}<b>${c.level??"?"}</b><small>LVL</small></div>
       <div class="tname"><div class="cname" title="${esc(c.name)}">${esc(c.name)}</div>
-      <div class="streamer">${esc(e.streamer)}${e.added?" · added":""}${stack?` · ${n===0?"main":"alt"} ${n+1}/${e.chars.length}`:""}</div></div>
-      ${stack?`<button class="ibtn" type="button" data-swap="${e.ch}" title="Swap to ${esc(next.name)}" aria-label="Swap character">${ICO_SWAP}</button>`:""}
+      <div class="streamer">${esc(e.streamer)}${recentlyAdded(e)?" · added":""}${soloLink(e)}${stack?` · ${n===0?"main":"alt"} ${n+1}/${e.chars.length}`:""}</div></div>
       ${hasGear?`<button class="ibtn" type="button" data-flip="${e.ch}" title="Flip to gear" aria-label="Flip to gear">${ICO_TAP}</button>`:""}
     </div>
     <div class="art">${art}
+      ${stack?`<button class="ibtn swap-art" type="button" data-swap="${e.ch}" title="Swap to ${esc(next.name)}" aria-label="Swap character">${ICO_SWAP}</button>`:""}
       <div class="side">
         ${sideBoxHTML(e, c)}
       </div>

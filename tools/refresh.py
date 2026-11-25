@@ -269,7 +269,7 @@ def handle_request(roster, kind, body, author, owner, labels):
     if entry:
         entry["chars"].append(char)
     else:
-        entry = {"ch": ch, "streamer": disp, "added": True, "flavor": f"Added on {datetime.now(SYD).strftime('%-d %b %Y')} by @{author}.",
+        entry = {"ch": ch, "streamer": disp, "added": True, "added_at": datetime.now(timezone.utc).isoformat(timespec="minutes"), "flavor": f"Added on {datetime.now(SYD).strftime('%-d %b %Y')} by @{author}.",
                  "how": f"Added through a GitHub request by @{author}. {how}", "fixed": "", "chars": [char]}
         tail = next((i for i, r in enumerate(roster) if r["ch"] == "quin69"), len(roster))
         roster.insert(tail, entry)
@@ -292,8 +292,8 @@ SHARE_TPL = """<!DOCTYPE html>
 <body>
 <p id="msg" style="text-align:center;margin-top:40vh">Loading card…</p>
 <script>
-// Share page for one card, made by tools/refresh.py (don't edit by hand). It loads the tracker page with only
-// this character's card showing, so the live data still updates every 3 hours.
+// Share page for one streamer's card, made by tools/refresh.py (don't edit by hand). It loads the tracker page with
+// only this card showing, so the live data still updates every 3 hours.
 (() => {{
 const card = {slug};
 fetch("../index.html", {{ cache: "no-cache" }})
@@ -313,31 +313,41 @@ fetch("../index.html", {{ cache: "no-cache" }})
 SITE = "https://blaqkfyre.github.io/wow-forever-tracker/"
 
 
+def solo_file(entry):
+    """File name of a streamer's solo page in c/ (needs entry["share"], set by share_pages)."""
+    return re.sub(r"[^a-z0-9-]+", "-", entry["ch"].lower()) + "-" + entry["share"] + ".html"
+
+
 def share_pages(roster):
-    """One c/<character>-<code>.html page per character. The random code is made once and kept in
-    roster.json ("share"), so a card's link never changes. Pages for removed characters are deleted.
-    Also writes share-links.md, the list of every link (only linked from the repo, not the site)."""
+    """One c/<channel>-<code>.html page per streamer (all their characters, with the alt toggle).
+    The random code is made once and kept in roster.json (entry "share"), so a link never changes.
+    Older per-character links (character "share" codes, e.g. c/abg-slayer-gtCETHRJ.html) keep working:
+    they show the same streamer card. Pages for removed streamers are deleted.
+    Also writes share-links.md, the list of every link."""
     import secrets
     os.makedirs(P("c"), exist_ok=True)
     keep, rows = set(), []
+    code = lambda: "".join(ch for ch in secrets.token_urlsafe(12) if ch.isalnum())[:8]
     for r in roster:
-        for c in r["chars"]:
-            if not c.get("slug"): continue
-            if not c.get("share"):
-                c["share"] = "".join(ch for ch in secrets.token_urlsafe(9) if ch.isalnum())[:8]
-            fname = re.sub(r"[^a-z0-9-]+", "-", c["slug"].lower()) + "-" + c["share"] + ".html"
+        if not r.get("share"): r["share"] = code()
+        title = f'{r["streamer"]} · WoW Forever'
+        page = SHARE_TPL.format(title=title.replace("<", ""), slug=json.dumps(r["ch"]), title_js=json.dumps(f"<title>{title}</title>"))
+        names = [solo_file(r)] + [re.sub(r"[^a-z0-9-]+", "-", c["slug"].lower()) + "-" + c["share"] + ".html"
+                                  for c in r["chars"] if c.get("slug") and c.get("share")]
+        for fname in names:
             keep.add(fname)
-            title = f'{c["name"]} · WoW Forever'
-            page = SHARE_TPL.format(title=title.replace("<", ""), slug=json.dumps(c["slug"]), title_js=json.dumps(f"<title>{title}</title>"))
             path = P("c", fname)
             if not os.path.exists(path) or open(path, encoding="utf-8").read() != page:
                 open(path, "w", encoding="utf-8").write(page)
-            rows.append(f'| {r["streamer"]} | {c["name"]} | {SITE}c/{fname} |')
+        chars = ", ".join(c["name"] for c in r["chars"] if c.get("slug")) or "no character yet"
+        rows.append(f'| {r["streamer"]} | {chars} | {SITE}c/{names[0]} |')
     for f in os.listdir(P("c")):
         if f.endswith(".html") and f not in keep: os.remove(P("c", f))
-    md = ("# Solo card share links\n\nOne page per character, showing only that card (live, updates with each refresh).\n"
-          "Made by `tools/refresh.py`; links stay the same for as long as the character is on the tracker.\n\n"
-          "| Streamer | Character | Link |\n|---|---|---|\n" + "\n".join(rows) + "\n")
+    md = ("# Solo card share links\n\nOne page per streamer, showing only their card (live, updates with each refresh; "
+          "streamers with alts get the alt toggle). Each card on the tracker links to its page.\n"
+          "Made by `tools/refresh.py`; links stay the same for as long as the streamer is on the tracker. "
+          "Older per-character links still work and show the same card.\n\n"
+          "| Streamer | Characters | Link |\n|---|---|---|\n" + "\n".join(rows) + "\n")
     if not os.path.exists(P("share-links.md")) or open(P("share-links.md"), encoding="utf-8").read() != md:
         open(P("share-links.md"), "w", encoding="utf-8").write(md)
 
@@ -552,7 +562,8 @@ def main():
     json.dump(roster, open(P("roster.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     html = open(P("index.html"), encoding="utf-8").read()
     i = html.index("const ROSTER = ["); j = html.index("\n];", i) + 3
-    page_roster = [dict(r, chars=[{k: v for k, v in c.items() if k != "share"} for c in r["chars"]]) for r in roster]  # share codes stay off the site
+    page_roster = [dict({k: v for k, v in r.items() if k != "share"}, solo=solo_file(r),
+                        chars=[{k: v for k, v in c.items() if k != "share"} for c in r["chars"]]) for r in roster]
     html = html[:i] + "const ROSTER = " + json.dumps(page_roster, indent=1, ensure_ascii=False) + ";" + html[j:]
     html = re.sub(r'(<b id="checked">)[^<]*(</b>)', lambda m: m.group(1) + now_text() + m.group(2), html)
     html = re.sub(r'gear-data\.js\?v=[0-9a-f]+', "gear-data.js?v=" + gv, html)

@@ -33,7 +33,7 @@ A single-page site (also installable as a PWA) that shows WoW Forever streamers'
 | `.github/workflows/refresh.yml` | Runs `refresh.py` every 3 hours, on manual run, on pushes to roster.json or the tools, and on Add/Remove issues. Commits as github-actions[bot]. When a run fails it writes `.github/last-error.log`. |
 | `.github/ISSUE_TEMPLATE/` | Forms for Add a streamer (channel, character optional, realm, display name) and Remove a streamer |
 | `manifest.webmanifest`, `icon-*.png` | PWA install |
-| `c/*.html`, `share-links.md` | Generated solo card share pages, and the list of their links |
+| `c/*.html`, `share-links.md` | Generated solo card share pages (one per streamer, plus older per-character links), and the list of their links |
 | `previews/gear-style-previews.html` | Old mockups of the gear styles. The live page doesn't use it. |
 
 The Armory sometimes returns a character without stats or item levels. `refresh.py` then keeps that character's last known stats (from `chars.js`), ilvl (from `roster.json`) and per-item levels (from `gear-data.js`), and says so in the workflow log.
@@ -51,16 +51,17 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 - 13 streamers: Sodapoppin, Towelliee (main plus a Ghalon Carter alt), Esfand, imaqtpie, Nmplol, Hammerdance, Asmongold, Mitch Jones, Gingi (EU), Xaryu, Bajheera, MOONMOON, and Quin69 (no character found yet).
 - Built: card flip with gear, Stats/Profs tabs, Talents popup, Twitch panel, swipeable cards on mobile (the desktop card scaled up with CSS `zoom` to 10px from each screen edge, centred, Add box just below the fold, other page text in the ! note; every card is the same size, alt stacks peek out above the card, and swiping loops from the last card to the first and back), news ticker, Add/Remove through GitHub issues with a realm picker and a confirm-before-remove step, and the 3-hourly refresh on GitHub (this replaced the Claude scheduled refresh task).
 - Level 60 badges have gold elite wings wrapped around the ring (inline SVG `ELITE_WINGS`, shine respects reduced motion).
-- **Solo share pages for every card:** `c/<character>-<code>.html`, made by `share_pages()` in refresh.py on every run. The code is stored once per character as `"share"` in roster.json (kept out of index.html's ROSTER block), so links never change; pages for removed characters are deleted. `share-links.md` lists every link. Each page fetches index.html and sets `window.SOLO_FORCE`, so only that card shows (no page controls, no links back, noindex, no PWA install). On PC the card is half the fill-the-window size; on phones it's the same size as on the tracker. There is deliberately no `?solo=` URL option. Abg Slayer keeps `c/abg-slayer-gtCETHRJ.html`.
+- **Solo share pages for every streamer:** `c/<channel>-<code>.html`, made by `share_pages()` in refresh.py on every run. The code is stored once per streamer as `"share"` in roster.json, so links never change; pages for removed streamers are deleted. Streamers with alts get the alt toggle on their page. The older per-character pages (character `"share"` codes, e.g. `c/abg-slayer-gtCETHRJ.html`) still work and show the same streamer card. `share-links.md` lists every link. Each page fetches index.html and sets `window.SOLO_FORCE` (a channel or character slug), so only that card shows (no page controls, noindex, no PWA install). On PC the card is half the fill-the-window size; on phones it's the same size as on the tracker. There is deliberately no `?solo=` URL option.
+- Card title bar: after the streamer name, each tracker card has a small "⧉ solo" link to its solo page (the page ROSTER gets `solo`, the file name); on a solo page that spot is a "all cards" link back to the tracker. "· added" only shows for a day after a streamer joins (`added_at`, set by Add requests). The alt toggle (swap) sits in the art area, top right, below the flip button.
 - **Add and Remove are switched off for now** (Add box disabled with "Coming soon", 🗑 hidden via CSS). Luke doesn't want visitors sent to GitHub; re-enable once the new add flow exists (see backlog).
-- Abg Slayer (imaqtpie) is set to 59 with `level_seen` while the Armory still shows 58.
+- Abg Slayer (imaqtpie) hit 60 on 25 Nov; the Armory caught up, so his `level_seen` override is gone.
 - Raids unlock 9 Dec 2026, and the page shows a countdown.
 
 ## Ideas / backlog
 - **Rethink how streamers and characters get added.** The GitHub issue form needs a GitHub account and the exact realm, and the VOD/Armory guessing isn't reliable. Luke doesn't want users to have to go through GitHub at all. Add/Remove are disabled on the page until this is built; design is still open.
 - A raid tab once raids open on 9 Dec
 - A stream or desktop overlay version of a card
-- Solo card extras (planned): a 🔗 button on each tracker card that copies its share link; one hidden page that swipes through all the solo cards with no tracker controls; a per-page size option (e.g. bigger for a stream overlay)
+- Solo card extras (planned): one hidden page that swipes through all the solo cards with no tracker controls; a per-page size option (e.g. bigger for a stream overlay)
 - Collectible rare or customisable cards
 - Filters and leaderboards (history.json already tracks daily level and ilvl)
 
@@ -76,6 +77,7 @@ Don't hand-edit the generated files. Change `refresh.py` or `roster.json` and le
 - Test by opening `index.html` in a browser. Live status only works outside sandboxed viewers.
 
 ## Change log
+- 2026-11-25 — Solo pages per streamer, solo link on cards, alt toggle in the art — one share page per streamer (alts included, old per-character links kept); "⧉ solo" link after the streamer name, "all cards" link back on solo pages; swap button moved to the art's top right; "· added" only for a day
 - 2026-11-25 — Share pages for every card, half-size solo card on PC — refresh.py makes a solo share page per character (`c/`, codes in roster.json) and `share-links.md`; solo card is half the fill size on PC, tracker size on phones
 - 2026-11-25 — Abg Slayer share card, Add switched off for now — `c/abg-slayer-gtCETHRJ.html` shows only his live card; solo mode in index.html only via `window.SOLO_FORCE`; Add box disabled ("Coming soon") and 🗑 hidden so nobody is sent to GitHub
 <!-- Newest first. One line per push: date — commit title — what changed. Skip bot "Tracker refresh" commits. -->
