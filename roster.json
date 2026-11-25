@@ -302,7 +302,7 @@
     "rep": [
      "Stormpike Guard",
      "Revered",
-     58
+     67
     ],
     "share": "XsA712YT"
    }
@@ -490,8 +490,8 @@
     ],
     "rep": [
      "Orgrimmar",
-     "Honored",
-     50
+     "Revered",
+     52
     ],
     "share": "hzEKF2CT"
    }
@@ -631,7 +631,7 @@
     "ilvl": 54,
     "race": "Gnome",
     "cls": "Rogue",
-    "spec": "Subtlety",
+    "spec": "Combat",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "D E A T H",
