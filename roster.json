@@ -47,9 +47,9 @@
      ]
     ],
     "rep": [
-     "Stormwind",
+     "Stormpike Guard",
      "Revered",
-     53
+     59
     ]
    }
   ]
@@ -82,7 +82,7 @@
      ],
      [
       "Blacksmithing",
-      280,
+      282,
       300
      ],
      [
@@ -493,7 +493,7 @@
     "slug": "xaryu-forever",
     "render": "7/1494791",
     "bg": "gnome",
-    "level": 58,
+    "level": 60,
     "ilvl": 44,
     "race": "Gnome",
     "cls": "Mage",
@@ -509,7 +509,7 @@
      ],
      [
       "Tailoring",
-      231,
+      232,
       300
      ],
      [
