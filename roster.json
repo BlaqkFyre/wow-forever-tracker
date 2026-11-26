@@ -15,7 +15,7 @@
     "ilvl": 61,
     "race": "Night Elf",
     "cls": "Druid",
-    "spec": "Restoration",
+    "spec": "Balance",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "gay",
@@ -49,7 +49,7 @@
     "rep": [
      "Stormpike Guard",
      "Revered",
-     76
+     83
     ],
     "share": "jjwHkCQb"
    }
@@ -302,7 +302,7 @@
     "rep": [
      "Stormpike Guard",
      "Revered",
-     67
+     79
     ],
     "share": "XsA712YT"
    }
@@ -325,7 +325,7 @@
     "ilvl": 52,
     "race": "Night Elf",
     "cls": "Druid",
-    "spec": "Feral",
+    "spec": "Balance",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "The Tavern",
@@ -347,7 +347,7 @@
      ],
      [
       "Fishing",
-      77,
+      78,
       150
      ]
     ],
@@ -469,7 +469,7 @@
     "profs": [
      [
       "Enchanting",
-      45,
+      46,
       75
      ],
      [
@@ -491,7 +491,7 @@
     "rep": [
      "Orgrimmar",
      "Revered",
-     52
+     53
     ],
     "share": "hzEKF2CT"
    }
@@ -515,7 +515,7 @@
     "ilvl": 44,
     "race": "Gnome",
     "cls": "Mage",
-    "spec": "Frost",
+    "spec": "Arcane",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "Phase IX",
@@ -549,7 +549,7 @@
     "rep": [
      "Stormwind",
      "Revered",
-     56
+     58
     ],
     "share": "syXsTsJD"
    }
