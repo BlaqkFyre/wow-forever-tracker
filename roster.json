@@ -47,9 +47,9 @@
      ]
     ],
     "rep": [
-     "Stormpike Guard",
+     "Stormwind",
      "Revered",
-     83
+     53
     ],
     "share": "jjwHkCQb"
    }
@@ -154,7 +154,7 @@
     "slug": "esfand-television",
     "render": "76/7621452",
     "bg": "human",
-    "level": 59,
+    "level": 60,
     "ilvl": 53,
     "race": "Human",
     "cls": "Paladin",
@@ -222,7 +222,7 @@
     "profs": [
      [
       "Mining",
-      299,
+      300,
       300
      ],
      [
@@ -302,7 +302,7 @@
     "rep": [
      "Stormpike Guard",
      "Revered",
-     79
+     81
     ],
     "share": "XsA712YT"
    }
@@ -325,7 +325,7 @@
     "ilvl": 52,
     "race": "Night Elf",
     "cls": "Druid",
-    "spec": "Balance",
+    "spec": "Feral",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "The Tavern",
@@ -469,7 +469,7 @@
     "profs": [
      [
       "Enchanting",
-      46,
+      47,
       75
      ],
      [
@@ -491,7 +491,7 @@
     "rep": [
      "Orgrimmar",
      "Revered",
-     53
+     54
     ],
     "share": "hzEKF2CT"
    }
@@ -569,7 +569,7 @@
     "slug": "bajheera-furyborn",
     "render": "200/5784776",
     "bg": "human",
-    "level": 59,
+    "level": 60,
     "ilvl": 55,
     "race": "Human",
     "cls": "Warrior",
@@ -607,7 +607,7 @@
     "rep": [
      "Stormwind",
      "Revered",
-     56
+     57
     ],
     "share": "0oTkn6fJ"
    }
@@ -631,7 +631,7 @@
     "ilvl": 54,
     "race": "Gnome",
     "cls": "Rogue",
-    "spec": "Combat",
+    "spec": "Subtlety",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "D E A T H",
@@ -659,8 +659,8 @@
     ],
     "rep": [
      "Stormwind",
-     "Honored",
-     49
+     "Revered",
+     50
     ],
     "share": "DMJvcnex"
    }

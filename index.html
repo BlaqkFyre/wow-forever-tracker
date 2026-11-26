@@ -376,7 +376,7 @@
     <span class="fact">Level cap <b>60</b></span>
     <span class="fact">World first 60 <b>Team JokerD · ~52h</b></span>
     <span class="fact">Raids unlock <b>9 Dec</b> <span id="raidCountdown"></span></span>
-    <span class="fact">Armory checked <b id="checked">26 Nov, 2:38 PM AEDT</b> · every 3h</span>
+    <span class="fact">Armory checked <b id="checked">27 Nov, 3:59 AM AEDT</b> · every 3h</span>
   </div>
   <div class="legend"><span>Tap a card to flip it to its gear. Tap or hover an item for its tooltip, where it comes from and the Forever vs Classic changes:</span>
     <span><span class="sw" style="background:var(--new)"></span>new in Forever</span>
@@ -415,9 +415,9 @@
   </footer>
 </main>
 
-<script src="gear-data.js?v=4d3d39e9fcc25234"></script>
-<script src="events.js?v=868a021229"></script>
-<script src="chars.js?v=e4b55f4fe6b6"></script>
+<script src="gear-data.js?v=1931c61d063b433c"></script>
+<script src="events.js?v=a0649d0828"></script>
+<script src="chars.js?v=7a5b494db052"></script>
 <script>
 const CLASS = {
   Druid:{c:"#ff7c0a", g:'<path d="M50 8c-6 14-22 18-22 36 0 12 9 22 22 22s22-10 22-22C72 26 56 22 50 8z" fill="#ff7c0a"/>'},
@@ -497,9 +497,9 @@ const ROSTER = [
      ]
     ],
     "rep": [
-     "Stormpike Guard",
+     "Stormwind",
      "Revered",
-     83
+     53
     ]
    }
   ],
@@ -601,7 +601,7 @@ const ROSTER = [
     "slug": "esfand-television",
     "render": "76/7621452",
     "bg": "human",
-    "level": 59,
+    "level": 60,
     "ilvl": 53,
     "race": "Human",
     "cls": "Paladin",
@@ -668,7 +668,7 @@ const ROSTER = [
     "profs": [
      [
       "Mining",
-      299,
+      300,
       300
      ],
      [
@@ -747,7 +747,7 @@ const ROSTER = [
     "rep": [
      "Stormpike Guard",
      "Revered",
-     79
+     81
     ]
    }
   ],
@@ -769,7 +769,7 @@ const ROSTER = [
     "ilvl": 52,
     "race": "Night Elf",
     "cls": "Druid",
-    "spec": "Balance",
+    "spec": "Feral",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "The Tavern",
@@ -910,7 +910,7 @@ const ROSTER = [
     "profs": [
      [
       "Enchanting",
-      46,
+      47,
       75
      ],
      [
@@ -932,7 +932,7 @@ const ROSTER = [
     "rep": [
      "Orgrimmar",
      "Revered",
-     53
+     54
     ]
    }
   ],
@@ -1008,7 +1008,7 @@ const ROSTER = [
     "slug": "bajheera-furyborn",
     "render": "200/5784776",
     "bg": "human",
-    "level": 59,
+    "level": 60,
     "ilvl": 55,
     "race": "Human",
     "cls": "Warrior",
@@ -1046,7 +1046,7 @@ const ROSTER = [
     "rep": [
      "Stormwind",
      "Revered",
-     56
+     57
     ]
    }
   ],
@@ -1069,7 +1069,7 @@ const ROSTER = [
     "ilvl": 54,
     "race": "Gnome",
     "cls": "Rogue",
-    "spec": "Combat",
+    "spec": "Subtlety",
     "faction": "ally",
     "ruleset": "PvP",
     "guild": "D E A T H",
@@ -1097,8 +1097,8 @@ const ROSTER = [
     ],
     "rep": [
      "Stormwind",
-     "Honored",
-     49
+     "Revered",
+     50
     ]
    }
   ],
@@ -1488,7 +1488,7 @@ document.getElementById("refresh").addEventListener("click",refreshAll);
 let treesReady = null;
 function loadTrees(){ if (window.TREES) return Promise.resolve(); if (!treesReady) treesReady = new Promise((ok,bad)=>{ const sc=document.createElement("script"); sc.src="talent-trees.js?v=500df386d832"; sc.onload=ok; sc.onerror=bad; document.head.appendChild(sc); }); return treesReady; }
 const TW = document.createElement("div"); TW.id="talwrap"; document.body.appendChild(TW);
-try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=e4b55f4fe6b6)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
+try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=7a5b494db052)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
 let talCur = null;
 function iconPos(ix){ const rows=Math.ceil(((window.TICN)||365)/12); return `background-position:${(ix%12)/11*100}% ${rows>1?Math.floor(ix/12)/(rows-1)*100:0}%`; }
 function knownIcons(cls){ const m={}; ROSTER.forEach(r=>r.chars.forEach(c=>{ if(c.cls!==cls||!c.slug||!CH[c.slug]) return; Object.values(CH[c.slug].t).forEach(a=>a.forEach(t=>{ if(t[2]>=0) m[t[0]]=t[2]; })); })); return m; }
