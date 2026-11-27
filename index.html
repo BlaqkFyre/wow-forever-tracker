@@ -1422,18 +1422,21 @@ function loopEnds(G, sl){
   const kids = [...G.children]; if (kids.length < 2) return;
   const copy = el => { const c = el.cloneNode(true); c.classList.add("clone"); c.removeAttribute("data-ch"); c.setAttribute("aria-hidden","true"); c.inert = true; return c; };
   G.prepend(copy(kids[kids.length-1])); G.append(copy(kids[0]));
-  if (!G.dataset.loop) { G.dataset.loop = 1; G.scrollLeft = kids[0].offsetLeft - G.children[0].offsetLeft; }
+  if (!G.dataset.loop) { G.dataset.loop = 1; G.scrollLeft += kids[0].getBoundingClientRect().left - G.children[0].getBoundingClientRect().left; }
   else G.scrollLeft = sl;
 }
 (function(){
   const G = document.getElementById("grid"); let t;
   function wrap(){
     if (!G.dataset.loop) return;
-    const kids = [...G.children], mid = G.scrollLeft + G.clientWidth/2;
-    const at = kids.reduce((b, k, i) => Math.abs(k.offsetLeft + k.offsetWidth/2 - mid) < Math.abs(kids[b].offsetLeft + kids[b].offsetWidth/2 - mid) ? i : b, 0);
+    // measure on screen (getBoundingClientRect): the cards use CSS zoom, so offsetLeft/offsetWidth are in a
+    // different scale from scrollLeft and the wrong card looked centred, sending the strip back to the start
+    const kids = [...G.children], g = G.getBoundingClientRect(), mid = g.left + g.width/2;
+    const dist = k => { const r = k.getBoundingClientRect(); return Math.abs(r.left + r.width/2 - mid); };
+    const at = kids.reduce((b, k, i) => dist(k) < dist(kids[b]) ? i : b, 0);
     const to = at === 0 ? kids.length-2 : at === kids.length-1 ? 1 : -1;
     if (to < 0) return;
-    G.style.scrollSnapType = "none"; G.scrollLeft += kids[to].offsetLeft - kids[at].offsetLeft;
+    G.style.scrollSnapType = "none"; G.scrollLeft += kids[to].getBoundingClientRect().left - kids[at].getBoundingClientRect().left;
     requestAnimationFrame(() => { G.style.scrollSnapType = ""; });
   }
   G.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(wrap, 140); }, {passive:true});
@@ -1597,7 +1600,9 @@ function renderTicker(){
   if (SOLO && !list.length) list.push({k:"none", s:`No news for ${pool[0]?.streamer||"this card"} yet`});
   const tk = document.getElementById("ticker"); if (!list.length) { tk.hidden = true; return; }
   // solo card: newest news in near-white, fading to grey for older items
-  const fade = i => { if (!SOLO || list.length < 2) return ""; const f = i / (list.length - 1), c = Math.round(242 - f * (242 - 112)); return ` style="color:rgb(${c},${c+2},${c+6})"`; };
+  // by age, not position: news from the same time is the same shade; white for the newest, fully grey 3+ days older
+  const newest = Math.max(...list.map(e => e.t ? Date.parse(e.t) : 0));
+  const fade = i => { const t = list[i].t; if (!SOLO || !t) return ""; const f = Math.min(1, Math.max(0, (newest - Date.parse(t)) / 2592e5)), c = Math.round(242 - f * (242 - 112)); return ` style="color:rgb(${c},${c+2},${c+6})"`; };
   const tr = document.getElementById("ttrack"); tr.innerHTML = list.map((e, i) => tickItem(e).replace(/^<span>/, `<span${fade(i)}>`)).join("");
   tr.style.setProperty("--dur", Math.max(25, list.length * 7) + "s"); tk.hidden = false; setHH();
 }
