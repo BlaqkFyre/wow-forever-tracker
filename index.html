@@ -348,9 +348,11 @@
 </style>
 <style>
   /* solo card pages (c/*.html set window.SOLO_FORCE): just that one card, centred, nothing else on the page */
-  html.solo body>header,html.solo .banner,html.solo #ticker,html.solo main>:not(.grid),html.solo .ibtn.rm,html.solo .infopop{display:none!important}
+  html.solo .hrow,html.solo .banner,html.solo main>:not(.grid),html.solo .ibtn.rm,html.solo .infopop{display:none!important}
+  html.solo body>header{padding-top:2px;border-bottom:0;background:transparent;backdrop-filter:none} /* only the ticker shows, filtered to this streamer */
+  html.solo .ticker{max-width:min(1240px,100%)}
   html.solo main{padding:0!important;max-width:none!important;margin:0!important}
-  html.solo .grid{display:flex!important;align-items:center;justify-content:center;min-height:100svh;margin:0!important;padding:10px!important;overflow:visible!important;box-sizing:border-box}
+  html.solo .grid{display:flex!important;align-items:center;justify-content:center;min-height:calc(100svh - var(--hh,0px));margin:0!important;padding:10px!important;overflow:visible!important;box-sizing:border-box}
   html.solo .grid>.card{flex:0 0 288px;width:288px;max-width:288px;zoom:1!important;transform:scale(var(--cz,1))} /* scale, not zoom: zoom below 1 rounds text and clips the stats panel */
 </style>
 <script>if(window.SOLO_FORCE)document.documentElement.classList.add("solo")</script>
@@ -1163,7 +1165,7 @@ function category(it){
   return 1;
 }
 function pickShowcase(gear){
-  return gear.filter(g => !["shirt","tabard"].includes(g.s)).sort((a,b) => (b.il-a.il) || (b.q-a.q) || (category(a)-category(b)))[0];
+  return gear.filter(g => !["shirt","tabard"].includes(g.s)).sort((a,b) => ((b.il||0)-(a.il||0)) || (b.q-a.q) || (category(a)-category(b)))[0];
 }
 const icoStyle = it => `--qc:${QCOL[it.q]};--c:${it.ic%12};--r:${Math.floor(it.ic/12)}`;
 function bigStyle(it){
@@ -1173,7 +1175,7 @@ function bigStyle(it){
 }
 function tileHTML(it, slot){
   if (!it) return `<div class="tile empty" title="${SLOT_LABEL[slot]}: empty"></div>`;
-  return `<div class="tile ico ${it.t}" style="${icoStyle(it)}" data-item="${it.id}" data-slot="${it.s}"><span class="il ${it.q===3||it.q===4?"lt":""}">${it.il}</span></div>`;
+  return `<div class="tile ico ${it.t}" style="${icoStyle(it)}" data-item="${it.id}" data-slot="${it.s}">${it.il?`<span class="il ${it.q===3||it.q===4?"lt":""}">${it.il}</span>`:""}</div>`;
 }
 
 // ---------- tooltip ----------
@@ -1331,7 +1333,7 @@ function gearBackHTML(e, c, stack){
       <div class="scase"><div class="lbl">SHOWCASE</div>
         <div class="bigicon ${big.cls}" data-item="${sc.id}" data-slot="${sc.s}" style="${big.st}"></div>
         <div class="nm" style="color:${QCOL[sc.q]}">${esc(sc.n)}</div>
-        <div class="il2">Item Level ${sc.il} · ${SLOT_LABEL[sc.s]}</div>
+        <div class="il2">${sc.il?`Item Level ${sc.il} · `:""}${SLOT_LABEL[sc.s]}</div>
         <span class="pill ${sc.t}">${STATUS_LABEL[sc.t]}</span></div>
       <div class="col">${RIGHT.map(s => tileHTML(by[s], s)).join("")}</div>
     </div>
@@ -1584,10 +1586,19 @@ function tickItem(e){
   return `<span><span class="k" style="${kc}">${TICON[e.k]||"•"}</span>${txt}${e.t?`<span class="ago">${ago(e.t)}</span>`:""}</span>`;
 }
 function renderTicker(){
-  const liveNow = ROSTER.filter(r => (state[r.ch]||{}).live === true).map(r => ({k:"live", s:`${r.streamer} is live${state[r.ch].game?" · "+state[r.ch].game:""}`}));
-  const list = liveNow.concat((window.EVENTS||[]).slice(0, 25));
+  const pool = SOLO ? entries() : ROSTER;
+  const liveNow = pool.filter(r => (state[r.ch]||{}).live === true).map(r => ({k:"live", s:`${r.streamer} is live${state[r.ch].game?" · "+state[r.ch].game:""}`}));
+  let news = window.EVENTS || [];
+  if (SOLO) { // solo card: only this streamer's news (their characters' names, or the streamer's name)
+    const names = pool.flatMap(r => [r.streamer, ...r.chars.map(c => c.name)]).filter(n => n && n !== "Not in Azeroth");
+    news = news.filter(ev => names.some(n => ev.s.includes(n)));
+  }
+  const list = liveNow.concat(news.slice(0, 25));
+  if (SOLO && !list.length) list.push({k:"none", s:`No news for ${pool[0]?.streamer||"this card"} yet`});
   const tk = document.getElementById("ticker"); if (!list.length) { tk.hidden = true; return; }
-  const tr = document.getElementById("ttrack"); tr.innerHTML = list.map(tickItem).join("");
+  // solo card: newest news in near-white, fading to grey for older items
+  const fade = i => { if (!SOLO || list.length < 2) return ""; const f = i / (list.length - 1), c = Math.round(242 - f * (242 - 112)); return ` style="color:rgb(${c},${c+2},${c+6})"`; };
+  const tr = document.getElementById("ttrack"); tr.innerHTML = list.map((e, i) => tickItem(e).replace(/^<span>/, `<span${fade(i)}>`)).join("");
   tr.style.setProperty("--dur", Math.max(25, list.length * 7) + "s"); tk.hidden = false; setHH();
 }
 

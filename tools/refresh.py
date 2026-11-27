@@ -450,7 +450,7 @@ def main():
                 continue
             ic = next((a for a in ((g.get("media") or {}).get("content") or {}).get("assets") or [] if a.get("key") == "icon"), None)
             f = FC.get(iid)
-            ITEMS[iid] = {"n": g.get("name"), "q": Q.get((g.get("quality") or {}).get("type"), 1), "il": gl or old_il.get(str(iid)),
+            ITEMS[iid] = {"n": g.get("name"), "q": Q.get((g.get("quality") or {}).get("type"), 1), "il": gl or (f or {}).get("l") or old_il.get(str(iid)),
                           "ic": icon_id(ic["value"]) if ic else None, "t": f["t"] if f else "same",
                           "x": clean(f.get("x")) if f else item_lines(g), "y": clean(f.get("y")) if f and f["t"] == "changed" else 0,
                           "src": SRC[str(iid)][:3] if str(iid) in SRC else 0}
@@ -482,6 +482,11 @@ def main():
         ch["ruleset"] = (c.get("ruleset") or {}).get("name", ch.get("ruleset", ""))
         time.sleep(0.4)
 
+    # any item still without a level: ForeverChanges' item level ("l"), then the last known one
+    for iid, it in ITEMS.items():
+        if not it["il"]:
+            it["il"] = (FC.get(iid) or {}).get("l") or old_il.get(str(iid))
+            if not it["il"]: print(f"No item level anywhere for item {iid} ({it['n']})")
     if bad: print("Characters that failed:", *bad, sep="\n  ")
     if not C:
         print("Every character failed; stopping without changes."); sys.exit(1)
@@ -547,7 +552,7 @@ def main():
                     it = I.get(str(iid))
                     if it and str(iid) not in before and it[1] >= 3:
                         ev("loot", f"{c['name']} equipped [{it[0]}]|{it[1]}")
-    events[:] = events[:60]
+    events[:] = events[:200]  # the main ticker shows the newest 25; solo cards filter these to one streamer
     open(P("events.js"), "w", encoding="utf-8").write("window.EVENTS=" + json.dumps(events, ensure_ascii=False) + ";")
 
     # ---- daily history for future progress charts
