@@ -84,7 +84,7 @@
      ],
      [
       "Blacksmithing",
-      287,
+      289,
       300
      ],
      [
@@ -336,11 +336,6 @@
       300
      ],
      [
-      "Skinning",
-      300,
-      300
-     ],
-     [
       "Cooking",
       299,
       300
@@ -349,12 +344,17 @@
       "Fishing",
       78,
       150
+     ],
+     [
+      "Herbalism",
+      22,
+      75
      ]
     ],
     "rep": [
      "Stormwind",
      "Revered",
-     53
+     54
     ],
     "share": "0DqVYjSJ"
    }
