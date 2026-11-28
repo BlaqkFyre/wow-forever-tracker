@@ -378,7 +378,7 @@
     <span class="fact">Level cap <b>60</b></span>
     <span class="fact">World first 60 <b>Team JokerD · ~52h</b></span>
     <span class="fact">Raids unlock <b>9 Dec</b> <span id="raidCountdown"></span></span>
-    <span class="fact">Armory checked <b id="checked">28 Nov, 10:31 AM AEDT</b> · every 3h</span>
+    <span class="fact">Armory checked <b id="checked">28 Nov, 6:56 PM AEDT</b> · every 3h</span>
   </div>
   <div class="legend"><span>Tap a card to flip it to its gear. Tap or hover an item for its tooltip, where it comes from and the Forever vs Classic changes:</span>
     <span><span class="sw" style="background:var(--new)"></span>new in Forever</span>
@@ -417,9 +417,9 @@
   </footer>
 </main>
 
-<script src="gear-data.js?v=7a93979bb5c2b77e"></script>
-<script src="events.js?v=8685e63898"></script>
-<script src="chars.js?v=a791058a0a4e"></script>
+<script src="gear-data.js?v=b48a175eae337399"></script>
+<script src="events.js?v=52503285a9"></script>
+<script src="chars.js?v=611171373fef"></script>
 <script>
 const CLASS = {
   Druid:{c:"#ff7c0a", g:'<path d="M50 8c-6 14-22 18-22 36 0 12 9 22 22 22s22-10 22-22C72 26 56 22 50 8z" fill="#ff7c0a"/>'},
@@ -535,7 +535,7 @@ const ROSTER = [
      ],
      [
       "Blacksmithing",
-      289,
+      291,
       300
      ],
      [
@@ -614,7 +614,7 @@ const ROSTER = [
     "profs": [
      [
       "First Aid",
-      293,
+      300,
       300
      ],
      [
@@ -641,7 +641,7 @@ const ROSTER = [
     "rep": [
      "Stormwind",
      "Revered",
-     56
+     57
     ]
    }
   ],
@@ -787,13 +787,13 @@ const ROSTER = [
       300
      ],
      [
-      "Fishing",
-      78,
+      "Herbalism",
+      89,
       150
      ],
      [
-      "Herbalism",
-      71,
+      "Fishing",
+      78,
       150
      ]
     ],
@@ -1020,13 +1020,13 @@ const ROSTER = [
     "guild": "The Furyborn Alliance",
     "profs": [
      [
-      "Mining",
+      "First Aid",
       300,
       300
      ],
      [
-      "First Aid",
-      290,
+      "Mining",
+      300,
       300
      ],
      [
@@ -1048,7 +1048,7 @@ const ROSTER = [
     "rep": [
      "Stormwind",
      "Revered",
-     57
+     58
     ]
    }
   ],
@@ -1493,7 +1493,7 @@ document.getElementById("refresh").addEventListener("click",refreshAll);
 let treesReady = null;
 function loadTrees(){ if (window.TREES) return Promise.resolve(); if (!treesReady) treesReady = new Promise((ok,bad)=>{ const sc=document.createElement("script"); sc.src="talent-trees.js?v=500df386d832"; sc.onload=ok; sc.onerror=bad; document.head.appendChild(sc); }); return treesReady; }
 const TW = document.createElement("div"); TW.id="talwrap"; document.body.appendChild(TW);
-try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=a791058a0a4e)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
+try{ const R=document.documentElement.style; R.setProperty("--tspr",`url(talents.webp?v=611171373fef)`); R.setProperty("--trows",Math.max(1,Math.ceil(((window.CHARS&&window.CHARS.n)||0)/12))); }catch(e){}
 let talCur = null;
 function iconPos(ix){ const rows=Math.ceil(((window.TICN)||365)/12); return `background-position:${(ix%12)/11*100}% ${rows>1?Math.floor(ix/12)/(rows-1)*100:0}%`; }
 function knownIcons(cls){ const m={}; ROSTER.forEach(r=>r.chars.forEach(c=>{ if(c.cls!==cls||!c.slug||!CH[c.slug]) return; Object.values(CH[c.slug].t).forEach(a=>a.forEach(t=>{ if(t[2]>=0) m[t[0]]=t[2]; })); })); return m; }
